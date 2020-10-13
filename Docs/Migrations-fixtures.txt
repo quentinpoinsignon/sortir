@@ -1,0 +1,58 @@
+MIGRATIONS
+//obtenir le statut des migrations
+php bin\console doctrine:migrations:status
+
+//obtenir la liste des migrations
+php bin\console doctrine:migrations:list
+
+//générer une migration après chgt ds classe
+php bin\console doctrine:migrations:diff
+
+//effectuer l'ensemble des migrations présentes
+php bin/console doctrine:migrations:migrate
+
+//effectuer une migration / rollback sélectivement:
+
+php bin\console doctrine:migrations:execute DoctrineMigrations\Version########## --up (or down)
+
+FIXTURES
+//installation
+(Bug mémoire composer self-update --preview /variable d'environnement 
+"composer require orm-fixtures --dev
+doctrine/doctrine-fixtures-bundle" vieilles versions
+composer req --dev orm-fixtures (site symfony)
+
+//Générer une fixture
+php bin/console make:fixtures
+
+//populate fixtures
+//FAKER
+composer req --dev fzaninotto/faker
+//ex : 
+public function load(ObjectManager $manager)
+    {
+        $faker = Faker\Factory::create('fr_FR');
+        for($i = 1 ; $i <= 10; $i++)
+        {
+            $test = new Test();
+            $test   ->setTitle($faker->title . $i)
+                    ->setContent($faker->paragraph .$i);
+            $manager->persist($test);
+        }
+        $manager->flush();
+    }
+
+//help
+php bin/console doctrine:fixtures:load --help
+
+//load fixture
+php bin/console doctrine:fixtures:load
+
+
+
+
+
+
+
+
+
