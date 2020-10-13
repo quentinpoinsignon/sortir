@@ -46,7 +46,7 @@ public function load(ObjectManager $manager)
 php bin/console doctrine:fixtures:load --help
 
 //load fixture
-php bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load --append
 
 
 
