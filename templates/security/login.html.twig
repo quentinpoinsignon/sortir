@@ -1,15 +1,5 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport">
-    <title>Connection</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
-
-    <body class="w3-container w3-red">
-
+{% extends 'base.html.twig' %}
+{% block body %}
     <div class="w3-container w3-red  w3-row flex-center">
     <form class=" w3-mobile w3-col w3-center m6 l4 w3-padding-64" method="post">
         {% if error %}
@@ -48,8 +38,5 @@
         </button>
     </form>
 </div>
-
-</body>
-</html>
-
+{% endblock %}
 
