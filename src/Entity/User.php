@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -63,6 +65,24 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $active;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $campus;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="owner", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $ownedEvents;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Registration::class, mappedBy="participant", cascade={"persist", "remove"})
+     */
+    private $registration;
+
 
     public function getId(): ?int
     {
@@ -206,6 +226,134 @@ class User implements UserInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getSpot(): ?Spot
+    {
+        return $this->spot;
+    }
+
+    public function setSpot(?Spot $spot): self
+    {
+        $this->spot = $spot;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getOwnedEvents(): Collection
+    {
+        return $this->ownedEvents;
+    }
+
+    public function addOwnedEvent(Event $event): self
+    {
+        if (!$this->ownedEvents->contains($event)) {
+            $this->ownedEvents[] = $event;
+            $event->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOwnedEvent(Event $event): self
+    {
+        if ($this->ownedEvents->contains($event)) {
+            $this->ownedEvents->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getUser() === $this) {
+                $event->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getParticipatedEvents(): Collection
+    {
+        return $this->participatedEvents;
+    }
+
+    public function addParticipatedEvent(Event $participatedEvent): self
+    {
+        if (!$this->participatedEvents->contains($participatedEvent)) {
+            $this->participatedEvents[] = $participatedEvent;
+            $participatedEvent->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipatedEvent(Event $participatedEvent): self
+    {
+        if ($this->participatedEvents->contains($participatedEvent)) {
+            $this->participatedEvents->removeElement($participatedEvent);
+            $participatedEvent->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Registration[]
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): self
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations[] = $registration;
+            $registration->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): self
+    {
+        if ($this->registrations->contains($registration)) {
+            $this->registrations->removeElement($registration);
+            $registration->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function getRegistration(): ?Registration
+    {
+        return $this->registration;
+    }
+
+    public function setRegistration(Registration $registration): self
+    {
+        $this->registration = $registration;
+
+        // set the owning side of the relation if necessary
+        if ($registration->getParticipant() !== $this) {
+            $registration->setParticipant($this);
+        }
 
         return $this;
     }

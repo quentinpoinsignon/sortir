@@ -1,0 +1,13 @@
+// Destruction de la database
+php bin/console doctrine:database:drop --force
+
+// Régénération de la database
+php bin/console doctrine:database:create
+
+// Update du schéma Doctrine
+php bin/console d:s:u --force
+
+// Fixtures globales
+php bin\console doctrine:fixtures:load --group=global
+
+

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,10 +49,38 @@ class Event
      */
     private $eventInfos;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Spot::class, inversedBy="events", cascade={"persist"})
+     */
+    private $spot;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="events", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="events", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $campus;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="events", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     */
+    private $owner;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Registration::class, mappedBy="event", cascade={"persist", "remove"})
+     */
+    private $registration;
+
+
+
+
 
     public function getName(): ?string
     {
@@ -120,6 +150,137 @@ class Event
     public function setEventInfos(?string $eventInfos): self
     {
         $this->eventInfos = $eventInfos;
+
+        return $this;
+    }
+
+    public function getSpot(): ?Spot
+    {
+        return $this->spot;
+    }
+
+    public function setSpot(?Spot $spot): self
+    {
+        $this->spot = $spot;
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(User $participant): self
+    {
+        //if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+        //}
+
+        return $this;
+    }
+
+    public function removeParticipant(User $participant): self
+    {
+        if ($this->participants->contains($participant)) {
+            $this->participants->removeElement($participant);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Registration[]
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): self
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations[] = $registration;
+            $registration->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): self
+    {
+        if ($this->registrations->contains($registration)) {
+            $this->registrations->removeElement($registration);
+            $registration->removeEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function getRegistration(): ?Registration
+    {
+        return $this->registration;
+    }
+
+    public function setRegistration(Registration $registration): self
+    {
+        $this->registration = $registration;
+
+        // set the owning side of the relation if necessary
+        if ($registration->getEvent() !== $this) {
+            $registration->setEvent($this);
+        }
 
         return $this;
     }
