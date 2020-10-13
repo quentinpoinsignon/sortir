@@ -79,9 +79,15 @@ class User implements UserInterface
     private $ownedEvents;
 
     /**
-     * @ORM\OneToOne(targetEntity=Registration::class, mappedBy="participant", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Registration::class, mappedBy="participant")
      */
-    private $registration;
+    private $registrations;
+
+    public function __construct()
+    {
+        $this->registrations = new ArrayCollection();
+    }
+
 
 
     public function getId(): ?int
@@ -286,34 +292,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Event[]
-     */
-    public function getParticipatedEvents(): Collection
-    {
-        return $this->participatedEvents;
-    }
-
-    public function addParticipatedEvent(Event $participatedEvent): self
-    {
-        if (!$this->participatedEvents->contains($participatedEvent)) {
-            $this->participatedEvents[] = $participatedEvent;
-            $participatedEvent->addParticipant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipatedEvent(Event $participatedEvent): self
-    {
-        if ($this->participatedEvents->contains($participatedEvent)) {
-            $this->participatedEvents->removeElement($participatedEvent);
-            $participatedEvent->removeParticipant($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Registration[]
      */
     public function getRegistrations(): Collection
@@ -325,7 +303,7 @@ class User implements UserInterface
     {
         if (!$this->registrations->contains($registration)) {
             $this->registrations[] = $registration;
-            $registration->addParticipant($this);
+            $registration->setParticipant($this);
         }
 
         return $this;
@@ -335,26 +313,20 @@ class User implements UserInterface
     {
         if ($this->registrations->contains($registration)) {
             $this->registrations->removeElement($registration);
-            $registration->removeParticipant($this);
+            // set the owning side to null (unless already changed)
+            if ($registration->getParticipant() === $this) {
+                $registration->setParticipant(null);
+            }
         }
 
         return $this;
     }
 
-    public function getRegistration(): ?Registration
-    {
-        return $this->registration;
-    }
 
-    public function setRegistration(Registration $registration): self
-    {
-        $this->registration = $registration;
 
-        // set the owning side of the relation if necessary
-        if ($registration->getParticipant() !== $this) {
-            $registration->setParticipant($this);
-        }
 
-        return $this;
-    }
+
+
+
+
 }

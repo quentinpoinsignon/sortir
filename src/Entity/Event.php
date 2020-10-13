@@ -74,11 +74,14 @@ class Event
     private $owner;
 
     /**
-     * @ORM\OneToOne(targetEntity=Registration::class, mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Registration::class, mappedBy="event")
      */
-    private $registration;
+    private $registrations;
 
-
+    public function __construct()
+    {
+        $this->registrations = new ArrayCollection();
+    }
 
 
 
@@ -215,32 +218,6 @@ class Event
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    public function addParticipant(User $participant): self
-    {
-        //if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-        //}
-
-        return $this;
-    }
-
-    public function removeParticipant(User $participant): self
-    {
-        if ($this->participants->contains($participant)) {
-            $this->participants->removeElement($participant);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Registration[]
      */
     public function getRegistrations(): Collection
@@ -252,7 +229,7 @@ class Event
     {
         if (!$this->registrations->contains($registration)) {
             $this->registrations[] = $registration;
-            $registration->addEvent($this);
+            $registration->setEvent($this);
         }
 
         return $this;
@@ -262,26 +239,15 @@ class Event
     {
         if ($this->registrations->contains($registration)) {
             $this->registrations->removeElement($registration);
-            $registration->removeEvent($this);
+            // set the owning side to null (unless already changed)
+            if ($registration->getEvent() === $this) {
+                $registration->setEvent(null);
+            }
         }
 
         return $this;
     }
 
-    public function getRegistration(): ?Registration
-    {
-        return $this->registration;
-    }
 
-    public function setRegistration(Registration $registration): self
-    {
-        $this->registration = $registration;
 
-        // set the owning side of the relation if necessary
-        if ($registration->getEvent() !== $this) {
-            $registration->setEvent($this);
-        }
-
-        return $this;
-    }
 }

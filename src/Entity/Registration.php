@@ -23,21 +23,18 @@ class Registration
     private $registrationDate;
 
     /**
-     * @ORM\OneToOne(targetEntity=Event::class, inversedBy="registration", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="registrations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="registration", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="registrations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $participant;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+
 
     public function getRegistrationDate(): ?\DateTimeInterface
     {
