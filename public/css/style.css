@@ -1,0 +1,18 @@
+/**********************************NavBar**************************************/
+.logo_verre
+{
+    display: inline;
+}
+
+.nom_site
+{
+    display: inline;
+    margin: 0px;
+}
+
+.logo_nom_site
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
