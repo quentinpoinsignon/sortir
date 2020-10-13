@@ -37,6 +37,12 @@ class Spot
      */
     private $longitude;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Town::class, inversedBy="spots", cascade={"persist"}))
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $town;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +92,18 @@ class Spot
     public function setLongitude(float $longitude): self
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getTown(): ?Town
+    {
+        return $this->town;
+    }
+
+    public function setTown(?Town $town): self
+    {
+        $this->town = $town;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TownRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Town
      * @ORM\Column(type="string", length=5)
      */
     private $postalCode;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Spot::class, mappedBy="town")
+     */
+    private $spots;
+
+    public function __construct()
+    {
+        $this->spots = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,37 @@ class Town
     public function setPostalCode(string $postalCode): self
     {
         $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Spot[]
+     */
+    public function getSpots(): Collection
+    {
+        return $this->spots;
+    }
+
+    public function addSpot(Spot $spot): self
+    {
+        if (!$this->spots->contains($spot)) {
+            $this->spots[] = $spot;
+            $spot->setTown($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpot(Spot $spot): self
+    {
+        if ($this->spots->contains($spot)) {
+            $this->spots->removeElement($spot);
+            // set the owning side to null (unless already changed)
+            if ($spot->getTown() === $this) {
+                $spot->setTown(null);
+            }
+        }
 
         return $this;
     }
