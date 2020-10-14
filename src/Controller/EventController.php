@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EventController extends AbstractController
 {
+    /**
+     * @author quentin
+     * Fonction pour afficher le détail d'un event
+     *
+     * @Route ("/{id}", name="event_detail", methods={"GET"})
+     */
+    public function detail(int $id, EntityManagerInterface $entityManager, Request $request)
+    {
+        $eventRepository = $entityManager->getRepository(Event::class);
+        $event = $eventRepository->find($id);
+
+        return $this->render('event/detail.html.twig', [
+            'event' => $event,
+        ]);
+    }
+
     /**
      * @Route("/", name="event_index", methods={"GET"})
      */
@@ -48,15 +65,16 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="event_show", methods={"GET"})
-     */
-    public function show(Event $event): Response
-    {
-        return $this->render('event/show.html.twig', [
-            'event' => $event,
-        ]);
-    }
+//    /**
+//     * @Route("/{id}", name="event_show", methods={"GET"})
+//     */
+//    public function show(Event $event, EntityManagerInterface $entityManager): Response
+//    {
+//       // $eventRepository = $entityManager->getRepository(Event: class);
+//        return $this->render('event/show.html.twig', [
+//            'event' => $event,
+//        ]);
+//    }
 
     /**
      * @Route("/{id}/edit", name="event_edit", methods={"GET","POST"})

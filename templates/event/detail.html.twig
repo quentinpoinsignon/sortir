@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} | Detail {% endblock %}
+
+{% block body %}
+    <br><br><br><br>
+<div class="w3-card-2">
+    <header class="w3-container">
+        <h2>Détail de la sortie - {{ event.name }}</h2>
+    </header>
+
+    <div class="w3-container w3-cell-row">
+        <div class="w3-cell w3-margin">
+            <p>Nom de la sortie : {{ event.name }}</p>
+            <p>Date et heure de la sortie : {{ event.startDateTime.format('d/m/Y à G:i') }}</p>
+            <p>Date limite d'inscription : {{ event.registrationLimitDate.format('d/m/Y à G:i') }}</p>
+            <p>Nombre de places : {{ event.registrationMaxNb }}</p>
+            <p>Durée :  {{ event.duration }} minutes</p>
+            <p>Description et infos : {{ event.eventInfos }}</p>
+        </div>
+        <div class="w3-cell w3-margin   ">
+            <p>Campus : {{ event.campus.name }}</p>
+            <p>Lieu : {{ event.spot.name }}</p>
+            <p>Rue : {{ event.spot.street }}</p>
+            <p>Code postal : {{ event.spot.town.postalCode }}</p>
+            <p>Latitude : {{ event.spot.latitude }}</p>
+            <p>Longitude : {{ event.spot.longitude }}</p>
+        </div>
+    </div>
+
+    <div class="w3-container w3-cell-row">
+        <div class="w3-cell">
+            <table class="w3-table w3-striped">
+                <h2>Liste des participants inscrits :</h2>
+
+
+                <table class="w3-table w3-striped">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Points</th>
+                    </tr>
+                    <tr>
+                        <td>Jill</td>
+                        <td>Smith</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                        <td>Eve</td>
+                        <td>Jackson</td>
+                        <td>94</td>
+                    </tr>
+                    <tr>
+                        <td>Adam</td>
+                        <td>Johnson</td>
+                        <td>67</td>
+                    </tr>
+
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+
