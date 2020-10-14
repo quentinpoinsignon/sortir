@@ -19,20 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.startDateTime ? event.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ event.duration }}</td>
-                <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ event.registrationMaxNb }}</td>
-                <td>{{ event.eventInfos }}</td>
-                <td>
-                    <a href="{{ path('event_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
+
         {% else %}
             <tr>
                 <td colspan="8">no records found</td>

@@ -5,84 +5,94 @@
 
 
 {% block body %}
+
     <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
-            <div class="container">
 
-                <form class="w3-container home_form">
-                    <h2 class="titre_form_accueil">Filtrer les sorties</h2>
+                <div class="form_plus_card w3-row">
+                    <form class="w3-container home_form w3-col">
+                        <h2 class="titre_form_accueil">Filtrer les sorties</h2>
 
-                    <label for="campus_list" class="campus_lbl">Campus</label>
-                    <select class="w3-select campus_list" name="campus_list" id="campus_list">
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                    </select>
+                        <label for="campus_list" class="campus_lbl">Campus</label>
+                        <select class="w3-select campus_list" name="campus_list" id="campus_list">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
 
 
-                    <label for="search_input" class="search_lbl">Le nom de la sortie contient :</label>
-                    <input type="text" class="search_input w3-input" id="search_input">
+                        <label for="search_input" class="search_lbl">Le nom de la sortie contient :</label>
+                        <input type="text" class="search_input w3-input" id="search_input">
 
-                    <label for="date_debut" class="date_debut_lbl">Entre</label>
-                    <input type="date" class="date_debut w3-input" id="date_debut">
+                        <label for="date_debut" class="date_debut_lbl">Entre</label>
+                        <input type="date" class="date_debut w3-input" id="date_debut">
 
-                    <label for="date_fin" class="date_fin_lbl">et</label>
-                    <input type="date" class="date_fin w3-input" id="date_fin">
-                    <br>
+                        <label for="date_fin" class="date_fin_lbl">et</label>
+                        <input type="date" class="date_fin w3-input" id="date_fin">
+                        <br>
 
-                    <div class="checkbx">
+                        <div class="checkbx">
 
-                        <div>
-                            <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur">
-                            <label for="user_organisateur" class="user_organisateur_lbl">Sorties dont je suis l'organisateur/trice</label>
+                            <div>
+                                <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur">
+                                <label for="user_organisateur" class="user_organisateur_lbl">Sorties dont je suis l'organisateur/trice</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" class="user_inscrits w3-check" id="user_inscrits">
+                                <label for="user_inscrits" class="user_inscrits_lbl">Sorties auxquelles je suis inscrit/e</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" class="user_non_inscrits w3-check" id="user_non_inscrits">
+                                <label for="user_non_inscrits" class="user_non_inscrits_lbl">Sorties auxquelles je ne suis pas inscrit/e</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" class="sorties_passees w3-check" id="sorties_passees">
+                                <label for="sorties_passees" class="sorties_passees_lbl">Sorties passées</label>
+                            </div>
                         </div>
+                        <button class="w3-btn w3-round" type="submit" style="background: #f44336; margin: 10px;">Valider</button>
+                    </form>
 
-                        <div>
-                            <input type="checkbox" class="user_inscrits w3-check" id="user_inscrits">
-                            <label for="user_inscrits" class="user_inscrits_lbl">Sorties auxquelles je suis inscrit/e</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" class="user_non_inscrits w3-check" id="user_non_inscrits">
-                            <label for="user_non_inscrits" class="user_non_inscrits_lbl">Sorties auxquelles je ne suis pas inscrit/e</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" class="sorties_passees w3-check" id="sorties_passees">
-                            <label for="sorties_passees" class="sorties_passees_lbl">Sorties passées</label>
-                        </div>
+                    <div class="w3-card aside w3-col">
+                        <p class="dateJour">Date du jour : {{ "now"|date('d/m/Y') }}</p>
+                        <p class="userName">Participant :</p>
                     </div>
-                    <button class="w3-btn w3-round" type="submit" style="background: #f44336; margin: 10px;">Valider</button>
-                </form>
-
-                <div class="w3-card aside">
-                    <p class="dateJour">Date du jour : {{ "now"|date('d/m/Y') }}</p>
-                    <p class="userName">Participant :</p>
                 </div>
+                <div class="tableau_list_event">
+                    <table class="w3-table w3-striped w3-border">
+                        <tr>
+                            <th>Nom de la sortie</th>
+                            <th>Date de la sortie</th>
+                            <th>Clôture</th>
+                            <th>inscrits/places</th>
+                            <th>Etat</th>
+                            <th>Inscrit</th>
+                            <th>Organisateur</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for event in eventList %}
+                        <tr>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.startDateTime ? event.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
 
-                <table class="w3-table w3-striped w3-border">
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Points</th>
-                    </tr>
-                    <tr>
-                        <td>Jill</td>
-                        <td>Smith</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>Eve</td>
-                        <td>Jackson</td>
-                        <td>94</td>
-                    </tr>
-                    <tr>
-                        <td>Adam</td>
-                        <td>Johnson</td>
-                        <td>67</td>
-                    </tr>
-                </table>
-            </div>
+                            <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ event.registrationMaxNb }}</td>
+                            <td>{{ event.state.label }}</td>
+                            <td>????</td>
+                            <td>{{ event.owner.firstName }}</td>
+
+                            <td>
+                                <a href="{{ path('event_show', {'id': event.id}) }}">show</a>
+                                <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
     </div>
 
 
