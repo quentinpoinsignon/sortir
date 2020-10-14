@@ -5,14 +5,35 @@
 {% block body %}
     <br><br>
     <h1>Créer une sortie !</h1>
-    {{ form_start(eventForm) }}
-    {{ form_widget(eventForm) }}
-    <br>
+    <div class="w3-container">
+{#    {{ form_start(eventAddForm) }}#}
+{#        <div class="w3-half">#}
+{#            {{ form_row(eventAddForm.name) }}#}
+{#            {{ form_row(eventAddForm.startDateTime) }}#}
+{#            {{ form_row(eventAddForm.registrationLimitDate) }}#}
+{#            {{ form_row(eventAddForm.registrationMaxNb) }}#}
+{#            {{ form_row(eventAddForm.duration) }}#}
+{#            {{ form_row(eventAddForm.eventInfos) }}#}
+{#        </div>#}
 
-    <button class="w3-btn w3-white w3-round" type="submit">
-        Connexion
-    </button>
+{#        <div class="w3-half">#}
+{#            {{ form_row(eventAddForm.spot.name) }}#}
+{#            {{ form_row(eventAddForm.town) }}#}
+
+{#            <p id="spot_street">TODO : récupérer la street du lieu sélectionné</p>#}
+{#            <p id="spot_postalCode">TODO : récupérer le code postal du lieu sélectionné</p>#}
+{#        </div>#}
+{#    <br>#}
+
+        {{ form_start(eventAddForm) }}
+
+        {{ form_widget(eventAddForm) }}
+
+    <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
+    <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
+    <button class="w3-btn w3-red w3-round" type="submit">Annuler</button>
+        {{ form_end(eventAddForm) }}
 
 
-    {{ form_end(eventForm) }}
+    </div>
 {% endblock %}

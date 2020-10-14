@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Registration;
-use App\Form\EventFormType;
+use App\Entity\Spot;
+use App\Form\EventAddFormType;
 use App\Form\EventType;
+use App\Form\HybridEventSpotFormType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,19 +56,16 @@ class EventController extends AbstractController
     {
 //        $this->denyAccessUnlessGranted("ROLE_USER");
 
-        //Instanciation de l'objet à entrer en BDD + formulaire
+
         $event = new Event();
-        //valeur par défaut qui va s'afficher dans le form !
-        //ici, le pseudo du user connecté
-//        $event->setOwner($this->getUser()->getUsername());
-        $eventForm = $this->createForm(EventFormType::class, $event);
-        $eventForm->handleRequest($request);
+        $spot = new Spot();
 
-        //si le formulaire est envoyé, set des valeurs par défaut de published et date
-        if($eventForm->isSubmitted() && $eventForm->isValid())
+        $eventAddForm = $this->createForm(EventAddFormType::class, $event);
+        $eventAddForm->handleRequest($request);
+
+
+        if($eventAddForm->isSubmitted() && $eventAddForm->isValid())
         {
-//            $idea->setDateCreated(new \DateTime());
-
             //envoi à la base de données
             $entityManager->persist($event);
             $entityManager->flush();
@@ -77,7 +76,7 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/add.html.twig', [
-            "eventForm" => $eventForm->createView()
+            "eventAddForm" => $eventAddForm->createView()
         ]);
 
     }
