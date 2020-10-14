@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Registration;
+use App\Form\EventFormType;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,96 +19,69 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventController extends AbstractController
 {
     /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
      * @author quentin
      * Fonction pour afficher le détail d'un event
      *
-     * @Route ("/{id}", name="event_detail", methods={"GET"})
+     * @Route ("/detail/{id}", name="event_detail", methods={"GET"})
      */
     public function detail(int $id, EntityManagerInterface $entityManager, Request $request)
     {
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
 
+        $registrationRepository = $entityManager->getRepository(Registration::class);
+        $registrations = $registrationRepository->findAll();
+
         return $this->render('event/detail.html.twig', [
             'event' => $event,
+            'registrations' => $registrations,
         ]);
     }
 
     /**
-     * @Route("/", name="event_index", methods={"GET"})
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @author quentin
+     * Fonction pour créer une nouvelle sortie
+     * @Route("/add", name="event_add")
      */
-    public function index(EventRepository $eventRepository): Response
+    public function addEvent(EntityManagerInterface $entityManager, Request $request)
     {
-        return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
-        ]);
-    }
+//        $this->denyAccessUnlessGranted("ROLE_USER");
 
-    /**
-     * @Route("/new", name="event_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
+        //Instanciation de l'objet à entrer en BDD + formulaire
         $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+        //valeur par défaut qui va s'afficher dans le form !
+        //ici, le pseudo du user connecté
+//        $event->setOwner($this->getUser()->getUsername());
+        $eventForm = $this->createForm(EventFormType::class, $event);
+        $eventForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+        //si le formulaire est envoyé, set des valeurs par défaut de published et date
+        if($eventForm->isSubmitted() && $eventForm->isValid())
+        {
+//            $idea->setDateCreated(new \DateTime());
+
+            //envoi à la base de données
             $entityManager->persist($event);
             $entityManager->flush();
+            // message Flash
+            $this->addFlash("green", "New event registered !");
 
-            return $this->redirectToRoute('event_index');
+            return $this->redirectToRoute("home");
         }
 
-        return $this->render('event/new.html.twig', [
-            'event' => $event,
-            'form' => $form->createView(),
+        return $this->render('event/add.html.twig', [
+            "eventForm" => $eventForm->createView()
         ]);
+
     }
 
-    /**
-     * @Route("/{id}", name="event_show", methods={"GET"})
-     */
-    public function show(Event $event, EntityManagerInterface $entityManager): Response
-    {
-       $eventRepository = $entityManager->getRepository(Event::class);
-        return $this->render('event/show.html.twig', [
-            'event' => $event,
-        ]);
-    }
 
-    /**
-     * @Route("/{id}/edit", name="event_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Event $event): Response
-    {
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('event_index');
-        }
-
-        return $this->render('event/edit.html.twig', [
-            'event' => $event,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="event_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Event $event): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($event);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('event_index');
-    }
 }

@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventType extends AbstractType
+class EventFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -17,11 +17,11 @@ class EventType extends AbstractType
             ->add('duration')
             ->add('registrationLimitDate')
             ->add('registrationMaxNb')
-            ->add('eventInfos')
-            ->add('spot')
-            ->add('state')
-            ->add('campus')
-            ->add('owner')
+//            ->add('eventInfos')
+//            ->add('spot')
+//            ->add('state')
+//            ->add('campus')
+//            ->add('owner')
         ;
     }
 

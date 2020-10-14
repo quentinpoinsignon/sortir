@@ -4,7 +4,7 @@
 
 {% block body %}
     <br><br><br><br>
-<div class="w3-card-2">
+<div class="w3-panel">
     <header class="w3-container">
         <h2>Détail de la sortie - {{ event.name }}</h2>
     </header>
@@ -17,48 +17,31 @@
             <p>Nombre de places : {{ event.registrationMaxNb }}</p>
             <p>Durée :  {{ event.duration }} minutes</p>
             <p>Description et infos : {{ event.eventInfos }}</p>
+            <br>
+            {# affichage de la liste des participants #}
+            <table class="w3-table w3-striped">
+                <h2>Liste des participants inscrits :</h2>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
+                </tr>
+                <tr>
+                    {% for registration in registrations%}
+                        <td>{{ registration.participant.username }}</td>
+                        <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
         </div>
-        <div class="w3-cell w3-margin   ">
+        <div class="w3-cell w3-margin">
             <p>Campus : {{ event.campus.name }}</p>
             <p>Lieu : {{ event.spot.name }}</p>
             <p>Rue : {{ event.spot.street }}</p>
             <p>Code postal : {{ event.spot.town.postalCode }}</p>
             <p>Latitude : {{ event.spot.latitude }}</p>
             <p>Longitude : {{ event.spot.longitude }}</p>
-        </div>
-    </div>
-
-    <div class="w3-container w3-cell-row">
-        <div class="w3-cell">
-            <table class="w3-table w3-striped">
-                <h2>Liste des participants inscrits :</h2>
-
-
-                <table class="w3-table w3-striped">
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Points</th>
-                    </tr>
-                    <tr>
-                        <td>Jill</td>
-                        <td>Smith</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>Eve</td>
-                        <td>Jackson</td>
-                        <td>94</td>
-                    </tr>
-                    <tr>
-                        <td>Adam</td>
-                        <td>Johnson</td>
-                        <td>67</td>
-                    </tr>
-
-
-            </table>
-
+            <br><br><br>
+            <iframe width="75%" height="75%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
         </div>
 
 
@@ -67,6 +50,7 @@
 
 
 </div>
+
 
 {% endblock %}
 
