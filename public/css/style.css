@@ -1,3 +1,13 @@
+body
+{
+    height: 100vh;
+}
+
+body .w3-container
+{
+    height: 90%;
+}
+
 /**********************************NavBar**************************************/
 .logo_verre
 {
@@ -22,4 +32,39 @@
     justify-content: center!important;
     align-items: center!important;
 
+}
+
+/***********************formulaire accueil***************************************/
+.home_form
+{
+    width: 60%;
+}
+
+.aside
+{
+    width: 15%;
+    padding: 20px;
+}
+
+.container
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+.aside
+{
+    height: min-content;
+    margin:50px;
+}
+.titre_form_accueil
+{
+    font-size: 4em;
+}
+
+
+/****************************footer*********************************/
+footer .w3-container
+{
+    heigth:20%;
 }

@@ -1,0 +1,2 @@
+code bouton:
+<button class="w3-btn w3-round" type="submit" style="background: #f44336; margin: 10px;">Valider</button>
