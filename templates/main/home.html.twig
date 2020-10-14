@@ -9,15 +9,14 @@
     <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
 
                 <div class="form_plus_card w3-row">
-                    <form class="w3-container home_form w3-col">
+                    <form class="w3-container home_form w3-col" method="post" action="">
                         <h2 class="titre_form_accueil">Filtrer les sorties</h2>
 
                         <label for="campus_list" class="campus_lbl">Campus</label>
                         <select class="w3-select campus_list" name="campus_list" id="campus_list">
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                            {% for campus in campusList %}
+                                <option value="{{ campus.id }}">{{ campus.name }}</option>
+                            {% endfor %}
                         </select>
 
 
@@ -62,7 +61,7 @@
                     </div>
                 </div>
                 <div class="tableau_list_event">
-                    <table class="w3-table w3-striped w3-border">
+                    <table class="w3-table w3-striped w3-border w3-centered">
                         <tr>
                             <th>Nom de la sortie</th>
                             <th>Date de la sortie</th>
@@ -76,12 +75,18 @@
                         {% for event in eventList %}
                         <tr>
                             <td>{{ event.name }}</td>
-                            <td>{{ event.startDateTime ? event.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
-                            <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ event.startDateTime ? event.startDateTime|date('d-m-Y H:i:s') : '' }}</td>
+                            <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d-m-Y H:i:s') : '' }}</td>
                             <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                             <td>{{ event.state.label }}</td>
-                            {% set affiche = ''%} {% for registration in registrationList if id.%}
-                            <td></td>
+                            {% set affiche = ''%}
+                            {% for registration in registrationList %}
+                                {% if id.participant == app.user.id %}
+                                     affiche = 'X'
+                                {% endif %}
+
+                            {% endfor %}
+                            <td>{{ affiche }}</td>
                             <td>{{ event.owner.firstName }}</td>
 
                             <td>

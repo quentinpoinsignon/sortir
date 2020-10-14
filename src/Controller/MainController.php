@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CampusRepository;
 use App\Repository\EventRepository;
 use App\Repository\RegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,15 +13,19 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="home")
      */
-    public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository)
+    public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository)
     {
         $eventList = $eventRepository->findAll();
         $registrationList = $registrationRepository->findAll();
+        $campusList = $campusRepository->findAll();
         return $this->render('main/home.html.twig', [
             "eventList" => $eventList,
             "registrationList" => $registrationList,
+            "campusList" => $campusList,
         ]);
     }
+
+
 
 
 
