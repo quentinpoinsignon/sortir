@@ -19,6 +19,12 @@ class RegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, Registration::class);
     }
 
+
+
+    public function findByIdEvent ($idEvent) {
+
+    }
+
     // /**
     //  * @return Registration[] Returns an array of Registration objects
     //  */

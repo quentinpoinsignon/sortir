@@ -58,7 +58,7 @@
 
                     <div class="w3-card aside w3-col">
                         <p class="dateJour">Date du jour : {{ "now"|date('d/m/Y') }}</p>
-                        <p class="userName">Participant :</p>
+                        <p class="userName">Participant : {{ app.user.firstName }}</p>
                     </div>
                 </div>
                 <div class="tableau_list_event">
@@ -77,16 +77,16 @@
                         <tr>
                             <td>{{ event.name }}</td>
                             <td>{{ event.startDateTime ? event.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
-
                             <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('Y-m-d H:i:s') : '' }}</td>
-                            <td>{{ event.registrationMaxNb }}</td>
+                            <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                             <td>{{ event.state.label }}</td>
-                            <td>????</td>
+                            {% set affiche = ''%} {% for registration in registrationList if id.%}
+                            <td></td>
                             <td>{{ event.owner.firstName }}</td>
 
                             <td>
-                                <a href="{{ path('event_show', {'id': event.id}) }}">détails</a>
-                                <a href="{{ path('event_edit', {'id': event.id}) }}">modifier</a>
+                                <a href="{{ path('event_detail', {'id': event.id}) }}">détails</a>
+                                {# <a href="{{ path('event_edit', {'id': event.id}) }}">modifier</a> #}
                             </td>
                         </tr>
                         {% endfor %}
