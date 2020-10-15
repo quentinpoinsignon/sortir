@@ -90,15 +90,15 @@
                             <td>{{ event.owner.firstName }}</td>
 
                             <td>
-                                <a href="{{ path('event_detail', {'id': event.id}) }}">détails</a>
-
-                               {# <a href="{{ path('event_edit', {'id': event.id}) }}">modifier</a>#}
-
+                                <a href="{{ url('event_detail', {'id': event.id}) }}">Afficher</a>
+                                <a href="{{ url('event_edit', {'id': event.id}) }}">Modifier</a>
                             </td>
                         </tr>
                         {% endfor %}
 
                     </table>
+                    <br>
+                     <a href="{{ url('event_add')}}" class="w3-btn w3-red w3-round">Créer une sortie</a>
                 </div>
     </div>
 

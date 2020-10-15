@@ -106,32 +106,47 @@ class EventController extends AbstractController
      */
     public function editEvent(int $id, Request $request, EntityManagerInterface $entityManager) :Response
     {
+        //récup de l'Event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
-//        $default=[
-//            'name'=>$event->getName(),
-//            'startDateTime'=>$event->getStartDateTime(),
-//            'registrationLimitDate'=>$event->getRegistrationLimitDate(),
-//            'registrationMaxNb'=>$event->getRegistrationMaxNb(),
-//            'duration'=>$event->getDuration(),
-//
-//
-//        ];
 
+        //génération du formulaire avec l'event passé en paramètre
         $eventEditForm= $this->createForm(EventAddFormType::class, $event);
         $eventEditForm->handleRequest($request);
 
+        //sauvegarde dans la base
         if ($eventEditForm->isSubmitted() && $eventEditForm->isValid()) {
             $entityManager->persist($event);
             $entityManager->flush();
-
+            //retour maison
             return $this->redirectToRoute('home');
         }
 
         return $this->render('event/edit.html.twig', [
             'eventEditForm' => $eventEditForm->createView(),
+            'event' => $event,
         ]);
     }
 
+    /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     * @author quentin
+     * Fonction de suppression d'un event
+     * @Route ("/remove/{id}", name="event_remove", methods={"GET"})
+     */
+
+    public function removeEvent(int $id, EntityManagerInterface $entityManager)
+    {
+        //récup de l'event sélectionné via son id
+        $eventRepository = $entityManager->getRepository(Event::class);
+        $event = $eventRepository->find($id);
+        //remove de l'event
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
 
 }
