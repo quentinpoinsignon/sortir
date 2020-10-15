@@ -24,9 +24,4 @@ class MainController extends AbstractController
             "campusList" => $campusList,
         ]);
     }
-
-
-
-
-
 }
