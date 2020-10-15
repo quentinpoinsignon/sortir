@@ -20,23 +20,50 @@ class EventRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @param $user
+     * @return array d'évenements dont le $user est l'organisateur
+     */
+    public function findByOwner($user) {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.owner = :val')
+            ->setParameter('val', $user)
+            ->orderBy('e.startDateTime')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findEventByRegistrationsByIdUser($user) {
+        return $this->createQueryBuilder('e')
+            ->select('r', 'e')
+            ->from('Event', 'e')
+            ->join('r.participant', 'p')
+            ->addSelect('p')
+            ->andWhere('p = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+//en sql SELECT e, r FROM Event inner join Registration on e.id = r.eventId WHERE r.participant = e.owner
 
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+
+//    public function findByExampleField($value)
+//    {
+//        return $this->createQueryBuilder('e')
+//            ->andWhere('e.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('e.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
 
     /*
     public function findOneBySomeField($value): ?Event

@@ -21,9 +21,10 @@ class RegistrationRepository extends ServiceEntityRepository
 
 
 
-    public function findByIdEvent ($idEvent) {
+    public function findRegistrations ($idEvent) {
 
     }
+
 
     // /**
     //  * @return Registration[] Returns an array of Registration objects
