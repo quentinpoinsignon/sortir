@@ -49,7 +49,6 @@ class EventEditFormType extends AbstractType
 
             ->add('spot', SpotAddFormType::class)
         ;
-
     }
 
 

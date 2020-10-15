@@ -81,7 +81,7 @@
                             <td>{{ event.state.label }}</td>
                             {% set affiche = ''%}
                             {% for registration in registrationList %}
-                                {% if id.participant == app.user.id %}
+                                {% if participant == app.user %}
                                      affiche = 'X'
                                 {% endif %}
 

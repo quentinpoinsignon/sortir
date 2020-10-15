@@ -105,11 +105,22 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $state2 = new State();
         $state3 = new State();
         $state4 = new State();
+        $state5 = new State();
+        $state6 = new State();
 
         $state1->setLabel("Créée");
         $state2->setLabel("Ouverte");
         $state3->setLabel("Activité en cours");
-        $state4->setLabel("Ouverte");
+        $state4->setLabel("Clôturée");
+        $state5->setLabel("Passée");
+        $state6->setLabel("Annulée");
+
+        $manager->persist($state1);
+        $manager->persist($state2);
+        $manager->persist($state3);
+        $manager->persist($state4);
+        $manager->persist($state5);
+        $manager->persist($state6);
 
         // Event
         $event1 = new Event();
@@ -170,6 +181,7 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $manager->persist($event2);
         $manager->persist($event3);
         $manager->persist($event4);
+
 
         $manager->flush();
     }
