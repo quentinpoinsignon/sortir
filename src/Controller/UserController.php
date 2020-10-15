@@ -14,6 +14,8 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/user_index", name="user_index", methods={"GET"})
+     * @param UserRepository $userRepository
+     * @return Response
      */
     public function index(UserRepository $userRepository): Response
     {
@@ -23,7 +25,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/{id}/user_show", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -33,11 +35,20 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/{id}/user_edit", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $default=[
+            'username'=>$user->getUsername(),
+            'name'=>$user->getName(),
+            'firstName'=>$user->getFirstName(),
+            'phoneNumber'=>$user->getPhoneNumber(),
+            'emailAdress'=>$user->getEmailAdress(),
+            'campus'=>$user->getCampus()
+        ];
+
+        $form= $this->createForm(UserType::class, $user,$default);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +64,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/{id}/user_delete", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {
