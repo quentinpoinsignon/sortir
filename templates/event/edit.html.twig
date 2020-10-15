@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} | Editer une sortie {% endblock %}
+
+{% block body %}
+    <br><br>
+    <h1>Editer une sortie</h1>
+    <div class="w3-container">
+        {{ form_start(eventEditForm) }}
+        <div class="w3-half">
+            {{ form_row(eventEditForm.name) }}
+            {{ form_row(eventEditForm.startDateTime) }}
+            {{ form_row(eventEditForm.registrationLimitDate) }}
+            {{ form_row(eventEditForm.registrationMaxNb) }}
+            {{ form_row(eventEditForm.duration) }}
+            {{ form_row(eventEditForm.eventInfos) }}
+            <p>Campus : {{ app.user.campus.name }}</p>
+            {{ form_row(eventEditForm.spot) }}
+
+            <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
+
+            {{ form_end(eventEditForm) }}
+            <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
+            <button class="w3-btn w3-red w3-round" type="submit">Supprimer la sortie</button>
+            <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+        </div>
+
+
+    </div>
+{% endblock %}

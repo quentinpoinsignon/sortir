@@ -106,7 +106,7 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $state3 = new State();
         $state4 = new State();
 
-        $state1->setLabel("Crée");
+        $state1->setLabel("Créée");
         $state2->setLabel("Ouverte");
         $state3->setLabel("Activité en cours");
         $state4->setLabel("Ouverte");

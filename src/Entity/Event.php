@@ -27,6 +27,7 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     *
      */
     private $startDateTime;
 
@@ -69,7 +70,7 @@ class Event
     private $campus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ownedEvents", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
      */

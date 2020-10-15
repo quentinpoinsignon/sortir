@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Campus;
 use App\Entity\Spot;
 use App\Entity\Town;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -24,7 +25,10 @@ class SpotAddFormType extends AbstractType
                 'label' => 'Ville',
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
-//                'mapped' => false
+                'query_builder' => function (EntityRepository $entityRepository){
+                    return $entityRepository ->createQueryBuilder('t')
+                        ->orderBy('t.name', 'ASC');
+                },
             ])
 
             ->add('name', TextType::class, [

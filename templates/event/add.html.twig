@@ -17,11 +17,11 @@
             <p>Campus : {{ app.user.campus.name }}</p>
             {{ form_row(eventAddForm.spot) }}
 
-    <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
-    <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
-    <button class="w3-btn w3-red w3-round" type="submit">Annuler</button>
-        {{ form_end(eventAddForm) }}
+            <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
 
+            {{ form_end(eventAddForm) }}
+            <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
+            <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
         </div>
 
 
