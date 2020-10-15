@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Registration;
 use App\Entity\Spot;
+use App\Entity\State;
+use App\Entity\Town;
 use App\Form\EventAddFormType;
 use App\Form\EventType;
 use App\Form\HybridEventSpotFormType;
-use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +57,9 @@ class EventController extends AbstractController
     {
 //        $this->denyAccessUnlessGranted("ROLE_USER");
 
-
+        // Récupération de la liste des villes
+        $townRepository = $entityManager->getRepository(Town::class);
+        $towns = $townRepository->findAll();
         $event = new Event();
         $spot = new Spot();
 
@@ -66,9 +69,19 @@ class EventController extends AbstractController
 
         if($eventAddForm->isSubmitted() && $eventAddForm->isValid())
         {
+            //set de valeurs par défaut : state à créé
+            $stateRepository = $entityManager->getRepository(State::class);
+            $stateCreated = $stateRepository->find(1);
+            $event->setState($stateCreated);
+            //owner à l'user connecté
+            $event->setOwner($this->getUser());
+            //campus au campus de l'user connecté
+            $event->setCampus($this->getUser()->getCampus());
+
             //envoi à la base de données
             $entityManager->persist($event);
             $entityManager->flush();
+
             // message Flash
             $this->addFlash("green", "New event registered !");
 
@@ -76,7 +89,8 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/add.html.twig', [
-            "eventAddForm" => $eventAddForm->createView()
+            "eventAddForm" => $eventAddForm->createView(),
+            'Towns' => $towns,
         ]);
 
     }

@@ -18,19 +18,15 @@ class SpotAddFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('campus', EntityType::class, [
-                'class' => Campus::class,
-                'choice_label' => 'name',
-                'attr' => ['class' => 'w3-select'],
-                'mapped' => false
-            ])
 
             ->add('town', EntityType::class, [
                 'class' => Town::class,
                 'label' => 'Ville',
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
+//                'mapped' => false
             ])
+
             ->add('name', TextType::class, [
                 'label' => 'Lieu',
                 'attr' => ['class' => 'w3-input'],
@@ -40,10 +36,6 @@ class SpotAddFormType extends AbstractType
                 'attr' => ['class' => 'w3-input'],
             ])
 
-            ->add('postalCode', TextType::class, [
-                'label' => 'Code postal :',
-                'attr' => ['class' => 'w3-input'],
-            ])
 
             ->add('latitude', NumberType::class, [
                 'label' => 'Latitude :',
