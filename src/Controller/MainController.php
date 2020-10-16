@@ -14,7 +14,7 @@ class MainController extends AbstractController
     /**
      * @Route("/home/{idAppUser}", requirements={"idAppUser"="\d+"}, name="home")
      */
-    public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository)
+    public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, $idAppUser = null)
     {
         $eventList = $eventRepository->findAll();
         $registrationList = $registrationRepository->findAll();

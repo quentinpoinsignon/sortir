@@ -1,12 +1,7 @@
-body
-{
-    height: 100vh;
-}
-
-body .w3-container
-{
-    height: 90%;
-}
+/*body .w3-container*/
+/*{*/
+/*    height: 90%;*/
+/*}*/
 
 /**********************************NavBar**************************************/
 .logo_verre
@@ -64,7 +59,7 @@ body .w3-container
 
 
 /****************************footer*********************************/
-footer .w3-container
-{
-    heigth:20%;
-}
+/*footer .w3-container*/
+/*{*/
+/*    heigth:20%;*/
+/*}*/
