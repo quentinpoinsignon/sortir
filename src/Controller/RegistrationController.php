@@ -29,10 +29,10 @@ public function eventRegistration(EventRepository $eventRepository, Registration
     $registration = new Registration;
     $event = $eventRepository->find($eventId);
     $user = $userRepository->find($participantId);
-       if(($event->getRegistrationLimitDate()>new DateTime()) && ($event->getRegistrationMaxNb()>$event->getRegistrations()->count()) && ($event->getState() =='ouverte'))
+       if(($event->getRegistrationLimitDate()>new DateTime()) && ($event->getRegistrationMaxNb()>$event->getRegistrations()->count()) && ($event->getState()->getLabel() =='ouverte'))
        {
            $registration->setParticipant($user);
-           $this->addFlash('registrationSuccess', 'Félicitaiton, vous êtes inscrit à cette sortie');
+           $this->addFlash('registrationSuccess', 'Félicitation, vous êtes inscrit à cette sortie');
        }
        else{
            $this->addFlash('registrationError', 'Vous ne pouvez pas vous inscrire à cette sortie');
