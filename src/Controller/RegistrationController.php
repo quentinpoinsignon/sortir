@@ -1,45 +1,42 @@
 <?php
-
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\RegistrationFormType;
+
+use App\Entity\Registration;
+use App\Repository\EventRepository;
+use App\Repository\RegistrationRepository;
+use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
 {
+
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/event_registration/{eventId}/{participantId}", name="event_registration")
+     * @param EventRepository $eventRepository
+     * @param RegistrationRepository $registrationRepository
+     * @param UserRepository $userRepository
+     * @param $eventId
+     * @param $participantId
+     * @return RedirectResponse
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+public function eventRegistration(EventRepository $eventRepository, RegistrationRepository $registrationRepository, UserRepository $userRepository, $eventId, $participantId)
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('home');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
-    }
+{
+    $registration = new Registration;
+    $event = $eventRepository->find($eventId);
+    $user = $userRepository->find($participantId);
+       if(($event->getRegistrationLimitDate()>new DateTime()) && ($event->getRegistrationMaxNb()>$event->getRegistrations()->count()) && ($event->getState() =='ouverte'))
+       {
+           $registration->setParticipant($user);
+           $this->addFlash('registrationSuccess', 'Félicitaiton, vous êtes inscrit à cette sortie');
+       }
+       else{
+           $this->addFlash('registrationError', 'Vous ne pouvez pas vous inscrire à cette sortie');
+       }
+    return $this->redirectToRoute('event_detail', ['id' => $event->getId()]);
+}
 }
