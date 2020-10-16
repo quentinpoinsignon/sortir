@@ -88,11 +88,11 @@
                                 {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
                                     <a href="{{ url('event_detail', {'id': event.id }) }}">{{ "S'inscrire" }}</a>
                                 {% endif %}
-                                {% if (registration.participant.id == app.user.id and registration.event.id == event.id) %}
-                                    {% if event.state.label is not 'Clôturée' %}
-                                        <a href="#">Se désister</a>
-                                    {% endif %}
-                                {% endif %}
+{#                                {% if (registration.participant.id == app.user.id and registration.event.id == event.id) %}#}
+{#                                    {% if event.state.label is not 'Clôturée' %}#}
+{#                                        <a href="#">Se désister</a>#}
+{#                                    {% endif %}#}
+{#                                {% endif %}#}
                                 <a href="{{ url('event_edit', {'id': event.id}) }}">Modifier</a>
                             </td>
 
