@@ -14,11 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-
      * @Route("/home", name="home")
-     */
-    public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository)
-
      * @Route("/home/{idAppUser}", requirements={"idAppUser"="\d+"}, name="home", methods={"GET","POST"})
      */
     public function home(Request $request, EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, $idAppUser = null, UserRepository $userRepository)
@@ -28,8 +24,6 @@ class MainController extends AbstractController
         $eventList = $eventRepository->findAll();
         $userList = $userRepository->findAll();
         $campusList = $campusRepository->findAll();
-
-
         $registrationList = $registrationRepository->findAll();
 
         //coucou adeline :D
