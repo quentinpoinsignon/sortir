@@ -8,7 +8,7 @@
     <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
 
                 <div class="form_plus_card w3-row">
-                    <form class="w3-container home_form w3-col" method="post" action="{{ path('home', {'idAppUser': app.user.id}) }}">
+                    <form class="w3-container home_form w3-col" method="post" action="{{ path('home', {'appUser': app.user}) }}">
                         <h2 class="titre_form_accueil">Filtrer les sorties</h2>
 
                         <label for="campus_list" class="campus_lbl">Campus</label>
@@ -95,8 +95,7 @@
 
                     </table>
                     <br>
-                    <button class="w3-btn w3-round" style="background: #f44336; margin: 10px;"><a href="{{ path('event_add')}}">Créer une sortie</a></button>
-                </div>
+                    <a href="{{ path('event_add')}}" class="w3-btn w3-round" style="background: #f44336; margin: 10px;">Créer une sortie</a>                </div>
 
 {#        {% for event in eventListUserOwner %}#}
 {#            <p>{{ event.name }}</p>#}
