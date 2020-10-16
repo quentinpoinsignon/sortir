@@ -51,7 +51,6 @@ class EventController extends AbstractController
     /**
      * @param EntityManagerInterface $entityManager
      * @param Request $request
-     * @param UserInterface $user
      * @return RedirectResponse|Response
      * @author quentin
      * Fonction pour créer une nouvelle sortie
@@ -69,7 +68,6 @@ class EventController extends AbstractController
 
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
-
 
         if($eventAddForm->isSubmitted() && $eventAddForm->isValid())
         {
