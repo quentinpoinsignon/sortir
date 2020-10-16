@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %} | Annuler une sortie {% endblock %}
+{% block body %}
+    <br><br>
+    <div class="w3-container w3-half">
+    <h1>Annuler une sortie</h1>
+        <p>Nom de la sortie : {{ event.name }}</p>
+        <p>Date de la sortie : {{ event.startDateTime.format('d/m/Y à G:i')}}</p>
+        <p>Campus : {{ event.campus.name }}</p>
+        <p>Lieu : {{ event.spot.name }} {{ event.spot.street }} {{ event.spot.town.postalCode }} {{ event.spot.town.name }}</p>
+        {{ form_start(eventCancelForm)}}
+        {{ form_widget(eventCancelForm) }}
+        <br>
+        <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
+        <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+        {{ form_end(eventCancelForm) }}
+</div>
+
+{% endblock %}
