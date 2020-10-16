@@ -25,12 +25,18 @@ class MainController extends AbstractController
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
 
+
 //        dd($eventList, $userList, $campusList, $registrationList);
-        //coucou adeline :D
 
+//méthodo pour tester une requête en fonction d'une checkbox / date ou autres
+//        $dateDebut = $request->get('date_debut');
+//        $value = $request->get("user_organisateur");
+//
+//        if($request->get('sorties_passees') == 'on')
+//        {
+//            $eventList =$eventRepository->findClosedEvents();
+//        }
 
-        //re-coucou adeline :D
-        $value = $request->get("user_organisateur");
 
 
         return $this->render('main/home.html.twig', [
@@ -38,7 +44,7 @@ class MainController extends AbstractController
             "registrationList" => $registrationList,
             "campusList" => $campusList,
             "userList" => $userList,
-            "reqest" => $request,
+            "request" => $request,
         ]);
 
     }
