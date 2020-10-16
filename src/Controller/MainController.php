@@ -26,18 +26,4 @@ class MainController extends AbstractController
         ]);
     }
 
-
-//    /**
-//     * @Route("/home/search/{idAppUser}", requirements={"idAppUser"="\d+"}, name="eventSearch")
-//     */
-//    public function filtresChkbx(EventRepository $eventRepository, $idAppUser) {
-//       return $this->render('main/home.html.twig', [
-//           'eventListUserOwner' => $eventRepository->findByOwner($idAppUser),
-//       ]);
-//    }
-
-
-
-
-
 }

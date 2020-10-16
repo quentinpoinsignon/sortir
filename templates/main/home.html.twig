@@ -80,6 +80,7 @@
                             <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                             <td>{{ event.state.label }}</td>
 
+
                             {% for registration in registrationList %}
                                 <td>{{  (registration.participant == app.user)? 'X':'' }}</td>
                             {% endfor %}

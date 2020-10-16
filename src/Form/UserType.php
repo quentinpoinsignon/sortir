@@ -5,9 +5,11 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Campus;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 class UserType extends AbstractType
 {
@@ -15,7 +17,13 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password')
+            ->add('currentPassword', PasswordType::class,
+                ['constraints' => new SecurityAssert\UserPassword
+                (['message' => 'Wrong value for your current password'
+                    ]),
+                'mapped' => false
+            ])
+            ->add('newPassword', PasswordType::class, ['mapped'=>false])
             ->add('name')
             ->add('firstName')
             ->add('phoneNumber')
@@ -32,8 +40,6 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'username'=>'data', 'name'=>'data', 'firstName'=>'data',
-            'phoneNumber'=>'data','emailAdress'=>'data', 'campus'=>'data'
-        ]);
+          ]);
     }
 }

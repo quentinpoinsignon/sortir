@@ -75,7 +75,7 @@ class EventController extends AbstractController
         {
             //set de valeurs par défaut : state à créé
             $stateRepository = $entityManager->getRepository(State::class);
-            $stateCreated = $stateRepository->findOneBy(['label' => 'Crée']);
+            $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
             $event->setState($stateCreated);
             //owner à l'user connecté
             $event->setOwner($this->getUser());
@@ -138,6 +138,27 @@ class EventController extends AbstractController
      */
 
     public function removeEvent(int $id, EntityManagerInterface $entityManager)
+    {
+        //récup de l'event sélectionné via son id
+        $eventRepository = $entityManager->getRepository(Event::class);
+        $event = $eventRepository->find($id);
+        //remove de l'event
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     * @author quentin
+     * Fonction d'annulation'd'un event
+     * @Route ("/cancel/{id}", name="event_cancel", methods={"GET"})
+     */
+
+    public function cancelEvent(int $id, EntityManagerInterface $entityManager)
     {
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
