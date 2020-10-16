@@ -15,7 +15,6 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/home", name="home")
-     *
      */
     public function home(Request $request, EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, UserRepository $userRepository)
 
@@ -25,14 +24,21 @@ class MainController extends AbstractController
         $userList = $userRepository->findAll();
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
+
         //dd($eventList, $userList, $campusList, $registrationList);
         //coucou adeline :D
+
+
+        //re-coucou adeline :D
+        $value = $request->get("user_organisateur");
+
 
         return $this->render('main/home.html.twig', [
             "eventList" => $eventList,
             "registrationList" => $registrationList,
             "campusList" => $campusList,
             "userList" => $userList,
+            "reqest" => $request,
         ]);
 
     }
