@@ -19,18 +19,18 @@
             <p>Description et infos : {{ event.eventInfos }}</p>
             <br>
             {# affichage de la liste des participants #}
-            <table class="w3-table w3-striped">
+            <table class="w3-table-all w3-hoverable w3-half">
                 <h2>Liste des participants inscrits :</h2>
                 <tr>
                     <th>Pseudo</th>
                     <th>Nom</th>
                 </tr>
-                <tr>
                     {% for registration in registrations%}
-                        <td>{{ registration.participant.username }}</td>
-                        <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
+                        <tr>
+                            <td>{{ registration.participant.username }}</td>
+                            <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
+                        </tr>
                     {% endfor %}
-                </tr>
             </table>
         </div>
         <div class="w3-cell w3-margin">
@@ -41,7 +41,7 @@
             <p>Latitude : {{ event.spot.latitude }}</p>
             <p>Longitude : {{ event.spot.longitude }}</p>
             <br><br><br>
-            <iframe width="75%" height="75%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
+            <iframe width=500px height=250px frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
         </div>
 
 

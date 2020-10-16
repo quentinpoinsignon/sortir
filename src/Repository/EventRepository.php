@@ -49,36 +49,31 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
-//en sql SELECT e, r FROM Event inner join Registration on e.id = r.eventId WHERE r.participant = e.owner
-
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-
-//    public function findByExampleField($value)
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-
-    /*
-    public function findOneBySomeField($value): ?Event
+    /**
+     * @quentin requête transitoire pour tests
+     */
+    public function findClosedEvents()
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('e.state = 5')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
+    /**
+     * @quentin requête transitoire pour tests
+     */
+    public function findEventByDate($dateDebut, $dateFin)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.startDateTime > $dateDebut')
+            ->where('e.registrationLimitDate < $dateFin')
+            ->getQuery()
+            ->getResult();
+    }
 
 }
+    
+    
+//en sql SELECT e, r FROM Event inner join Registration on e.id = r.eventId WHERE r.participant = e.owner
+
