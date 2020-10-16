@@ -37,9 +37,11 @@ class EventRepository extends ServiceEntityRepository
      * @param $user
      * @return int|mixed|string tableau d'évenements dont le user est participant
      */
+
     public function findEventByRegistrationsByUser($user)
     {
         $request =  $this->createQueryBuilder('e')
+
             ->join('e.registrations', 'r')
             ->join('r.participant', 'p')
             ->addSelect('p')
