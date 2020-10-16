@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Repository\CampusRepository;
 use App\Repository\EventRepository;
 use App\Repository\RegistrationRepository;
+use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
     /**
-     * @Route("/home", name="home")
+     * @Route("/home/{idAppUser}", requirements={"idAppUser"="\d+"}, name="home")
      */
     public function home(EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository)
     {
@@ -26,13 +27,14 @@ class MainController extends AbstractController
     }
 
 
-    /**
-     * @Route("/home/search/{idAppUser}", requirements={"idAppUser"="\d+"}, name="eventSearch")
-     */
-    public function filtresChkbx(EventRepository $eventRepository,$idAppUser) {
-       //$eventRepository->
-
-    }
+//    /**
+//     * @Route("/home/search/{idAppUser}", requirements={"idAppUser"="\d+"}, name="eventSearch")
+//     */
+//    public function filtresChkbx(EventRepository $eventRepository, $idAppUser) {
+//       return $this->render('main/home.html.twig', [
+//           'eventListUserOwner' => $eventRepository->findByOwner($idAppUser),
+//       ]);
+//    }
 
 
 

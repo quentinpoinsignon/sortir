@@ -9,7 +9,7 @@
     <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
 
                 <div class="form_plus_card w3-row">
-                    <form class="w3-container home_form w3-col" method="post" action="{{ path('eventSearch', {'idAppUser': app.user.id}) }}">
+                    <form class="w3-container home_form w3-col" method="post" action="{{ path('home', {'idAppUser': app.user.id}) }}">
                         <h2 class="titre_form_accueil">Filtrer les sorties</h2>
 
                         <label for="campus_list" class="campus_lbl">Campus</label>
@@ -79,14 +79,11 @@
                             <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d-m-Y H:i:s') : '' }}</td>
                             <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                             <td>{{ event.state.label }}</td>
-                            {% set affiche = ''%}
-                            {% for registration in registrationList %}
-                                {% if id.participant == app.user.id %}
-                                     affiche = 'X'
-                                {% endif %}
 
+                            {% for registration in registrationList %}
+                                <td>{{  (registration.participant == app.user)? 'X':'' }}</td>
                             {% endfor %}
-                            <td>{{ affiche }}</td>
+
                             <td>{{ event.owner.firstName }}</td>
 
                             <td>
@@ -100,6 +97,10 @@
                     <br>
                      <a href="{{ url('event_add')}}" class="w3-btn w3-red w3-round">Créer une sortie</a>
                 </div>
+
+{#        {% for event in eventListUserOwner %}#}
+{#            <p>{{ event.name }}</p>#}
+{#        {% endfor %}#}
     </div>
 
 

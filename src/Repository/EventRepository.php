@@ -22,7 +22,7 @@ class EventRepository extends ServiceEntityRepository
 
     /**
      * @param $user
-     * @return array d'évenements dont le $user est l'organisateur
+     * @return array  tableau d'évenements dont le $user est l'organisateur
      */
     public function findByOwner($user) {
         return $this->createQueryBuilder('e')
@@ -33,6 +33,10 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $user
+     * @return int|mixed|string tableau d'évenements dont le user est participant
+     */
     public function findEventByRegistrationsByIdUser($user) {
         return $this->createQueryBuilder('e')
             ->select('r', 'e')
