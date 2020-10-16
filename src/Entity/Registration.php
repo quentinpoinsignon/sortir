@@ -3,11 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\RegistrationRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=RegistrationRepository::class)
+ * @UniqueEntity(
+ *     fields={"event", "participant"},
+ *     errorPath="particpant",
+ *     message="Vous êtes déjà inscrit à cet sortie."
+ * )
  */
+
 class Registration
 {
     /**
@@ -31,17 +39,18 @@ class Registration
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="registrations")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $participant;
 
 
 
-    public function getRegistrationDate(): ?\DateTimeInterface
+    public function getRegistrationDate(): ?DateTimeInterface
     {
         return $this->registrationDate;
     }
 
-    public function setRegistrationDate(\DateTimeInterface $registrationDate): self
+    public function setRegistrationDate(DateTimeInterface $registrationDate): self
     {
         $this->registrationDate = $registrationDate;
 
