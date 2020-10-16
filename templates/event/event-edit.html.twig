@@ -15,11 +15,9 @@
             {{ form_row(eventEditForm.duration) }}
             {{ form_row(eventEditForm.eventInfos) }}
             <p>Campus : {{ app.user.campus.name }}</p>
-            {{ form_row(eventEditForm.spot) }}
-
+            {{ form_widget(eventEditForm.spot) }}
             <br>
             <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
-
             {{ form_end(eventEditForm) }}
             <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-red w3-round">Publier la sortie</a>
             <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-red w3-round">Supprimer la sortie</a>
