@@ -25,7 +25,7 @@ class MainController extends AbstractController
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
 
-        //dd($eventList, $userList, $campusList, $registrationList);
+//        dd($eventList, $userList, $campusList, $registrationList);
         //coucou adeline :D
 
 

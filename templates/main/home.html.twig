@@ -77,17 +77,17 @@
                             <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                             <td>{{ event.state.label }}</td>
 
-
+                            <td>
                             {% for registration in registrationList %}
-                                <td>{{  (registration.participant.id == app.user.id)? 'X':'' }}</td>
+                                     {{ (registration.participant.id == app.user.id and registration.event.id == event.id)? 'X' :'' }}
                             {% endfor %}
-
+                            </td>
                             <td>{{ event.owner.firstName }}</td>
-
                             <td>
                                 <a href="{{ url('event_detail', {'id': event.id}) }}">Afficher</a>
                                 <a href="{{ url('event_edit', {'id': event.id}) }}">Modifier</a>
                             </td>
+
                         </tr>
                         {% endfor %}
 
