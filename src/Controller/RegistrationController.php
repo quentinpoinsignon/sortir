@@ -32,6 +32,11 @@ public function eventRegistration(EventRepository $eventRepository, Registration
        if(($event->getRegistrationLimitDate()>new DateTime()) && ($event->getRegistrationMaxNb()>$event->getRegistrations()->count()) && ($event->getState()->getLabel() =='ouverte'))
        {
            $registration->setParticipant($user);
+           $registration->setEvent($event);
+           $registration->setRegistrationDate(new DateTime());
+           $entityManager=  $this->getDoctrine()->getManager();
+           $entityManager->persist($registration);
+           $entityManager->flush();
            $this->addFlash('registrationSuccess', 'Félicitation, vous êtes inscrit à cette sortie');
        }
        else{
