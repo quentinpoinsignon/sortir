@@ -15,9 +15,9 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/home", name="home")
-     * @Route("/home/{idAppUser}", requirements={"idAppUser"="\d+"}, name="home", methods={"GET","POST"})
+     *
      */
-    public function home(Request $request, EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, $idAppUser = null, UserRepository $userRepository)
+    public function home(Request $request, EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, UserRepository $userRepository)
 
     {
 
@@ -25,7 +25,7 @@ class MainController extends AbstractController
         $userList = $userRepository->findAll();
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
-
+        //dd($eventList, $userList, $campusList, $registrationList);
         //coucou adeline :D
 
         return $this->render('main/home.html.twig', [
