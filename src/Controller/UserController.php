@@ -26,7 +26,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/user_show", name="user_show", methods={"GET"})
+     * @Route("/user_show/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
