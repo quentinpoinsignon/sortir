@@ -29,13 +29,13 @@ class MainController extends AbstractController
 //        dd($eventList, $userList, $campusList, $registrationList);
 
 //méthodo pour tester une requête en fonction d'une checkbox / date ou autres
-//        $dateDebut = $request->get('date_debut');
-//        $value = $request->get("user_organisateur");
-//
-//        if($request->get('sorties_passees') == 'on')
-//        {
-//            $eventList =$eventRepository->findClosedEvents();
-//        }
+
+        dump($request->get('user_inscrits'));
+
+        if($request->get('user_inscrits' == 'on'))
+        {
+            $eventList = $eventRepository->findEventByRegistrationsByIdUser($request->getUser());
+        }
 
 
 
