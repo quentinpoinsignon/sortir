@@ -47,7 +47,8 @@ class EventEditFormType extends AbstractType
                 'attr' => ['class' => 'w3-input'],
             ])
 
-            ->add('spot', SpotAddFormType::class)
+            ->add('spot', SpotAddFormType::class, [
+            ])
         ;
     }
 

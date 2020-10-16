@@ -42,7 +42,7 @@ class EventController extends AbstractController
         $registrationRepository = $entityManager->getRepository(Registration::class);
         $registrations = $registrationRepository->findAll();
 
-        return $this->render('event/detail.html.twig', [
+        return $this->render('event/event-detail.html.twig', [
             'event' => $event,
             'registrations' => $registrations,
         ]);
@@ -89,7 +89,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
-        return $this->render('event/add.html.twig', [
+        return $this->render('event/event-add.html.twig', [
             'eventAddForm' => $eventAddForm->createView()
         ]);
 
@@ -122,7 +122,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('event/edit.html.twig', [
+        return $this->render('event/event-edit.html.twig', [
             'eventEditForm' => $eventEditForm->createView(),
             'event' => $event,
         ]);
@@ -163,8 +163,40 @@ class EventController extends AbstractController
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
+
+        //Récup du state ouverte
+        $stateRepository = $entityManager->getRepository(State::class);
+        $stateCreated = $stateRepository->findOneBy(['label' => 'Annulée']);
+        $event->setState($stateCreated);
+
         //remove de l'event
-        $entityManager->remove($event);
+        $entityManager->persist($event);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     * @author quentin
+     * Fonction de publication d'un event
+     * @Route ("/publish/{id}", name="event_publish", methods={"GET"})
+     */
+    public function publishEvent(int $id, EntityManagerInterface $entityManager)
+    {
+        //récup de l'event sélectionné via son id
+        $eventRepository = $entityManager->getRepository(Event::class);
+        $event = $eventRepository->find($id);
+
+        //Récup du state ouverte
+        $stateRepository = $entityManager->getRepository(State::class);
+        $stateCreated = $stateRepository->findOneBy(['label' => 'Ouverte']);
+        $event->setState($stateCreated);
+
+        //remove de l'event
+        $entityManager->persist($event);
         $entityManager->flush();
 
         return $this->redirectToRoute('home');
