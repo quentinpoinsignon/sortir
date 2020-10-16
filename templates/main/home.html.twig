@@ -85,7 +85,7 @@
                             <td>{{ event.owner.firstName }}</td>
                             <td>
                                 {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'ouverte' %}
-                                 <a href="{{ url('event_detail', {'id': event.id }) }}">{{ "S'inscrire" }}</a>
+                                 <a href="{{ url('event_detail', {'id': event.id}) }}">{{ "S'inscrire" }}</a>
                                 {% endif %}
                                 <a href="{{ url('event_detail', {'id': event.id}) }}">Afficher</a>
                                 <a href="{{ url('event_edit', {'id': event.id}) }}">Modifier</a>

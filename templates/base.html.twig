@@ -50,7 +50,14 @@
         </div>
     </div>
 
-
+    {# read and display all flash messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="w3-panel w3-blue-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
         {% block body %}
         {% endblock %}
