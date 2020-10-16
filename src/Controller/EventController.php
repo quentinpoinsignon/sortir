@@ -8,6 +8,7 @@ use App\Entity\Spot;
 use App\Entity\State;
 use App\Entity\Town;
 use App\Form\EventAddFormType;
+use App\Form\EventCancelFormType;
 use App\Form\EventType;
 use App\Form\HybridEventSpotFormType;
 use App\Form\UserType;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 /**
  * @Route("/event")
@@ -25,13 +26,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EventController extends AbstractController
 {
     /**
-     * @param int $id
-     * @param EntityManagerInterface $entityManager
-     * @param Request $request
-     * @return Response
      * @author quentin
      * Fonction pour afficher le détail d'un event
-     *
      * @Route ("/detail/{id}", name="event_detail", methods={"GET"})
      */
     public function detail(int $id, EntityManagerInterface $entityManager, Request $request)
@@ -49,11 +45,8 @@ class EventController extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param Request $request
-     * @return RedirectResponse|Response
      * @author quentin
-     * Fonction pour créer une nouvelle sortie
+     * Fonction pour créer un nouvel event
      * @Route("/add", name="event_add")
      */
     public function addEvent(EntityManagerInterface $entityManager, Request $request)
@@ -94,12 +87,8 @@ class EventController extends AbstractController
     }
 
     /**
-     * @param int $id
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse|Response
      * @author quentin
-     * Fonction pour éditer une sortie
+     * Fonction pour éditer un event
      * @Route ("/edit/{id}", name="event_edit", methods={"GET", "POST"})
      */
     public function editEvent(int $id, Request $request, EntityManagerInterface $entityManager) :Response
@@ -127,14 +116,10 @@ class EventController extends AbstractController
     }
 
     /**
-     * @param int $id
-     * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
      * @author quentin
      * Fonction de suppression d'un event
      * @Route ("/remove/{id}", name="event_remove", methods={"GET"})
      */
-
     public function removeEvent(int $id, EntityManagerInterface $entityManager)
     {
         //récup de l'event sélectionné via son id
@@ -148,36 +133,40 @@ class EventController extends AbstractController
     }
 
     /**
-     * @param int $id
-     * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
      * @author quentin
-     * Fonction d'annulation'd'un event
-     * @Route ("/cancel/{id}", name="event_cancel", methods={"GET"})
+     * Fonction d'annulation d'un event
+     * @Route ("/cancel/{id}", name="event_cancel", methods={"GET", "POST"})
      */
-
-    public function cancelEvent(int $id, EntityManagerInterface $entityManager)
+    public function cancelEvent(int $id, EntityManagerInterface $entityManager, Request $request)
     {
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
 
-        //Récup du state ouverte
-        $stateRepository = $entityManager->getRepository(State::class);
-        $stateCreated = $stateRepository->findOneBy(['label' => 'Annulée']);
-        $event->setState($stateCreated);
+        //génération du formulaire avec l'event passé en paramètre
+        $eventCancelForm= $this->createForm(EventCancelFormType::class, $event);
+        $eventCancelForm->handleRequest($request);
 
-        //remove de l'event
-        $entityManager->persist($event);
-        $entityManager->flush();
+        //sauvegarde dans la base
+        if ($eventCancelForm->isSubmitted() && $eventCancelForm->isValid()) {
+            //Récup du state ouverte
+            $stateRepository = $entityManager->getRepository(State::class);
+            $stateCanceled = $stateRepository->findOneBy(['label' => 'Annulée']);
+            $event->setState($stateCanceled);
+            //sauvegarde en base
+            $entityManager->persist($event);
+            $entityManager->flush();
+            //retour maison
+            return $this->redirectToRoute('home');
+        }
 
-        return $this->redirectToRoute('home');
+        return $this->render('event/event-cancel.html.twig', [
+            'eventCancelForm' => $eventCancelForm->createView(),
+            'event' => $event,
+        ]);
     }
 
     /**
-     * @param int $id
-     * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
      * @author quentin
      * Fonction de publication d'un event
      * @Route ("/publish/{id}", name="event_publish", methods={"GET"})
@@ -196,8 +185,10 @@ class EventController extends AbstractController
         //remove de l'event
         $entityManager->persist($event);
         $entityManager->flush();
-
+        
         return $this->redirectToRoute('home');
     }
+
+
 
 }

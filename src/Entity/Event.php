@@ -81,6 +81,11 @@ class Event
      */
     private $registrations;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cancelReason;
+
     public function __construct()
     {
         $this->registrations = new ArrayCollection();
@@ -251,6 +256,18 @@ class Event
                 $registration->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCancelReason(): ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(?string $cancelReason): self
+    {
+        $this->cancelReason = $cancelReason;
 
         return $this;
     }
