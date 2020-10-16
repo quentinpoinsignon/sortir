@@ -39,10 +39,10 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findEventByRegistrationsByIdUser($user) {
         return $this->createQueryBuilder('e')
-            ->select('r', 'e')
-            ->from('Event', 'e')
+            ->join('e.registrations', 'r')
             ->join('r.participant', 'p')
             ->addSelect('p')
+            ->addSelect('r')
             ->andWhere('p = :val')
             ->setParameter('val', $user)
             ->getQuery()
