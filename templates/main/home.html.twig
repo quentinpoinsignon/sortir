@@ -10,7 +10,7 @@
                         <h2 class="titre_form_accueil">Filtrer les sorties</h2>
 
                         <label for="campus_list" class="campus_lbl">Campus</label>
-                        <select class="w3-select campus_list" name="campus_list" id="campus_list">
+                        <select class="w3-select campus_list" id="campus_list">
                             {% for campus in campusList %}
                                 <option value="{{ campus.id }}">{{ campus.name }}</option>
                             {% endfor %}
@@ -30,7 +30,7 @@
                         <div class="checkbx">
 
                             <div>
-                                <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur">
+                                <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur" name="user_organisateur">
                                 <label for="user_organisateur" class="user_organisateur_lbl">Sorties dont je suis l'organisateur/trice</label>
                             </div>
 
