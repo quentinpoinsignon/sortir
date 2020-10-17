@@ -26,16 +26,29 @@ class MainController extends AbstractController
         $registrationList = $registrationRepository->findAll();
 
 
+        //Récupérer les données du formulaire
+        if($request->get('search_input') != null) {
+            $campusChoiceId = $request->get('campus_list');
+            $search = $request->get('search_input');
+            $dateDebut = $request->get('date_debut');
+            $dateFin = $request->get('date_fin');
+            $userOrganisateur = $request->get('user_organisateur');
+            $userInscrit = $request->get('user_inscrits');
+            $userNonInscrit = $request->get('user_non_inscrits');
+            $sortiesPassees = $request->get('sorties_passees');
+        }
+
+
 //        dd($eventList, $userList, $campusList, $registrationList);
 
 //méthodo pour tester une requête en fonction d'une checkbox / date ou autres
 
-        dump($request->get('user_inscrits'));
-
-        if($request->get('user_inscrits' == 'on'))
-        {
-            $eventList = $eventRepository->findEventByRegistrationsByIdUser($request->getUser());
-        }
+//        dump($request->get('user_inscrits'));
+//
+//        if($request->get('user_inscrits' == 'on'))
+//        {
+//            $eventList = $eventRepository->findEventByRegistrationsByIdUser($request->getUser());
+//        }
 
 
 
