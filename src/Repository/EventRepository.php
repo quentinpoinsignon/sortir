@@ -24,7 +24,7 @@ class EventRepository extends ServiceEntityRepository
      * @param $user
      * @return array  tableau d'évenements dont le $user est l'organisateur
      */
-    public function findByOwner($user) {
+    public function findEventByOwner($user) {
         $qb = $this->createQueryBuilder('e')
             ->andWhere('e.owner = :val')
             ->setParameter('val', $user);
@@ -32,36 +32,22 @@ class EventRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
-//    /**
-//     * @param $user
-//     * @return int|mixed|string tableau d'évenements dont le user est participant
-//     */
-//
-//    public function findEventByRegistrationsByUser($user)
-//    {
-//        $request =  $this->createQueryBuilder('e')
-//
-//            ->join('e.registrations', 'r')
-//            ->join('r.participant', 'p')
-//            ->addSelect('p')
-//            ->addSelect('r')
-//            ->andWhere('p = :val')
-//            ->setParameter('val', $user)
-//            ->getQuery()
-//            ->getResult();
-//        return $request;
-//    }
-
     /**
-     * @quentin requête transitoire pour tests
+     * @param $user
+     * @return int|mixed|string tableau d'évenements dont le user est participant
      */
-    public function findClosedEvents()
+
+    public function findEventByRegistrationsByUser($user)
     {
-        return $this->createQueryBuilder('e')
-            ->where('e.state = 5')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('e')
+            ->join('e.registrations', 'r')
+            ->addSelect('r')
+            ->andWhere('r.participant = :val')
+            ->setParameter('val', $user);
+            $query = $qb->getQuery();
+        return $query->execute();
     }
+
 
     /**
      * @param String $stateLabel
@@ -85,10 +71,37 @@ class EventRepository extends ServiceEntityRepository
     public function findEventByDate($dateDebut, $dateFin)
     {
         return $this->createQueryBuilder('e')
-            ->where('e.startDateTime > $dateDebut')
-            ->where('e.registrationLimitDate < $dateFin')
+            ->andWhere('e.startDateTime > :dateDebut')
+            ->andWhere('e.registrationLimitDate < :dateFin')
+            ->setParameter('dateDebut', $dateDebut)
+            ->setParameter('dateFin', $dateFin)
             ->getQuery()
             ->getResult();
+    }
+
+
+    /**
+     * @param $campusId
+     * @return int|mixed|string tableau d'événements qui sont organisés par le campus dont l'id est passé en paramètre
+     */
+    public function findEventByCampus($campusId) {
+        $qb = $this->createQueryBuilder('e')
+            ->join('e.campus', 'c')
+            ->addSelect('c')
+            ->andWhere('c.id = :campusId')
+            ->setParameter('campusId', $campusId);
+        $query = $qb->getQuery();
+        $query->execute();
+        return $query->getResult();
+
+    }
+
+    public function findEventBySearchWord($word) {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.name like :word')
+            ->setParameter('word','%' . $word . '%');
+        $query = $qb->getQuery();
+        return $query->execute();
     }
 
 }

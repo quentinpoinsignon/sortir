@@ -43,7 +43,7 @@ class MainController extends AbstractController
 //
        // if($request->get('user_inscrits' == 'on'))
         //{
-            $myEventList = $eventRepository->findEventByStateLabel('Ouverte');
+            $myEventList = $eventRepository->findEventBySearchWord('MarioKart');
             dump($myEventList);
        // }
 
