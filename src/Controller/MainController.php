@@ -37,18 +37,15 @@ class MainController extends AbstractController
             $userNonInscrit = $request->get('user_non_inscrits');
             $sortiesPassees = $request->get('sorties_passees');
         }
-
-
-//        dd($eventList, $userList, $campusList, $registrationList);
-
 //méthodo pour tester une requête en fonction d'une checkbox / date ou autres
 
 //        dump($request->get('user_inscrits'));
 //
-//        if($request->get('user_inscrits' == 'on'))
-//        {
-//            $eventList = $eventRepository->findEventByRegistrationsByIdUser($request->getUser());
-//        }
+       // if($request->get('user_inscrits' == 'on'))
+        //{
+            $myEventList = $eventRepository->findEventByStateLabel('Ouverte');
+            dump($myEventList);
+       // }
 
 
 

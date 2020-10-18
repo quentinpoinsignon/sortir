@@ -25,34 +25,32 @@ class EventRepository extends ServiceEntityRepository
      * @return array  tableau d'évenements dont le $user est l'organisateur
      */
     public function findByOwner($user) {
-        return $this->createQueryBuilder('e')
+        $qb = $this->createQueryBuilder('e')
             ->andWhere('e.owner = :val')
-            ->setParameter('val', $user)
-            ->orderBy('e.startDateTime')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('val', $user);
+        $query = $qb->getQuery();
+        return $query->execute();
     }
 
-    /**
-     * @param $user
-     * @return int|mixed|string tableau d'évenements dont le user est participant
-     */
-
-    public function findEventByRegistrationsByUser($user)
-    {
-        $request =  $this->createQueryBuilder('e')
-
-            ->join('e.registrations', 'r')
-            ->join('r.participant', 'p')
-            ->addSelect('p')
-            ->addSelect('r')
-            ->andWhere('p = :val')
-            ->setParameter('val', $user)
-            ->getQuery()
-            ->getResult();
-        return $request;
-    }
-
+//    /**
+//     * @param $user
+//     * @return int|mixed|string tableau d'évenements dont le user est participant
+//     */
+//
+//    public function findEventByRegistrationsByUser($user)
+//    {
+//        $request =  $this->createQueryBuilder('e')
+//
+//            ->join('e.registrations', 'r')
+//            ->join('r.participant', 'p')
+//            ->addSelect('p')
+//            ->addSelect('r')
+//            ->andWhere('p = :val')
+//            ->setParameter('val', $user)
+//            ->getQuery()
+//            ->getResult();
+//        return $request;
+//    }
 
     /**
      * @quentin requête transitoire pour tests
@@ -63,6 +61,22 @@ class EventRepository extends ServiceEntityRepository
             ->where('e.state = 5')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param String $stateLabel
+     * @return int|mixed|string return un tableau des événements dont le statut est passé en paramètre
+     */
+    public function findEventByStateLabel($stateLabel) {
+        $qb = $this->createQueryBuilder('e')
+            ->join('e.state', 's')
+            ->addSelect('s')
+            ->andWhere('s.label = :label')
+            ->setParameter('label', $stateLabel);
+        $query = $qb->getQuery();
+        $query->execute();
+        return $query->getResult();
+
     }
 
     /**

@@ -49,7 +49,7 @@
                                 <label for="sorties_passees" class="sorties_passees_lbl">Sorties passées</label>
                             </div>
                         </div>
-                        <button class="w3-btn w3-round" type="submit" style="background: #f44336; margin: 10px;">Valider</button>
+                        <button class="w3-btn w3-round w3-red" type="submit" style="margin:10px 0px">Valider</button>
                     </form>
 
                     <div class="w3-card aside w3-col w3-center w3-right w3-hover-shadow">
@@ -70,51 +70,42 @@
                             <th>Actions</th>
                         </tr>
                         {% for event in eventList %}
-                        <tr>
-                            <td>{{ event.name }}</td>
-                            <td>{{ event.startDateTime ? event.startDateTime|date('d-m-Y H:i:s') : '' }}</td>
-                            <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d-m-Y H:i:s') : '' }}</td>
-                            <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
-                            <td>{{ event.state.label }}</td>
+                            <tr>
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.startDateTime ? event.startDateTime|date('d-m-Y H:i:s') : '' }}</td>
+                                <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d-m-Y H:i:s') : '' }}</td>
+                                <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
+                                <td>{{ event.state.label }}</td>
 
-                            <td>
-                            {% for registration in registrationList %}
-                                     {{ (registration.participant.id == app.user.id and registration.event.id == event.id)? 'X' :'' }}
-                            {% endfor %}
-                            </td>
-                            <td>{{ event.owner.firstName }}</td>
-                            <td>
+                                <td>
+                                {% for registration in registrationList %}
+                                         {{ (registration.participant.id == app.user.id and registration.event.id == event.id)? 'X' :'' }}
+                                {% endfor %}
+                                </td>
+                                <td>{{ event.owner.firstName }}</td>
 
-                                <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>
-                                {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
-                                    <a href="{{ url('event_registration', {'eventId': event.id, 'participantId' : app.user.id }) }}">{{ "S'inscrire" }}</a>
+                                <td> {#Colonne avec liens à afficher (Détails, Se désister, S'inscrire, Annuler)#}
 
-                              
+                                    {# "Détails" à afficher dans tous les cas#}
+                                    <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>
 
-                                {% endif %}
-{#                                {% if (registration.participant.id == app.user.id and registration.event.id == event.id) %}#}
-{#                                    {% if event.state.label is not 'Clôturée' %}#}
-{#                                        <a href="#">Se désister</a>#}
+                                    {#S'inscrire, si l'event n'est pas encore passé, et si le nombre max d'inscription n'est pas atteint, et si l'event est "ouvert"#}
+                                    {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
+                                        <a href="{{ url('event_registration', {'eventId': event.id, 'participantId' : app.user.id }) }}">{{ "S'inscrire" }}</a>
+                                    {% endif %}
+                                    {#Se désister, si la date de cloture des inscriptions n'est pas passée et si je suis inscrit à l'event#}
+{#                                        {% if date(event.registrationLimitDate) < date()%}#}
+{#                                    <a href="{{ url('event_edit', {'id': event.id}) }}">Se désister</a>#}
 {#                                    {% endif %}#}
-{#                                {% endif %}#}
-                                <a href="{{ url('event_edit', {'id': event.id}) }}">Modifier</a>
-                            </td>
-
-                        </tr>
+{#                                    Annuler, si je suis l'owner de l'event et si la date limite d'inscription n'est pas dépassée#}
+                                </td>
+                            </tr>
                         {% endfor %}
-
                     </table>
                     <br>
-
-              </div>
-
+                </div>
                     <a href="{{ url('event_add')}}" class="w3-btn w3-red w3-round">Créer une sortie</a>
                 </div>
-
-
-{#        {% for event in eventListUserOwner %}#}
-{#            <p>{{ event.name }}</p>#}
-{#        {% endfor %}#}
     </div>
 
 
