@@ -22,7 +22,7 @@ class SpotAddFormType extends AbstractType
 
             ->add('town', EntityType::class, [
                 'class' => Town::class,
-                'label' => 'Ville',
+                'label' => 'Ville :',
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
                 'query_builder' => function (EntityRepository $entityRepository){
@@ -32,11 +32,11 @@ class SpotAddFormType extends AbstractType
             ])
 
             ->add('name', TextType::class, [
-                'label' => 'Lieu',
+                'label' => 'Lieu :',
                 'attr' => ['class' => 'w3-input'],
             ])
             ->add('street', TextType::class, [
-                'label' => 'Rue',
+                'label' => 'Rue :',
                 'attr' => ['class' => 'w3-input'],
             ])
 
@@ -46,7 +46,7 @@ class SpotAddFormType extends AbstractType
                 'attr' => ['class' => 'w3-input'],
             ])
             ->add('longitude', NumberType::class, [
-                'label' =>'Longitude : ',
+                'label' =>'Longitude :',
                 'attr' => ['class' => 'w3-input'],
             ])
         ;

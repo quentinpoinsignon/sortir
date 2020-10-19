@@ -4,16 +4,22 @@ namespace App\DataFixtures;
 
 use App\Entity\Campus;
 use App\Entity\Event;
+use App\Entity\Registration;
 use App\Entity\Spot;
 use App\Entity\State;
 use App\Entity\Town;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class GlobalFixtures extends Fixture implements FixtureGroupInterface
+class GlobalFixtures extends Fixture
 {
+    private $encoder;
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
     public function load(ObjectManager $manager)
     {
         // Towns
@@ -24,10 +30,29 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $town2->setName('Nantes');
         $town2->setPostalCode('44000');
         $town3 = new Town();
-        $town3->setName('Montaigu');
-        $town3->setPostalCode('85600');
+        $town3->setName('La Roche-sur-Yon');
+        $town3->setPostalCode('85000');
+        $town4 = new Town();
+        $town4->setName('Saint-Herblain');
+        $town4->setPostalCode('44800');
 
 
+        $manager->persist($town1);
+        $manager->persist($town2);
+        $manager->persist($town3);
+        $manager->persist($town4);
+
+        //Campus
+        $campus1 = new Campus();
+        $campus1->setName("Chartres-de-Bretagne");
+        $campus2 = new Campus();
+        $campus2->setName("Saint-Herblain");
+        $campus3 = new Campus();
+        $campus3->setName("La Roche-sur-Yon");
+
+        $manager->persist($campus1);
+        $manager->persist($campus2);
+        $manager->persist($campus3);
 
         // Spots
         $spot1 = new Spot();
@@ -36,69 +61,113 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $spot1->setLatitude(48.108455);
         $spot1->setLongitude(-1.675147);
         $spot1->setTown($town1);
-        $manager->persist($spot1);
+
 
         $spot2 = new Spot();
-        $spot2->setName('Gameover');
+        $spot2->setName('Game Over');
         $spot2->setStreet('1 Rue Lebrun');
-        $spot2->setLatitude(47.220173);
-        $spot2->setLongitude(-1.548964);
+        $spot2->setLatitude(47.22009);
+        $spot2->setLongitude(-1.54947);
         $spot2->setTown($town2);
-        $manager->persist($spot2);
+
 
         $spot3 = new Spot();
-        $spot3->setName('L\'instant Jeux');
-        $spot3->setStreet('19 rue Georges Clémenceau');
-        $spot3->setLatitude(46.977119);
-        $spot3->setLongitude(-1.313038);
-        $spot3->setTown($town3);
+        $spot3->setName('Bowl Center');
+        $spot3->setStreet('151 Rue du Moulin de la Rousselière');
+        $spot3->setLatitude(47.23027);
+        $spot3->setLongitude(-1.63857);
+        $spot3->setTown($town4);
+
+        $spot4 = new Spot();
+        $spot4->setName('Berlin 1989');
+        $spot4->setStreet('9 Rue des Piliers de la Chauvinière');
+        $spot4->setLatitude(47.23105);
+        $spot4->setLongitude(-1.63818);
+        $spot4->setTown($town4);
+
+
+        $spot5 = new Spot();
+        $spot5->setName('Le WARP - Taverne Ludique');
+        $spot5->setStreet('8 Rue Stéphane Guilleme');
+        $spot5->setLatitude(46.66985);
+        $spot5->setLongitude(-1.42461);
+        $spot5->setTown($town3);
+
+
+        $manager->persist($spot1);
+        $manager->persist($spot2);
         $manager->persist($spot3);
+        $manager->persist($spot4);
+        $manager->persist($spot5);
 
-        //Campus
-        $campus1 = new Campus();
-        $campus1->setName("Chartres de Bretagne");
-        $campus2 = new Campus();
-        $campus2->setName("Saint Herblain");
-        $campus3 = new Campus();
-        $campus3->setName("La Roche sur Yon");
-
-        $user = new User();
-        $user->setFirstName("toto");
-        $user->setName("gargamel");
-        $user->setEmailAdress("toto.gargamel@mail.fr");
-        $user->setActive(true);
-        $user->setAdministrator(false);
-        $user->setPassword("toto");
-        $user->setPhoneNumber("0645879632");
-        $user->setRoles(['ROLE_USER']);
-        $user->setUsername("toto");
-        $user->setCampus($campus1);
-
+        // Users
+        //la team en admin
+        $user1 = new User();
+        $user1->setFirstName("Adeline");
+        $user1->setName("Avril");
+        $user1->setEmailAdress("adelineavril@eni.fr");
+        $user1->setActive(true);
+        $user1->setAdministrator(true);
+        $user1->setPassword($this->encoder->encodePassword($user1,'adeline'));
+        $user1->setPhoneNumber("0645879632");
+        $user1->setRoles(['ROLE_ADMIN']);
+        $user1->setUsername("adeline");
+        $user1->setCampus($campus2);
 
         $user2 = new User();
-        $user2->setFirstName("rico");
-        $user2->setName("pantagruel");
-        $user2->setEmailAdress("rico.pantagruel@mail.fr");
+        $user2->setFirstName("Kim");
+        $user2->setName("Maroe");
+        $user2->setEmailAdress("kimmaroe@eni.fr");
         $user2->setActive(true);
-        $user2->setAdministrator(false);
-        $user2->setPassword("G435HNDSEGY");
-        $user2->setPhoneNumber("0458972596");
-        $user2->setRoles(['ROLE_USER']);
-        $user2->setUsername("ricolagaffe");
+        $user2->setAdministrator(true);
+        $user2->setPassword($this->encoder->encodePassword($user2,'kim'));
+        $user2->setPhoneNumber("0758972596");
+        $user2->setRoles(['ROLE_ADMIN']);
+        $user2->setUsername("kim");
         $user2->setCampus($campus2);
 
         $user3 = new User();
-        $user3->setFirstName("jojo");
-        $user3->setName("fafaron");
-        $user3->setEmailAdress("fanfaron.jojo@mail.fr");
+        $user3->setFirstName("Quentin");
+        $user3->setName("Poinsignon");
+        $user3->setEmailAdress("quentinpoinsignon@eni.fr");
         $user3->setActive(true);
-        $user3->setAdministrator(false);
-        $user3->setPassword("hgey595866gdffr");
-        $user3->setPhoneNumber("0548965235");
-        $user3->setRoles(['ROLE_USER']);
-        $user3->setUsername("jojolasticot");
-        $user3->setCampus($campus3);
+        $user3->setAdministrator(true);
+        $user3->setPassword($this->encoder->encodePassword($user3,'quentin'));
+        $user3->setPhoneNumber("0656243514");
+        $user3->setRoles(['ROLE_ADMIN']);
+        $user3->setUsername("quentin");
+        $user3->setCampus($campus2);
 
+        //les users
+        $user4 = new User();
+        $user4->setFirstName("Guillaume");
+        $user4->setName("Sylvestre");
+        $user4->setEmailAdress("guillaumesylvestre@eni.fr");
+        $user4->setActive(true);
+        $user4->setAdministrator(false);
+        $user4->setPassword($this->encoder->encodePassword($user4,'guillaume'));
+        $user4->setPhoneNumber("0765897654");
+        $user4->setRoles(['ROLE_USER']);
+        $user4->setUsername("guillaume");
+        $user4->setCampus($campus2);
+
+        $user5 = new User();
+        $user5->setFirstName("Hervé");
+        $user5->setName("Boisgontier");
+        $user5->setEmailAdress("herveboisgontier@eni.fr");
+        $user5->setActive(true);
+        $user5->setAdministrator(false);
+        $user5->setPassword($this->encoder->encodePassword($user5,'herve'));
+        $user5->setPhoneNumber("0676543419");
+        $user5->setRoles(['ROLE_USER']);
+        $user5->setUsername("hervé");
+        $user5->setCampus($campus2);
+
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
+        $manager->persist($user4);
+        $manager->persist($user5);
 
         // State
         $state1 = new State();
@@ -122,20 +191,20 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
         $manager->persist($state5);
         $manager->persist($state6);
 
-        // Event
+        // Events
         $event1 = new Event();
         $event2 = new Event();
         $event3 = new Event();
         $event4 = new Event();
 
-        $event1->setName("Soirée Lazer Game");
-        $event2->setName("Soirée Ciné!!");
-        $event3->setName("Se réunir autour d'une dinde");
+        $event1->setName("Soirée Bowling");
+        $event2->setName("Beer Afterwork");
+        $event3->setName("Apéro fin de projet");
         $event4->setName("Trick or Treat");
 
         $event1->setStartDateTime(new \DateTime("2020-11-16T21:00:00"));
         $event2->setStartDateTime(new \DateTime("2020-10-25T21:00:00"));
-        $event3->setStartDateTime(new \DateTime("2020-12-25T19:30:00"));
+        $event3->setStartDateTime(new \DateTime("2020-10-23T19:30:00"));
         $event4->setStartDateTime(new \DateTime("2020-10-31T22:00:00"));
 
         $event1->setDuration(60);
@@ -145,49 +214,71 @@ class GlobalFixtures extends Fixture implements FixtureGroupInterface
 
         $event1->setRegistrationLimitDate(new \DateTime("2020-11-15T21:00:00"));
         $event2->setRegistrationLimitDate(new \DateTime("2020-10-24T21:00:00"));
-        $event3->setRegistrationLimitDate(new \DateTime("2020-12-24T19:30:00"));
+        $event3->setRegistrationLimitDate(new \DateTime("2020-10-22T19:30:00"));
         $event4->setRegistrationLimitDate(new \DateTime("2020-10-30T22:00:00"));
 
         $event1->setRegistrationMaxNb(12);
         $event2->setRegistrationMaxNb(20);
-        $event3->setRegistrationMaxNb(6);
+        $event3->setRegistrationMaxNb(34);
         $event4->setRegistrationMaxNb(10);
 
         $event1->setState($state1);
         $event2->setState($state2);
-        $event3->setState($state3);
+        $event3->setState($state1);
         $event4->setState($state4);
 
-        $event1->setSpot($spot1);
-        $event2->setSpot($spot2);
-        $event3->setSpot($spot3);
-        $event4->setSpot($spot2);
+        $event1->setSpot($spot3);
+        $event2->setSpot($spot4);
+        $event3->setSpot($spot2);
+        $event4->setSpot($spot5);
 
-        $event1->setCampus($campus1);
+        $event1->setCampus($campus2);
         $event2->setCampus($campus2);
-        $event3->setCampus($campus3);
-        $event4->setCampus($campus2);
+        $event3->setCampus($campus2);
+        $event4->setCampus($campus1);
 
-        $event1->setOwner($user);
+        $event1->setOwner($user1);
         $event2->setOwner($user2);
         $event3->setOwner($user3);
         $event4->setOwner($user2);
 
+        $event1->setEventInfos('Fuck it dude, let\'s go bowling');
+        $event2->setEventInfos('Boire un petit coup c\'est agréable');
+        $event3->setEventInfos('Fêtons ensemble la fin du projet Symfony !');
+        $event4->setEventInfos('Well to be honest I don\'t know what this is...');
 
-        $manager->persist($user);
-        $manager->persist($user2);
-        $manager->persist($user3);
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
         $manager->persist($event4);
 
+        $registration1 = new Registration();
+        $registration2 = new Registration();
+        $registration3 = new Registration();
+
+        $registration1->setParticipant($user1);
+        $registration2->setParticipant($user2);
+        $registration3->setParticipant($user3);
+
+        $registration1->setEvent($event3);
+        $registration2->setEvent($event3);
+        $registration3->setEvent($event3);
+
+        $registration1->setRegistrationDate(new \DateTime());
+        $registration2->setRegistrationDate(new \DateTime());
+        $registration3->setRegistrationDate(new \DateTime());
+
+        $manager->persist($registration1);
+        $manager->persist($registration2);
+        $manager->persist($registration3);
+
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
+        $manager->persist($user4);
+        $manager->persist($user5);
 
         $manager->flush();
     }
 
-    public static function getGroups(): array
-    {
-        return ['global'];
-    }
 }

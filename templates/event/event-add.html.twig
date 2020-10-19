@@ -3,26 +3,53 @@
 {% block title %} | Créer une sortie {% endblock %}
 
 {% block body %}
-    <br><br>
-    <h1>Créer une sortie !</h1>
-    <div class="w3-container">
-    {{ form_start(eventAddForm) }}
-        <div class="w3-half">
+    <div class="w3-container w3-margin w3-panel">
+        <h1>Créer une sortie !</h1>
+        {{ form_start(eventAddForm) }}
+        <div class="w3-half w3-row-padding">
             {{ form_row(eventAddForm.name) }}
             {{ form_row(eventAddForm.startDateTime) }}
             {{ form_row(eventAddForm.registrationLimitDate) }}
             {{ form_row(eventAddForm.registrationMaxNb) }}
             {{ form_row(eventAddForm.duration) }}
             {{ form_row(eventAddForm.eventInfos) }}
-            <p>Campus : {{ app.user.campus.name }}</p>
-            {{ form_widget(eventAddForm.spot) }}
-            <br>
-            <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
-            {{ form_end(eventAddForm) }}
-            <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
-            <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
         </div>
-
+        <div class="w3-half">
+            <p>Campus :</p>
+            <p>{{ app.user.campus.name }}</p>
+            {#            {{ form_widget(eventAddForm.spot) }}#}
+            <label for="campus">Lieu :</label>
+            <select class="w3-select" name="campus" id="campus">
+                <option value="" disabled selected>Choisissez un lieu</option>
+                {% for spot in spots %}
+                    <option value="{{ spot.id }}" id="spot_{{ spot.id }}" data-spot="{{ spot.id }}">{{ spot.name }}</option>
+                {% endfor %}
+            </select>
+            <p>Rue : <span id="spot_street"></span></p>
+            <p id="spot_postal_code">Code Postal : </p>
+            <p id="spot_town">Ville : </p>
+            <p id="spot_latitude">Latitude : </p>
+            <p id="spot_longitude">Longitude : </p>
+            <br><br>
+            <br><br>
+            <br><br>
+        </div>
+        <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
+        <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
+        <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+        {{ form_end(eventAddForm) }}
 
     </div>
+
+    <script>
+        document.getElementById('campus').addEventListener('change', function (){
+
+            {% for spot in spots %}
+
+
+            document.getElementById('spot_street').innerText = '{{ spot.name }}';
+
+            {% endfor %}
+        });
+    </script>
 {% endblock %}

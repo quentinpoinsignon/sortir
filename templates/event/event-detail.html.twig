@@ -4,59 +4,55 @@
 
 {% block body %}
 
-<div class="w3-panel w3-margin w3-padding-large">
-    <header class="w3-container">
+    <div class="w3-padding">
+        <header class="w3-padding">
+            <h2>Détail de la sortie - {{ event.name }}</h2>
+        </header>
 
-        <h2>Détail de la sortie - {{ event.name }}</h2>
-    </header>
-
-    <div class="w3-container w3-cell-row">
-        <div class="w3-cell w3-margin">
-            <p>Nom de la sortie : {{ event.name }}</p>
-            <p>Date et heure de la sortie : {{ event.startDateTime.format('d/m/Y à G:i') }}</p>
-            <p>Date limite d'inscription : {{ event.registrationLimitDate.format('d/m/Y à G:i') }}</p>
-            <p>Nombre de places : {{ event.registrationMaxNb }}</p>
-            <p>Durée :  {{ event.duration }} minutes</p>
-            <p>Description et infos : {{ event.eventInfos }}</p>
-            <br>
-            {# affichage de la liste des participants #}
-            <table class="w3-table-all w3-hoverable w3-half">
-                <h2>Liste des participants inscrits :</h2>
-                <tr>
-                    <th>Pseudo</th>
-                    <th>Nom</th>
-                </tr>
+        <div class="w3-container w3-cell-row">
+            <div class="w3-cell w3-margin">
+                <p>Nom de la sortie : {{ event.name }}</p>
+                <p>Date et heure de la sortie : {{ event.startDateTime.format('d/m/Y à G:i') }}</p>
+                <p>Date limite d'inscription : {{ event.registrationLimitDate.format('d/m/Y à G:i') }}</p>
+                <p>Nombre de places : {{ event.registrationMaxNb }}</p>
+                <p>Durée :  {{ event.duration }} minutes</p>
+                <p>Description et infos : </p>
+                <textarea name="" id="" cols="30" rows="2">{{ event.eventInfos }}</textarea>
+                <br>
+                {# affichage de la liste des participants #}
+                <table class="w3-table-all w3-hoverable w3-half">
+                    <h2>Liste des participants inscrits :</h2>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Nom</th>
+                    </tr>
                     {% for registration in registrations%}
-                        <tr>
-                            <td>{{ registration.participant.username }}</td>
-                            <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
-                        </tr>
+                        {% if registration.event.id == event.id %}
+                            <tr>
+                                <td>{{ registration.participant.username }}</td>
+                                <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
-            </table>
-            <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">
-                {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'ouverte' %}
-                {{ "S'inscrire" }}
-                {% endif %}
+                </table>
+                <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">
+                    {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'ouverte' %}
+                        {{ "S'inscrire" }}
+                    {% endif %}
                 </a>
+            </div>
+            <div class="w3-cell w3-margin">
+                <p>Campus : {{ event.campus.name }}</p>
+                <p>Lieu : {{ event.spot.name }}</p>
+                <p>Rue : {{ event.spot.street }}</p>
+                <p>Code postal : {{ event.spot.town.postalCode }}</p>
+                <p>Ville : {{ event.spot.town.name }}</p>
+                <p>Latitude : {{ event.spot.latitude }}</p>
+                <p>Longitude : {{ event.spot.longitude }}</p>
+                <br><br>
+                <iframe width=400px height=250px frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
+            </div>
         </div>
-        <div class="w3-cell w3-margin">
-            <p>Campus : {{ event.campus.name }}</p>
-            <p>Lieu : {{ event.spot.name }}</p>
-            <p>Rue : {{ event.spot.street }}</p>
-            <p>Code postal : {{ event.spot.town.postalCode }}</p>
-            <p>Latitude : {{ event.spot.latitude }}</p>
-            <p>Longitude : {{ event.spot.longitude }}</p>
-            <br><br><br>
-            <iframe width=500px height=250px frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
-        </div>
-
-
     </div>
-
-
-
-</div>
-
-
 {% endblock %}
 

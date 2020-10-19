@@ -55,7 +55,6 @@ class Spot
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
 
@@ -124,36 +123,7 @@ class Spot
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setSpot($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getSpot() === $this) {
-                $user->setSpot(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Event[]

@@ -11,10 +11,8 @@ use App\Form\EventAddFormType;
 use App\Form\EventCancelFormType;
 use App\Form\EventType;
 use App\Form\HybridEventSpotFormType;
-use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -185,7 +183,7 @@ class EventController extends AbstractController
         //remove de l'event
         $entityManager->persist($event);
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('home');
     }
 

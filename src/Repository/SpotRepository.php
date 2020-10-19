@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Spot;
+use App\Entity\Campus;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function MongoDB\BSON\fromJSON;
 
 /**
  * @method Spot|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +22,19 @@ class SpotRepository extends ServiceEntityRepository
         parent::__construct($registry, Spot::class);
     }
 
+    public function spotTest(int $idcampus)
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.town', 't')
+            ->join('s.events', 'e')
+            ->join('e.campus', 'c')
+            ->where('c.id = :val')
+            ->setParameter('val', $idcampus)
+            ->addSelect('t.name')
+            ->addSelect('t.postalCode')
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Spot[] Returns an array of Spot objects
     //  */
