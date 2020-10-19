@@ -46,8 +46,10 @@ class EventController extends AbstractController
      * @author quentin
      * Fonction pour créer un nouvel event
      * @Route("/add", name="event_add")
+     * @Route ("/edit/{id}", name="event_edit")
+     *
      */
-    public function addEvent(EntityManagerInterface $entityManager, Request $request)
+    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request)
     {
 //        $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -55,31 +57,39 @@ class EventController extends AbstractController
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findAll();
         $event = new Event();
-        $spot = new Spot();
+        $spotRepository = $entityManager->getRepository(Spot::class);
+        $spots = $spotRepository->findAll();
 
-        $eventAddForm = $this->createForm(EventAddFormType::class, $event);
+        $eventAddForm = $this->createForm(EventAddFormType::class, $event, ['use_type' => 'create']);
         $eventAddForm->handleRequest($request);
 
-        if($eventAddForm->isSubmitted() && $eventAddForm->isValid())
-        {
-            //set de valeurs par défaut : state à créé
-            $stateRepository = $entityManager->getRepository(State::class);
-            $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
-            $event->setState($stateCreated);
-            //owner à l'user connecté
-            $event->setOwner($this->getUser());
-            //campus au campus de l'user connecté
-            $event->setCampus($this->getUser()->getCampus());
+        if($eventAddForm->isSubmitted()) {
+            if($eventAddForm->get('cancel')->isClicked())
+            {
+                dd('test');
+            }
+            if ($eventAddForm->isValid()) {
+                //set de valeurs par défaut : state à créé
+                $stateRepository = $entityManager->getRepository(State::class);
+                $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
+                $event->setState($stateCreated);
+                //owner à l'user connecté
+                $event->setOwner($this->getUser());
+                //campus au campus de l'user connecté
+                $event->setCampus($this->getUser()->getCampus());
 
-            //envoi à la base de données
-            $entityManager->persist($event);
-            $entityManager->flush();
+                //envoi à la base de données
+                $entityManager->persist($event);
+                $entityManager->flush();
 
-            return $this->redirectToRoute("home");
+                return $this->redirectToRoute("home");
+            }
         }
 
         return $this->render('event/event-add.html.twig', [
-            'eventAddForm' => $eventAddForm->createView()
+            'eventAddForm' => $eventAddForm->createView(),
+            'spots' => $spots,
+            'towns' => $towns,
         ]);
 
     }

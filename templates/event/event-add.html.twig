@@ -17,12 +17,21 @@
         <div class="w3-half">
             <p>Campus :</p>
             <p>{{ app.user.campus.name }}</p>
-            {#            {{ form_widget(eventAddForm.spot) }}#}
-            <label for="campus">Lieu :</label>
+            {# {{ form_widget(eventAddForm.spot) }} #}
+            <label for="villes">Campus :</label>
+            <select class="w3-select" name="towns" id="towns">
+                <option value="" disabled selected>Choisissez une ville</option>
+                {% for town in towns %}
+                    <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="campus">Lieu  :</label>
             <select class="w3-select" name="campus" id="campus">
                 <option value="" disabled selected>Choisissez un lieu</option>
                 {% for spot in spots %}
-                    <option value="{{ spot.id }}" id="spot_{{ spot.id }}" data-spot="{{ spot.id }}">{{ spot.name }}</option>
+                    si event et que la ville du lieu de l'event correspond à la ville du lieu en cours, alors j'affiche, sinon je passe
+                    <option value="{{ spot.id }}" {% if event is defined and event.spot == spot %}selected {% endif %}>{{ spot.name }}</option>
+
                 {% endfor %}
             </select>
             <p>Rue : <span id="spot_street"></span></p>
@@ -34,9 +43,8 @@
             <br><br>
             <br><br>
         </div>
-        <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
-        <button class="w3-btn w3-red w3-round" type="submit">Publier la sortie</button>
-        <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+
+
         {{ form_end(eventAddForm) }}
 
     </div>
