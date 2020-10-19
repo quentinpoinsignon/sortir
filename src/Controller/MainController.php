@@ -33,7 +33,6 @@ class MainController extends AbstractController
         $dateFin = $request->get('date_fin');
         $userOrganisateur = $request->get('user_organisateur');
         $userInscrit = $request->get('user_inscrits');
-        $userNonInscrit = $request->get('user_non_inscrits');
         $sortiesPassees = $request->get('sorties_passees');
         $idUser = $this->getUser()->getId();
         $user = $this->getUser();
@@ -51,14 +50,19 @@ class MainController extends AbstractController
 //            dump($myEventList);
        // }
 
-
-
         return $this->render('main/home.html.twig', [
             "eventList" => $eventList,
             "registrationList" => $registrationList,
             "campusList" => $campusList,
             "userList" => $userList,
             "request" => $request,
+            "searchWords" => $search,
+            "dateDebut" => $dateDebut,
+            "dateFin" => $dateFin,
+            "userOrganisateur" => $userOrganisateur,
+            "userInscrit" => $userInscrit,
+            "sortiesPassees" => $sortiesPassees
+
         ]);
 
     }

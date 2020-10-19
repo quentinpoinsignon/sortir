@@ -12,35 +12,35 @@
                         <label for="campus_list" class="campus_lbl">Campus</label>
                         <select class="w3-select campus_list" id="campus_list" name="campus_list">
                             {% for campus in campusList %}
-                                <option value="{{ campus.id }}" name="{{ campus.id }}">{{ campus.name }}</option>
+                                <option value="{{ campus.id }}" name="{{ campus.id }}" {% if campus == app.user.campus %}selected="selected"{% endif%} >{{ campus.name }}</option>
                             {% endfor %}
                         </select>
 
 
                         <label for="search_input" class="search_lbl">Le nom de la sortie contient :</label>
-                        <input type="text" class="search_input w3-input" id="search_input" name="search_input">
+                        <input type="text" class="search_input w3-input" id="search_input" name="search_input" value="{{ searchWords }}">
 
                         <label for="date_debut" class="date_debut_lbl">Entre</label>
-                        <input type="date" class="date_debut w3-input" id="date_debut" name="date_debut">
+                        <input type="date" class="date_debut w3-input" id="date_debut" name="date_debut" value="{{ dateDebut }}">
 
                         <label for="date_fin" class="date_fin_lbl">et</label>
-                        <input type="date" class="date_fin w3-input" id="date_fin" name="date_fin">
+                        <input type="date" class="date_fin w3-input" id="date_fin" name="date_fin" value="{{ dateFin }}">
                         <br>
 
                         <div class="checkbx">
 
                             <div>
-                                <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur" name="user_organisateur">
+                                <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur" name="user_organisateur" {% if userOrganisateur == "on" %} checked {% endif %}>
                                 <label for="user_organisateur" class="user_organisateur_lbl">Sorties dont je suis l'organisateur/trice</label>
                             </div>
 
                             <div>
-                                <input type="checkbox" class="user_inscrits w3-check" id="user_inscrits" name="user_inscrits">
+                                <input type="checkbox" class="user_inscrits w3-check" id="user_inscrits" name="user_inscrits" {% if userInscrit == "on" %} checked {% endif %}>
                                 <label for="user_inscrits" class="user_inscrits_lbl">Sorties auxquelles je suis inscrit/e</label>
                             </div>
 
                             <div>
-                                <input type="checkbox" class="sorties_passees w3-check" id="sorties_passees" name="sorties_passees">
+                                <input type="checkbox" class="sorties_passees w3-check" id="sorties_passees" name="sorties_passees" {% if sortiesPassees == "on" %} checked {% endif %}>
                                 <label for="sorties_passees" class="sorties_passees_lbl">Sorties passées</label>
                             </div>
                         </div>
