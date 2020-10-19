@@ -43,7 +43,7 @@ class MainController extends AbstractController
 
 //méthode pour tester une requête en fonction d'une checkbox / date ou autres
 
-//        dump($request->get('user_inscrits'));
+        //dump($dateFin);
 //
        // if($request->get('user_inscrits' == 'on'))
         //{

@@ -133,6 +133,15 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameter('word','%' . $request->get('search_input') . '%');
         }
 
+        if($request->get('date_debut') && $request->get('date_fin') == "")
+            $qb->andWhere('e.startDateTime > :dateDebut2')
+                ->setParameter('dateDebut2', $request->get('date_debut'));
+
+        if($request->get('date_debut') == "" && $request->get('date_fin'))
+            $qb->andWhere('e.startDateTime < :dateFin2')
+                ->setParameter('dateFin2', $request->get('date_fin'));
+
+
         if($request->get('date_debut') && $request->get('date_fin')) {
             $qb->andWhere('e.startDateTime > :dateDebut')
                 ->andWhere('e.registrationLimitDate < :dateFin')
