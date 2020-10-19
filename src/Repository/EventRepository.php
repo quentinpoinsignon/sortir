@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,6 +50,16 @@ class EventRepository extends ServiceEntityRepository
             $query = $qb->getQuery();
         return $query->execute();
     }
+
+//    public function findEventUserNotRegistered($user) {
+//        $qb = $this->createQueryBuilder('e')
+//            ->join('e.registrations', 'r')
+//            ->addSelect('r')
+//            ->andWhere('r.participant != :val')
+//            ->setParameter('val', $user);
+//        $query = $qb->getQuery();
+//        return $query->execute();
+//    }
 
 
     /**
@@ -100,6 +113,50 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('e')
             ->andWhere('e.name like :word')
             ->setParameter('word','%' . $word . '%');
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+
+    public function findEventBySearchFilters (Request $request, User $user) {
+        $qb = $this->createQueryBuilder('e');
+
+        if($request->get('campus_list')) {
+            $qb->join('e.campus', 'c')
+                ->addSelect('c')
+                ->andWhere('c.id = :campusId')
+                ->setParameter('campusId', $request->get('campus_list'));
+        }
+
+        if($request->get('search_input')) {
+            $qb->andWhere('e.name like :word')
+                ->setParameter('word','%' . $request->get('search_input') . '%');
+        }
+
+        if($request->get('date_debut') && $request->get('date_fin')) {
+            $qb->andWhere('e.startDateTime > :dateDebut')
+                ->andWhere('e.registrationLimitDate < :dateFin')
+                ->setParameter('dateDebut', $request->get('date_debut'))
+                ->setParameter('dateFin', $request->get('date_fin'));
+        }
+
+        if($request->get('user_organisateur')) {
+            $qb->andWhere('e.owner = :val')
+                ->setParameter('val', $user);
+        }
+
+        if($request->get('user_inscrits')) {
+            $qb->join('e.registrations', 'r')
+                ->addSelect('r')
+                ->andWhere('r.participant = :val2')
+                ->setParameter('val2', $user);
+        }
+
+        if($request->get('sorties_passees')) {
+            $qb->join('e.state', 's')
+                ->addSelect('s')
+                ->andWhere("s.label like '%Passée%'");
+        }
         $query = $qb->getQuery();
         return $query->execute();
     }

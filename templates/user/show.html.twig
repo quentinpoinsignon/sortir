@@ -3,44 +3,33 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1>Mon profil</h1>
 
-    <table class="table">
-        <tbody>
+    <table class="w3-table-all">
+    <tbody>
+
             <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
+                <th>Pseudo</th>
                 <td>{{ user.username }}</td>
             </tr>
             <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <td>{{ user.name }}</td>
             </tr>
             <tr>
-                <th>FirstName</th>
+                <th>Prénom</th>
                 <td>{{ user.firstName }}</td>
             </tr>
             <tr>
-                <th>PhoneNumber</th>
+                <th>Téléphone</th>
                 <td>{{ user.phoneNumber }}</td>
             </tr>
             <tr>
-                <th>EmailAdress</th>
+                <th>Email</th>
                 <td>{{ user.emailAdress }}</td>
             </tr>
             <tr>
-                <th>Administrator</th>
+                <th>Administrateur</th>
                 <td>{{ user.administrator ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
@@ -50,9 +39,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('user_index') }}">back to list</a>
+    <a href="{{ path('user_index') }}" class="w3-btn w3-red w3-round">back to list</a>
 
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+    <a href="{{ path('user_edit', {'id': user.id}) }}" class="w3-btn w3-red w3-round">Modifier</a>
 
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
