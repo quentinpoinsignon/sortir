@@ -12,25 +12,23 @@
     <h1 class="w3-padding-24 w3-margin">Register</h1>
     <div class="w3-row w3-row-padding">
         <div class="w3-col s4 w3-padding-24 w3-margin">
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.username) }}
-    {{ form_row(registrationForm.name) }}
-    {{ form_row(registrationForm.firstName) }}
-    {{ form_row(registrationForm.emailAdress) }}
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.name) }}
+            {{ form_row(registrationForm.firstName) }}
+            {{ form_row(registrationForm.emailAdress) }}
             {{ form_row(registrationForm.phoneNumber) }}
-
-    {{ form_row(registrationForm.password) }}
+            {{ form_row(registrationForm.password) }}
         </div>
         <div class="w3-col s4 w3-padding-24 w3-margin">
-    {{ form_row(registrationForm.administrator) }}
-    {{ form_row(registrationForm.active) }}
-    {{ form_row(registrationForm.roles) }}
-    {{ form_row(registrationForm.campus) }}
-    {{ form_row(registrationForm.save) }}
+            {{ form_row(registrationForm.administrator) }}
+            {{ form_row(registrationForm.active) }}
+            {{ form_row(registrationForm.roles) }}
+            {{ form_row(registrationForm.campus) }}
+            {{ form_row(registrationForm.save) }}
         </div>
-
-    {{ form_end(registrationForm) }}
-</div>
+        {{ form_end(registrationForm) }}
+    </div>
 </div>
 
 

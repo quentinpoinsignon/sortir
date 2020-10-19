@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\CampusRepository;
 use App\Repository\EventRepository;
 use App\Repository\RegistrationRepository;
@@ -9,6 +10,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 
 class MainController extends AbstractController
@@ -20,31 +22,33 @@ class MainController extends AbstractController
 
     {
 
-        $eventList = $eventRepository->findAll();
+
         $userList = $userRepository->findAll();
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
 
+        $campusChoiceId = $request->get('campus_list');
+        $search = $request->get('search_input');
+        $dateDebut = $request->get('date_debut');
+        $dateFin = $request->get('date_fin');
+        $userOrganisateur = $request->get('user_organisateur');
+        $userInscrit = $request->get('user_inscrits');
+        $userNonInscrit = $request->get('user_non_inscrits');
+        $sortiesPassees = $request->get('sorties_passees');
+        $idUser = $this->getUser()->getId();
+        $user = $this->getUser();
 
-        //Récupérer les données du formulaire
-        if($request->get('search_input') != null) {
-            $campusChoiceId = $request->get('campus_list');
-            $search = $request->get('search_input');
-            $dateDebut = $request->get('date_debut');
-            $dateFin = $request->get('date_fin');
-            $userOrganisateur = $request->get('user_organisateur');
-            $userInscrit = $request->get('user_inscrits');
-            $userNonInscrit = $request->get('user_non_inscrits');
-            $sortiesPassees = $request->get('sorties_passees');
-        }
-//méthodo pour tester une requête en fonction d'une checkbox / date ou autres
+
+        $eventList = $eventRepository->findEventBySearchFilters($request, $this->getUser());
+
+//méthode pour tester une requête en fonction d'une checkbox / date ou autres
 
 //        dump($request->get('user_inscrits'));
 //
        // if($request->get('user_inscrits' == 'on'))
         //{
-            $myEventList = $eventRepository->findEventBySearchWord('MarioKart');
-            dump($myEventList);
+//            $myEventList = $eventRepository->findEventUserNotRegistered($this->getUser());
+//            dump($myEventList);
        // }
 
 
