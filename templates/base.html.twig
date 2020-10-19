@@ -51,12 +51,15 @@
     </div>
 
     {# read and display all flash messages #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="w3-panel w3-blue w3-margin-top w3-padding-32 {{ label }}">
+    {% for message in app.flashes('success') %}
+            <div class="w3-panel w3-blue w3-margin-top w3-padding-32">
                 {{ message }}
             </div>
-        {% endfor %}
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="w3-panel w3-red w3-margin-top w3-padding-32">
+            {{ message }}
+        </div>
     {% endfor %}
 
         {% block body %}

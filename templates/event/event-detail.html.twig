@@ -35,11 +35,11 @@
                         {% endif %}
                     {% endfor %}
                 </table>
-                <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">
-                    {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'ouverte' %}
-                        {{ "S'inscrire" }}
+
+                    {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
+                <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
                     {% endif %}
-                </a>
+
             </div>
             <div class="w3-cell w3-margin">
                 <p>Campus : {{ event.campus.name }}</p>
