@@ -1,29 +1,95 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} | Editer une sortie {% endblock %}
+{% block title %} | Créer une sortie {% endblock %}
 
 {% block body %}
-    <div class="w3-container w3-margin">
-    <h1>Editer une sortie</h1>
-    <div class="w3-container">
+    <br>
+    <div class="w3-container w3-margin w3-panel">
+        <h1>Créer une sortie ! <span class="w3-tag w3-round w3-teal w3-right" id="state-tag">{{event.state.label}}</span></h1>
         {{ form_start(eventEditForm) }}
-        <div class="w3-half">
-            {{ form_row(eventEditForm.name) }}
-            {{ form_row(eventEditForm.startDateTime) }}
-            {{ form_row(eventEditForm.registrationLimitDate) }}
-            {{ form_row(eventEditForm.registrationMaxNb) }}
-            {{ form_row(eventEditForm.duration) }}
-            {{ form_row(eventEditForm.eventInfos) }}
-            <p>Campus : {{ app.user.campus.name }}</p>
-{#            {{ form_widget(eventEditForm.spot) }}#}
+        <div class="w3-half w3-padding">
+            {{ form_widget(eventEditForm) }}
             <br>
-            <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
-            {{ form_end(eventEditForm) }}
-            <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-red w3-round">Publier la sortie</a>
-            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-red w3-round" id="delete-btn">Supprimer la sortie</a>
-            <a href="{{ url('_profiler_home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+            <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
+            <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-teal w3-round">Publier la sortie</a>
+            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-teal w3-round" id="delete-btn">Supprimer la sortie</a>
+            <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
         </div>
-        
+        <div class="w3-half w3-padding">
+            <p class="w3-input">Campus : {{ app.user.campus.name }}</p>
+            <label for="town">Villes :</label>
+            <select class="w3-select" name="town" id="town">
+                <option value="" disabled selected>Choisissez une ville</option>
+                {% for town in towns %}
+                    <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="spot">Lieu :</label>
+            <select name="selectedSpotId" id="selectedSpotId" class="w3-select" required="true">
+                <option value="0" id="spot-null" disabled selected>Choisissez un lieu</option>
+                {% for spot in spots %}
+                    <option value="{{ spot.id }}" id="spot-{{ spot.id }}" {% if selectedSpot.id == spot.id %} selected {% endif %}>{{ spot.name }}</option>
+                {% endfor %}
+            </select>
+            <p>Rue : <span id="spot_street"></span></p>
+            <p>Code Postal :  <span id="spot_postal_code"></span></p>
+            <p>Latitude : <span id="spot_latitude"></span></p>
+            <p>Longitude : <span id="spot_longitude"></span></p>
+            <br><br>
+            <a href="{{ url("spot_add") }}" class="w3-btn w3-teal w3-round">Ajouter un nouveau lieu</a>
+            <br><br>
+        </div>
+        {{ form_end(eventEditForm) }}
     </div>
-    </div>
+
+
+
+    <script>
+        document.getElementById('spot_street').innerText = '{{ selectedSpot.street }}';
+        document.getElementById('spot_postal_code').innerText = '{{ selectedSpot.town.postalCode }}';
+        document.getElementById('spot_latitude').innerText = '{{ selectedSpot.latitude }}';
+        document.getElementById('spot_longitude').innerText = '{{ selectedSpot.longitude }}';
+        document.getElementById('selectedSpotId').options.selectedIndex={{ selectedSpot.id }};
+
+        {# chargement des lieux en fonction de la ville sélectionnée #}
+        document.getElementById('town').addEventListener('change', function ()
+        {
+            document.getElementById('selectedSpotId').options.selectedIndex=0;
+            document.getElementById('spot_street').innerText = '';
+            document.getElementById('spot_postal_code').innerText = '';
+            document.getElementById('spot_latitude').innerText = '';
+            document.getElementById('spot_longitude').innerText = '';
+            {% for spot in spots %}
+            if (this.value == {{ spot.town.id }})
+            {
+                document.getElementById('spot-{{ spot.id }}').hidden = false;
+                document.getElementById('spot_street').innerText = '';
+                document.getElementById('spot_postal_code').innerText = '';
+                document.getElementById('spot_latitude').innerText = '';
+                document.getElementById('spot_longitude').innerText = '';
+            }
+            else
+            {
+                document.getElementById('spot-{{ spot.id }}').hidden = true;
+            }
+            {% endfor %}
+        });
+
+
+        {# rechargement des métadonnées de lieu #}
+
+        document.getElementById('selectedSpotId').addEventListener('change', function ()
+        {
+
+            {% for spot in spots %}
+            if (this.value == {{ spot.id }})
+            {
+                document.getElementById('spot_street').innerText = '{{ spot.street }}';
+                document.getElementById('spot_postal_code').innerText = '{{ spot.town.postalCode }}';
+                document.getElementById('spot_latitude').innerText = '{{ spot.latitude }}';
+                document.getElementById('spot_longitude').innerText = '{{ spot.longitude }}';
+            }
+            {% endfor %}
+        });
+    </script>
 {% endblock %}

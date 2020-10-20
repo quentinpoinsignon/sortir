@@ -5,10 +5,13 @@
 {% block body %}
     <br>
     <div class="w3-container w3-margin w3-panel">
-        <h1>Créer une sortie ! <span class="w3-tag w3-round w3-green w3-right" id="state-tag">En création</span></h1>
+        <h1>Créer une sortie ! <span class="w3-tag w3-round w3-teal w3-right" id="state-tag">En création</span></h1>
         {{ form_start(eventAddForm) }}
         <div class="w3-half w3-padding">
             {{ form_widget(eventAddForm) }}
+            <br>
+            <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
+            <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
         </div>
         <div class="w3-half w3-padding">
             <p class="w3-input">Campus : {{ app.user.campus.name }}</p>
@@ -19,7 +22,6 @@
                     <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>
                 {% endfor %}
             </select>
-
             <label for="spot">Lieu :</label>
             <select name="selectedSpotId" id="selectedSpotId" class="w3-select" required="true">
                 <option value="0" id="spot-null" disabled selected>Choisissez un lieu</option>
@@ -27,7 +29,6 @@
                     <option value="{{ spot.id }}" id="spot-{{ spot.id }}">{{ spot.name }}</option>
                 {% endfor %}
             </select>
-
             <p>Rue : <span id="spot_street"></span></p>
             <p>Code Postal :  <span id="spot_postal_code"></span></p>
             <p>Latitude : <span id="spot_latitude"></span></p>
@@ -36,15 +37,10 @@
             <a href="{{ url("spot_add") }}" class="w3-btn w3-teal w3-round">Ajouter un nouveau lieu</a>
             <br><br>
         </div>
-        <div class="w3-center">
-                <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
-                <a href="{url('event_publish', {'id': event.id}) }}" class="w3-btn w3-yellow w3-round">Publier la sortie</a>
-                <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
-        </div>
         {{ form_end(eventAddForm) }}
     </div>
 
-    </div>
+
 
     <script>
         {# gel du menu de sélection des lieux si aucune ville n'est sélectionnée #}

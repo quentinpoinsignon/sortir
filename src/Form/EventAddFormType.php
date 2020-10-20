@@ -53,7 +53,6 @@ class EventAddFormType extends AbstractType
                 'label' => 'Description et infos :',
                 'attr' => ['class' => 'w3-input'],
             ])
-//            ->add('spot', HiddenType::class, [])
         ;
 
 
