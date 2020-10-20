@@ -7,12 +7,14 @@ use App\Entity\Registration;
 use App\Entity\Spot;
 use App\Entity\State;
 use App\Entity\Town;
+Use App\EventServices\StateService as StateService;
 use App\Form\EventAddFormType;
 use App\Form\EventCancelFormType;
 use App\Form\EventType;
 use App\Form\HybridEventSpotFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,13 +45,17 @@ class EventController extends AbstractController
     }
 
     /**
+     * @param int|null $id
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param StateService $stateService
+     * @return RedirectResponse|Response
      * @author quentin
      * Fonction pour créer un nouvel event
      * @Route("/add", name="event_add")
      * @Route ("/edit/{id}", name="event_edit")
-     *
      */
-    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request)
+    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request, StateService  $stateService)
     {
 //        $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -64,15 +70,14 @@ class EventController extends AbstractController
         $eventAddForm->handleRequest($request);
 
         if($eventAddForm->isSubmitted()) {
-            if($eventAddForm->get('cancel')->isClicked())
+            /*if($eventAddForm->get('cancel')->isClicked())
             {
                 dd('test');
-            }
+            }*/
             if ($eventAddForm->isValid()) {
-                //set de valeurs par défaut : state à créé
-                $stateRepository = $entityManager->getRepository(State::class);
-                $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
-                $event->setState($stateCreated);
+                //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
+                $stateService->createdState($event);
+
                 //owner à l'user connecté
                 $event->setOwner($this->getUser());
                 //campus au campus de l'user connecté
