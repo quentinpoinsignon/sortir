@@ -12,6 +12,8 @@ use App\Form\EventAddFormType;
 use App\Form\EventCancelFormType;
 use App\Form\EventType;
 use App\Form\HybridEventSpotFormType;
+use App\Repository\EventRepository;
+use App\Repository\RegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -211,9 +213,18 @@ class EventController extends AbstractController
     /**
      * @author Adeline
      * Fonction pour se désister d'un event
-     * @Route
+     * @Route ("/unsuscribe/{idEvent}", name="unsuscribe", methods={"GET"}, requirements={"idEvent": "\d+"})
      */
-//    public function leaveEvent ()
+    public function unsuscribeEvent (int $idEvent, EntityManagerInterface $entityManager) {
+
+        $registrationRepository = $entityManager->getRepository(Registration::class);
+        $registrations =  $registrationRepository->findRegistrationsByEventByUser($idEvent, $this->getUser());
+        //dd($registrations);
+        $entityManager->remove($registrations[0]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
 
 
 

@@ -90,24 +90,12 @@
                                     {% endif %}
 
 
-                                    {#Se désister, si la date de cloture des inscriptions n'est pas passée et si je suis inscrit à l'event#}
-                                    <div class="modal_desinscription">
-                                        <!-- Trigger/Open the Modal -->
-                                        <a onclick="document.getElementById('id01').style.display='block'">Se désister</a>
-                                        <!-- The Modal -->
-                                        <div id="id01" class="w3-modal">
-                                            <div class="w3-modal-content">
-                                                <div class="w3-container">
-                                                <span onclick="document.getElementById('id01').style.display='none'"
-                                                                class="w3-button w3-display-topright">&times;</span>
-                                                    <p>Some text in the Modal..</p>
-                                                    <p>Some text in the Modal..</p>
-                                                </div>
-                                            </div>
+                                        {#Se désister, si la date de cloture des inscriptions n'est pas passée et si je suis inscrit à l'event#}
+                                        <div class="modal_desinscription">
+                                            <!-- Trigger/Open the Modal -->
+                                            <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');">Se désister</button>
                                         </div>
-                                    </div>
-
-{#                                    Annuler, si je suis l'owner de l'event et si la date limite d'inscription n'est pas dépassée#}
+                                        {#Annuler, si je suis l'owner de l'event et si la date limite d'inscription n'est pas dépassée#}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -120,6 +108,27 @@
 
 
     </div>
+    <!-- The Modal -->
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container w3-center" >
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <p>Etes-vous sûr de vouloir vous désinscrire ??</p>
+                <a href=""><button class="w3-btn w3-round w3-right" type="submit" style="background: #f44336; margin: 10px;">Confirmer</button></a>
+            </div>
+        </div>
+    </div>
 
 
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        // Used to toggle the menu on small screens when clicking on the menu button
+        function showDesistModal(path) {
+            document.getElementById('id01').querySelector('a').href = path;
+            document.getElementById('id01').style.display='block';
+        }
+    </script>
 {% endblock %}
