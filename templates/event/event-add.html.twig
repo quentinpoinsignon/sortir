@@ -3,60 +3,81 @@
 {% block title %} | Créer une sortie {% endblock %}
 
 {% block body %}
+    <br>
     <div class="w3-container w3-margin w3-panel">
-        <h1>Créer une sortie !</h1>
+        <h1>Créer une sortie ! <span class="w3-tag w3-round w3-green w3-right" id="state-tag">En création</span></h1>
         {{ form_start(eventAddForm) }}
-        <div class="w3-half w3-row-padding">
-            {{ form_row(eventAddForm.name) }}
-            {{ form_row(eventAddForm.startDateTime) }}
-            {{ form_row(eventAddForm.registrationLimitDate) }}
-            {{ form_row(eventAddForm.registrationMaxNb) }}
-            {{ form_row(eventAddForm.duration) }}
-            {{ form_row(eventAddForm.eventInfos) }}
+        <div class="w3-half w3-padding">
+            {{ form_widget(eventAddForm) }}
         </div>
-        <div class="w3-half">
-            <p>Campus :</p>
-            <p>{{ app.user.campus.name }}</p>
+        <div class="w3-half w3-padding">
+            <p class="w3-input">Campus : {{ app.user.campus.name }}</p>
+            <p></p>
             {# {{ form_widget(eventAddForm.spot) }} #}
-            <label for="villes">Campus :</label>
-            <select class="w3-select" name="towns" id="towns">
+            <label for="town">Villes :</label>
+            <select class="w3-select" name="town" id="town">
                 <option value="" disabled selected>Choisissez une ville</option>
                 {% for town in towns %}
                     <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>
                 {% endfor %}
             </select>
-            <label for="campus">Lieu  :</label>
-            <select class="w3-select" name="campus" id="campus">
-                <option value="" disabled selected>Choisissez un lieu</option>
+            <label for="spot">Lieu :</label>
+            <select name="selectedSpotId" id="selectedSpotId" class="w3-select">
+                <option value="0" id="spot-null" disabled selected>Choisissez un lieu</option>
                 {% for spot in spots %}
-                    si event et que la ville du lieu de l'event correspond à la ville du lieu en cours, alors j'affiche, sinon je passe
-                    <option value="{{ spot.id }}" {% if event is defined and event.spot == spot %}selected {% endif %}>{{ spot.name }}</option>
-
+                    <option value="{{ spot.id }}" id="spot-{{ spot.id }}">{{ spot.name }}</option>
                 {% endfor %}
+{#                    <option value="{{ spot.id }}" {% if event is defined and event.spot == spot %}selected {% endif %}>{{ spot.name }}</option>#}
+                    {#                    si event et que la ville du lieu de l'event correspond à la ville du lieu en cours, alors j'affiche, sinon je passe#}
+
             </select>
             <p>Rue : <span id="spot_street"></span></p>
-            <p id="spot_postal_code">Code Postal : </p>
-            <p id="spot_town">Ville : </p>
-            <p id="spot_latitude">Latitude : </p>
-            <p id="spot_longitude">Longitude : </p>
-            <br><br>
-            <br><br>
+            <p>Code Postal :  <span id="spot_postal_code"></span></p>
+            <p>Ville :  <span id="spot_town"></span></p>
+            <p>Latitude : <span id="spot_latitude"></span></p>
+            <p>Longitude : <span id="spot_longitude"></span></p>
             <br><br>
         </div>
-
-
+        <div class="w3-center">
+                <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
+                <a href="{url('event_publish', {'id': event.id}) }}" class="w3-btn w3-yellow w3-round">Publier la sortie</a>
+                <a href="{{ path('home') }}" class="w3-btn w3-black w3-round">Annuler</a>
+        </div>
         {{ form_end(eventAddForm) }}
+    </div>
 
     </div>
 
     <script>
-        document.getElementById('campus').addEventListener('change', function (){
-
+        {# chargement des lieux en fonction de la ville sélectionnée #}
+        document.getElementById('town').addEventListener('change', function ()
+        {
+            document.getElementById('selectedSpotId').options.selectedIndex=0;
             {% for spot in spots %}
+                if (this.value == {{ spot.town.id }})
+                {
+                    document.getElementById('spot-{{ spot.id }}').hidden = false;
+                }
+                else
+                {
+                    document.getElementById('spot-{{ spot.id }}').hidden = true;
+                }
+            {% endfor %}
+        });
 
 
-            document.getElementById('spot_street').innerText = '{{ spot.name }}';
-
+        {# rechargement des métadonnées de lieu #}
+        document.getElementById('selectedSpotId').addEventListener('change', function ()
+        {
+            {% for spot in spots %}
+                if (this.value == {{ spot.id }})
+                {
+                    document.getElementById('spot_street').innerText = '{{ spot.street }}';
+                    document.getElementById('spot_postal_code').innerText = '{{ spot.town.postalCode }}';
+                    document.getElementById('spot_town').innerText = '{{ spot.town.name }}';
+                    document.getElementById('spot_latitude').innerText = '{{ spot.latitude }}';
+                    document.getElementById('spot_longitude').innerText = '{{ spot.longitude }}';
+                }
             {% endfor %}
         });
     </script>
