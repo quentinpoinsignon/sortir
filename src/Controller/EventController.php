@@ -28,6 +28,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventController extends AbstractController
 {
     /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
      * @author quentin
      * Fonction pour afficher le détail d'un event
      * @Route ("/detail/{id}", name="event_detail", methods={"GET"})
@@ -174,7 +178,7 @@ class EventController extends AbstractController
      * Fonction d'annulation d'un event
      * @Route ("/cancel/{id}", name="event_cancel", methods={"GET", "POST"})
      */
-    public function cancelEvent(int $id, EntityManagerInterface $entityManager, Request $request)
+    public function cancelEvent(int $id, EntityManagerInterface $entityManager, Request $request, StateService $stateService)
     {
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
@@ -186,10 +190,11 @@ class EventController extends AbstractController
 
         //sauvegarde dans la base
         if ($eventCancelForm->isSubmitted() && $eventCancelForm->isValid()) {
-            //Récup du state ouverte
-            $stateRepository = $entityManager->getRepository(State::class);
+            //Appel de la méthode canceledState de StateService
+            $stateService->canceledState($event);
+          /*  $stateRepository = $entityManager->getRepository(State::class);
             $stateCanceled = $stateRepository->findOneBy(['label' => 'Annulée']);
-            $event->setState($stateCanceled);
+            $event->setState($stateCanceled);*/
             //sauvegarde en base
             $entityManager->persist($event);
             $entityManager->flush();
@@ -204,20 +209,27 @@ class EventController extends AbstractController
     }
 
     /**
+     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @param StateService $stateService
+     * @return RedirectResponse
      * @author quentin
      * Fonction de publication d'un event
      * @Route ("/publish/{id}", name="event_publish", methods={"GET"})
      */
-    public function publishEvent(int $id, EntityManagerInterface $entityManager)
+    public function publishEvent(int $id, EntityManagerInterface $entityManager, StateService $stateService)
     {
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
 
         //Récup du state ouverte
-        $stateRepository = $entityManager->getRepository(State::class);
+        //$stateRepository = $entityManager->getRepository(State::class);
+        //Appel du service StateService pour set le state à "Ouverte"
+        $stateService->openedState($event);
+       /*
         $stateCreated = $stateRepository->findOneBy(['label' => 'Ouverte']);
-        $event->setState($stateCreated);
+        $event->setState($stateCreated);*/
 
         //remove de l'event
         $entityManager->persist($event);
@@ -244,7 +256,5 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
-
-
 
 }
