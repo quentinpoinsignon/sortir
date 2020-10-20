@@ -46,10 +46,8 @@ class EventController extends AbstractController
      * @author quentin
      * Fonction pour créer un nouvel event
      * @Route("/add", name="event_add")
-     * @Route ("/edit/{id}", name="event_edit")
-     *
      */
-    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request)
+    public function addEvent(EntityManagerInterface $entityManager, Request $request)
     {
 //        $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -60,27 +58,31 @@ class EventController extends AbstractController
         $spotRepository = $entityManager->getRepository(Spot::class);
         $spots = $spotRepository->findAll();
 
-        $eventAddForm = $this->createForm(EventAddFormType::class, $event, ['use_type' => 'create']);
+        $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
 
         if($eventAddForm->isSubmitted()) {
-            if($eventAddForm->get('cancel')->isClicked())
-            {
-                dd('test');
-            }
             if ($eventAddForm->isValid()) {
                 //set de valeurs par défaut : state à créé
                 $stateRepository = $entityManager->getRepository(State::class);
                 $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
                 $event->setState($stateCreated);
+
                 //owner à l'user connecté
                 $event->setOwner($this->getUser());
+
                 //campus au campus de l'user connecté
                 $event->setCampus($this->getUser()->getCampus());
+
+                // spot depuis la sélection de l'user
+                $spot = $spotRepository->find($request->request->get('selectedSpotId'));
+                $event->setSpot($spot);
 
                 //envoi à la base de données
                 $entityManager->persist($event);
                 $entityManager->flush();
+
+                $this->addFlash('green', 'Nouvel évènement enregistré !');
 
                 return $this->redirectToRoute("home");
             }
@@ -88,8 +90,8 @@ class EventController extends AbstractController
 
         return $this->render('event/event-add.html.twig', [
             'eventAddForm' => $eventAddForm->createView(),
-            'spots' => $spots,
             'towns' => $towns,
+            'spots' => $spots,
         ]);
 
     }

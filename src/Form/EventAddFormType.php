@@ -25,7 +25,7 @@ class EventAddFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $isCreate = 'create' == $options['use_type'];
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de la sortie :',
@@ -53,30 +53,11 @@ class EventAddFormType extends AbstractType
                 'label' => 'Description et infos :',
                 'attr' => ['class' => 'w3-input'],
             ])
-            ->add('spot', HiddenType::class, [])
+//            ->add('spot', HiddenType::class, [])
+        ;
 
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer',
-                'attr' => ['class' => 'w3-btn w3-teal w3-round'],
-            ])
 
-            ->add('publish', SubmitType::class, [
-                'label' => 'Publier',
-                'attr' => ['class' => 'w3-btn w3-yellow w3-round'],
-            ])
 
-            ->add('cancel', ButtonType::class, [
-                'label' => 'Annuler',
-                'attr' => ['class' => 'w3-btn w3-black w3-round'],
-            ])
-            ;
-
-        if ($isCreate) {
-            $builder->add('delete', SubmitType::class, [
-                'label' => 'Supprimer',
-                'attr' => ['class' => 'w3-btn w3-red w3-round'],
-            ]);
-        }
 
     }
 
@@ -84,7 +65,7 @@ class EventAddFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
-            'use_type' => 'create',
+
         ]);
     }
 }

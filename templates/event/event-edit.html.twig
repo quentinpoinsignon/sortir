@@ -20,11 +20,10 @@
             <button class="w3-btn w3-red w3-round" type="submit">Enregistrer</button>
             {{ form_end(eventEditForm) }}
             <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-red w3-round">Publier la sortie</a>
-            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-red w3-round">Supprimer la sortie</a>
-            <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-red w3-round" id="delete-btn">Supprimer la sortie</a>
+            <a href="{{ url('_profiler_home') }}" class="w3-btn w3-red w3-round">Annuler</a>
         </div>
-
-
+        
     </div>
     </div>
 {% endblock %}
