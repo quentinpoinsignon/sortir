@@ -1,5 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %} | Ajouter un lieu {% endblock %}
 {% block body %}
-    {{ form_start(spotAddForm) }}
-   {{ form_row(spotAddForm) }}
-    {{ form_end(spotAddForm) }}
+    <br><br>
+    <div class="w3-container w3-margin w3-panel">
+    <h1>Ajouter un lieu</h1>
+        {{ form_start(spotAddForm)}}
+        <label for="town">Villes :</label>
+        <select class="w3-select" name="town" id="town" required="true">
+            <option value="" disabled selected>Choisissez une ville</option>
+            {% for town in towns %}
+                <option value="{{ town.id }}">{{ town.name }}</option>
+            {% endfor %}
+        </select>
+        {{ form_widget(spotAddForm)}}
+        <br>
+        <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
+        <a href="{{ path("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
+        {{ form_end(spotAddForm) }}
+    </div>
 {% endblock %}
