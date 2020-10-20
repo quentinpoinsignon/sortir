@@ -71,7 +71,7 @@ class EventController extends AbstractController
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
 
-        if($eventAddForm->isSubmitted()) {
+        if ($eventAddForm->isSubmitted()) {
 
             /*if($eventAddForm->get('cancel')->isClicked())
             {
@@ -81,39 +81,40 @@ class EventController extends AbstractController
                 //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
                 $stateService->createdState($event);
 
-            if ($eventAddForm->isValid()) {
-                //set de valeurs par défaut : state à créé
-                $stateRepository = $entityManager->getRepository(State::class);
-                $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
-                $event->setState($stateCreated);
+                if ($eventAddForm->isValid()) {
+                    //set de valeurs par défaut : state à créé
+                    $stateRepository = $entityManager->getRepository(State::class);
+                    $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
+                    $event->setState($stateCreated);
 
 
-                //owner à l'user connecté
-                $event->setOwner($this->getUser());
+                    //owner à l'user connecté
+                    $event->setOwner($this->getUser());
 
-                //campus au campus de l'user connecté
-                $event->setCampus($this->getUser()->getCampus());
+                    //campus au campus de l'user connecté
+                    $event->setCampus($this->getUser()->getCampus());
 
-                // spot depuis la sélection de l'user
-                $spot = $spotRepository->find($request->request->get('selectedSpotId'));
-                $event->setSpot($spot);
+                    // spot depuis la sélection de l'user
+                    $spot = $spotRepository->find($request->request->get('selectedSpotId'));
+                    $event->setSpot($spot);
 
-                //envoi à la base de données
-                $entityManager->persist($event);
-                $entityManager->flush();
+                    //envoi à la base de données
+                    $entityManager->persist($event);
+                    $entityManager->flush();
 
-                $this->addFlash('green', 'Nouvel évènement enregistré !');
+                    $this->addFlash('green', 'Nouvel évènement enregistré !');
 
-                return $this->redirectToRoute("home");
+                    return $this->redirectToRoute("home");
+                }
             }
+
+            return $this->render('event/event-add.html.twig', [
+                'eventAddForm' => $eventAddForm->createView(),
+                'towns' => $towns,
+                'spots' => $spots,
+            ]);
+
         }
-
-        return $this->render('event/event-add.html.twig', [
-            'eventAddForm' => $eventAddForm->createView(),
-            'towns' => $towns,
-            'spots' => $spots,
-        ]);
-
     }
 
     /**

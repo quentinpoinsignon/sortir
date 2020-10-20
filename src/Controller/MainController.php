@@ -40,16 +40,6 @@ class MainController extends AbstractController
 
         $eventList = $eventRepository->findEventBySearchFilters($request, $this->getUser());
 
-//méthode pour tester une requête en fonction d'une checkbox / date ou autres
-
-        //dump($dateFin);
-//
-       // if($request->get('user_inscrits' == 'on'))
-        //{
-//            $myEventList = $eventRepository->findEventUserNotRegistered($this->getUser());
-//            dump($myEventList);
-       // }
-
         return $this->render('main/home.html.twig', [
             "eventList" => $eventList,
             "registrationList" => $registrationList,

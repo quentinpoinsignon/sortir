@@ -176,13 +176,16 @@ class GlobalFixtures extends Fixture
         $state4 = new State();
         $state5 = new State();
         $state6 = new State();
+        $state7 = new State();
+
 
         $state1->setLabel("Créée");
         $state2->setLabel("Ouverte");
-        $state3->setLabel("Activité en cours");
-        $state4->setLabel("Clôturée");
-        $state5->setLabel("Passée");
-        $state6->setLabel("Annulée");
+        $state3->setLabel("Clôturée");
+        $state4->setLabel("En cours");
+        $state5->setLabel("Terminée");
+        $state6->setLabel("Archivée");
+        $state7->setLabel("Annulée");
 
         $manager->persist($state1);
         $manager->persist($state2);
@@ -190,6 +193,7 @@ class GlobalFixtures extends Fixture
         $manager->persist($state4);
         $manager->persist($state5);
         $manager->persist($state6);
+        $manager->persist($state7);
 
         // Events
         $event1 = new Event();
