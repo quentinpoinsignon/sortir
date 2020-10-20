@@ -20,31 +20,21 @@ class SpotAddFormType extends AbstractType
     {
         $builder
 
-            ->add('town', EntityType::class, [
-                'class' => Town::class,
-                'label' => 'Ville :',
-                'choice_label' => 'name',
-                'attr' => ['class' => 'w3-select'],
-                'query_builder' => function (EntityRepository $entityRepository){
-                    return $entityRepository ->createQueryBuilder('t')
-                        ->orderBy('t.name', 'ASC');
-                },
-            ])
-
             ->add('name', TextType::class, [
                 'label' => 'Lieu :',
                 'attr' => ['class' => 'w3-input'],
             ])
+
             ->add('street', TextType::class, [
                 'label' => 'Rue :',
                 'attr' => ['class' => 'w3-input'],
             ])
 
-
             ->add('latitude', NumberType::class, [
                 'label' => 'Latitude :',
                 'attr' => ['class' => 'w3-input'],
             ])
+
             ->add('longitude', NumberType::class, [
                 'label' =>'Longitude :',
                 'attr' => ['class' => 'w3-input'],

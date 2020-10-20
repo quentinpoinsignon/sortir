@@ -57,13 +57,11 @@ class EventController extends AbstractController
      */
     
     public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request, StateService  $stateService)
-
     {
-//        $this->denyAccessUnlessGranted("ROLE_USER");
-
+//       $this->denyAccessUnlessGranted("ROLE_USER");
         // Récupération de la liste des villes
         $townRepository = $entityManager->getRepository(Town::class);
-        $towns = $townRepository->findAll();
+        $towns = $townRepository->findBy(array(), array('name' =>'ASC'));
         $event = new Event();
         $spotRepository = $entityManager->getRepository(Spot::class);
         $spots = $spotRepository->findAll();
@@ -71,33 +69,22 @@ class EventController extends AbstractController
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
 
-        if ($eventAddForm->isSubmitted()) {
+        if ($eventAddForm->isSubmitted() && $eventAddForm->isValid()) {
 
-            /*if($eventAddForm->get('cancel')->isClicked())
-            {
-                dd('test');
-            }*/
-            if ($eventAddForm->isValid()) {
                 //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
                 $stateService->createdState($event);
 
-                if ($eventAddForm->isValid()) {
                     //set de valeurs par défaut : state à créé
                     $stateRepository = $entityManager->getRepository(State::class);
                     $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
                     $event->setState($stateCreated);
-
-
                     //owner à l'user connecté
                     $event->setOwner($this->getUser());
-
                     //campus au campus de l'user connecté
                     $event->setCampus($this->getUser()->getCampus());
-
                     // spot depuis la sélection de l'user
                     $spot = $spotRepository->find($request->request->get('selectedSpotId'));
                     $event->setSpot($spot);
-
                     //envoi à la base de données
                     $entityManager->persist($event);
                     $entityManager->flush();
@@ -105,8 +92,8 @@ class EventController extends AbstractController
                     $this->addFlash('green', 'Nouvel évènement enregistré !');
 
                     return $this->redirectToRoute("home");
-                }
-            }
+
+        }
 
             return $this->render('event/event-add.html.twig', [
                 'eventAddForm' => $eventAddForm->createView(),
@@ -114,8 +101,8 @@ class EventController extends AbstractController
                 'spots' => $spots,
             ]);
 
-        }
-    }
+}
+
 
     /**
      * @author quentin

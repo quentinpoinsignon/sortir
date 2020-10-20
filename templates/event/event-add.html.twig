@@ -12,8 +12,6 @@
         </div>
         <div class="w3-half w3-padding">
             <p class="w3-input">Campus : {{ app.user.campus.name }}</p>
-            <p></p>
-            {# {{ form_widget(eventAddForm.spot) }} #}
             <label for="town">Villes :</label>
             <select class="w3-select" name="town" id="town">
                 <option value="" disabled selected>Choisissez une ville</option>
@@ -21,27 +19,27 @@
                     <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>
                 {% endfor %}
             </select>
+
             <label for="spot">Lieu :</label>
-            <select name="selectedSpotId" id="selectedSpotId" class="w3-select">
+            <select name="selectedSpotId" id="selectedSpotId" class="w3-select" required="true">
                 <option value="0" id="spot-null" disabled selected>Choisissez un lieu</option>
                 {% for spot in spots %}
                     <option value="{{ spot.id }}" id="spot-{{ spot.id }}">{{ spot.name }}</option>
                 {% endfor %}
-{#                    <option value="{{ spot.id }}" {% if event is defined and event.spot == spot %}selected {% endif %}>{{ spot.name }}</option>#}
-                    {#                    si event et que la ville du lieu de l'event correspond à la ville du lieu en cours, alors j'affiche, sinon je passe#}
-
             </select>
+
             <p>Rue : <span id="spot_street"></span></p>
             <p>Code Postal :  <span id="spot_postal_code"></span></p>
-            <p>Ville :  <span id="spot_town"></span></p>
             <p>Latitude : <span id="spot_latitude"></span></p>
             <p>Longitude : <span id="spot_longitude"></span></p>
+            <br><br>
+            <a href="{{ url("spot_add") }}" class="w3-btn w3-teal w3-round">Ajouter un nouveau lieu</a>
             <br><br>
         </div>
         <div class="w3-center">
                 <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
                 <a href="{url('event_publish', {'id': event.id}) }}" class="w3-btn w3-yellow w3-round">Publier la sortie</a>
-                <a href="{{ path('home') }}" class="w3-btn w3-black w3-round">Annuler</a>
+                <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
         </div>
         {{ form_end(eventAddForm) }}
     </div>
@@ -49,14 +47,21 @@
     </div>
 
     <script>
+        {# gel du menu de sélection des lieux si aucune ville n'est sélectionnée #}
+        document.getElementById('selectedSpotId').disabled = true;
         {# chargement des lieux en fonction de la ville sélectionnée #}
         document.getElementById('town').addEventListener('change', function ()
         {
+            document.getElementById('selectedSpotId').disabled = false;
             document.getElementById('selectedSpotId').options.selectedIndex=0;
             {% for spot in spots %}
                 if (this.value == {{ spot.town.id }})
                 {
                     document.getElementById('spot-{{ spot.id }}').hidden = false;
+                    document.getElementById('spot_street').innerText = '';
+                    document.getElementById('spot_postal_code').innerText = '';
+                    document.getElementById('spot_latitude').innerText = '';
+                    document.getElementById('spot_longitude').innerText = '';
                 }
                 else
                 {
@@ -74,7 +79,6 @@
                 {
                     document.getElementById('spot_street').innerText = '{{ spot.street }}';
                     document.getElementById('spot_postal_code').innerText = '{{ spot.town.postalCode }}';
-                    document.getElementById('spot_town').innerText = '{{ spot.town.name }}';
                     document.getElementById('spot_latitude').innerText = '{{ spot.latitude }}';
                     document.getElementById('spot_longitude').innerText = '{{ spot.longitude }}';
                 }
