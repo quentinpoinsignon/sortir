@@ -54,7 +54,7 @@
                 </div>
                 <div class="tableau_list_event">
                     <table class="w3-table-all w3-centered">
-                        <tr>
+                        <tr class="w3-red">
                             <th>Nom de la sortie</th>
                             <th>Date de la sortie</th>
                             <th>Clôture</th>
@@ -81,21 +81,22 @@
 
                                 <td> {#Colonne avec liens à afficher (Détails, Se désister, S'inscrire, Annuler)#}
 
-                                    {# "Détails" à afficher dans tous les cas#}
-                                    <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>
 
-                                    {#S'inscrire, si l'event n'est pas encore passé, et si le nombre max d'inscription n'est pas atteint, et si l'event est "ouvert"#}
-                                    {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
-                                        <a href="{{ url('event_registration', {'eventId': event.id, 'participantId' : app.user.id }) }}">{{ "S'inscrire" }}</a>
-                                    {% endif %}
+{#                                    #}{# "Détails" à afficher dans tous les cas#}
+{#                                    <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>#}
+{#                                    #}
+{#                                    #}{#S'inscrire, si l'event n'est pas encore passé, et si le nombre max d'inscription n'est pas atteint, et si l'event est "ouvert"#}
+{#                                    {% if event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}#}
+{#                                        <a href="{{ url('event_registration', {'eventId': event.id, 'participantId' : app.user.id }) }}">{{ "S'inscrire" }}</a>#}
+{#                                    {% endif %}#}
 
 
-                                        {#Se désister, si la date de cloture des inscriptions n'est pas passée et si je suis inscrit à l'event#}
-                                        <div class="modal_desinscription">
-                                            <!-- Trigger/Open the Modal -->
-                                            <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');">Se désister</button>
-                                        </div>
-                                        {#Annuler, si je suis l'owner de l'event et si la date limite d'inscription n'est pas dépassée#}
+{#                                        #}{#Se désister, si la date de cloture des inscriptions n'est pas passée et si je suis inscrit à l'event#}
+{#                                        <div class="modal_desinscription">#}
+{#                                            <!-- Trigger/Open the Modal -->#}
+{#                                            <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');">Se désister</button>#}
+{#                                        </div>#}
+{#                                        #}{#Annuler, si je suis l'owner de l'event et si la date limite d'inscription n'est pas dépassée#}
                                 </td>
                             </tr>
                         {% endfor %}

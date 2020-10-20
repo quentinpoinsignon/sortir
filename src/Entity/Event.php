@@ -86,7 +86,7 @@ class Event
      */
     private $cancelReason;
 
-    //***********************************************************************************************
+    //**********************************Méthodes de vérif pour afficher les options cliquables sur Home *************************************************************
 
     public function canIShow($event)
     {
