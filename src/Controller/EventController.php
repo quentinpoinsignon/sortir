@@ -221,5 +221,13 @@ class EventController extends AbstractController
     }
 
 
+    /**
+     * @author Adeline
+     * Fonction pour se désister d'un event
+     * @Route
+     */
+//    public function leaveEvent ()
+
+
 
 }

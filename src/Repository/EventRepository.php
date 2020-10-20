@@ -164,7 +164,7 @@ class EventRepository extends ServiceEntityRepository
         if($request->get('sorties_passees')) {
             $qb->join('e.state', 's')
                 ->addSelect('s')
-                ->andWhere("s.label like '%Passée%'");
+                ->andWhere("s.label like '%Terminée%'");
         }
         $query = $qb->getQuery();
         return $query->execute();
