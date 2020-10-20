@@ -41,29 +41,41 @@ class StateService
 
             public function openedState(Event $event)
             {
+                $state = $this->stateRepository->findOneBy(['label' => 'Ouverte']);
+                $event->setState($state);
 
             }
 
 
             public function closedState(Event $event){
 
+                $state= $this->stateRepository->findOneBy(['label'=>'Clôturée']);
+                $event->setState($state);
+
             }
 
             public function inProgressState(Event $event){
-
+                $state= $this->stateRepository->findOneBy(['label'=>'En cours']);
+                $event->setState($state);
             }
 
             public function finishedState(Event $event){
-
+                $state= $this->stateRepository->findOneBy(['label'=>'Terminée']);
+                $event->setState($state);
 
             }
 
             public function archivedState(Event $event){
 
+                $state= $this->stateRepository->findOneBy(['label'=>'Archivée']);
+                $event->setState($state);
+
             }
 
             public function canceledState(Event $event){
 
+                $state=$this->stateRepository->findOneBy(['label' => 'Annulée']);
+                $event->setState($state);
 
             }
 
