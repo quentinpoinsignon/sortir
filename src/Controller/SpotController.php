@@ -55,7 +55,7 @@ class SpotController extends AbstractController
             $entityManager->persist($spot);
             $entityManager->flush();
             // message Flash
-            $this->addFlash("green", "New Spot registered !");
+            $this->addFlash("success", "Nouveau lieu créé : " . $spot->getName());
 
             return $this->redirectToRoute("event_add");
         }

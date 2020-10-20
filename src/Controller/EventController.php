@@ -89,7 +89,7 @@ class EventController extends AbstractController
                     $entityManager->persist($event);
                     $entityManager->flush();
 
-                    $this->addFlash('green', 'Nouvel évènement enregistré !');
+                    $this->addFlash('success', 'Nouvel évènement enregistré !' . $event->getName());
 
                     return $this->redirectToRoute("home");
 
@@ -111,9 +111,21 @@ class EventController extends AbstractController
      */
     public function editEvent(int $id, Request $request, EntityManagerInterface $entityManager) :Response
     {
+        $townRepository = $entityManager->getRepository(Town::class);
+        $towns = $townRepository->findBy(array(), array('name' =>'ASC'));
+
+        $spotRepository = $entityManager->getRepository(Spot::class);
+        $spots = $spotRepository->findAll();
+
         //récup de l'Event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
+
+        //récup du lieu pré-sélectionné
+        $selectedSpot = $event->getSpot();
+
+        //récup de la ville pré-sélectionnée
+        $selectedTown = $event->getSpot()->getTown();
 
         //génération du formulaire avec l'event passé en paramètre
         $eventEditForm= $this->createForm(EventAddFormType::class, $event);
@@ -124,12 +136,17 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
             //retour maison
+            $this->addFlash('success', 'La sortie ' . $event->getName() . ' a été modifiée');
             return $this->redirectToRoute('home');
         }
 
         return $this->render('event/event-edit.html.twig', [
             'eventEditForm' => $eventEditForm->createView(),
             'event' => $event,
+            'towns' => $towns,
+            'spots' => $spots,
+            'selectedSpot' => $selectedSpot,
+            'selectedTown' => $selectedTown,
         ]);
     }
 
@@ -204,7 +221,9 @@ class EventController extends AbstractController
         $entityManager->persist($event);
         $entityManager->flush();
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('event_edit', [
+            'id' => $event->getId(),
+        ]);
     }
 
 

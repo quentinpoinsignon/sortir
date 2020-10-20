@@ -3,10 +3,11 @@
 {% block title %} | Detail {% endblock %}
 
 {% block body %}
-
+    <br>
     <div class="w3-padding">
         <header class="w3-padding">
             <h2>Détail de la sortie - {{ event.name }}</h2>
+            <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round w3-">Retour</a>
         </header>
 
         <div class="w3-container w3-cell-row">
@@ -39,7 +40,6 @@
                     {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
                 <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
                     {% endif %}
-
             </div>
             <div class="w3-cell w3-margin">
                 <p>Campus : {{ event.campus.name }}</p>
@@ -52,6 +52,7 @@
                 <br><br>
                 <iframe width=400px height=250px frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
             </div>
+
         </div>
     </div>
 {% endblock %}
