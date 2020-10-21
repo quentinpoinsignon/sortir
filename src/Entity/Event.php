@@ -27,7 +27,6 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
-     *
      */
     private $startDateTime;
 

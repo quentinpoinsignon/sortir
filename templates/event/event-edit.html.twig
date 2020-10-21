@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} | Créer une sortie {% endblock %}
+{% block title %} | Modifier une sortie {% endblock %}
 
 {% block body %}
     <br>
     <div class="w3-container w3-margin w3-panel">
-        <h1>Créer une sortie ! <span class="w3-tag w3-round w3-teal w3-right" id="state-tag">{{event.state.label}}</span></h1>
+        <h1>Modifier une sortie <span class="w3-tag w3-round w3-teal w3-right" id="state-tag">{{event.state.label}}</span></h1>
         {{ form_start(eventEditForm) }}
         <div class="w3-half w3-padding">
             {{ form_widget(eventEditForm) }}
             <br>
             <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
-            <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-teal w3-round">Publier la sortie</a>
-            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-teal w3-round" id="delete-btn">Supprimer la sortie</a>
+            {% if event.state.label == 'Créée' %}
+            <a href="{{ path('event_publish', {'id': event.id}) }}" class="w3-btn w3-teal w3-round">Publier</a>
+            {% endif %}
+            <a href="{{ path('event_remove', {'id': event.id}) }}" class="w3-btn w3-red w3-round" id="delete-btn">Supprimer</a>
             <a href="{{ url("home") }}" class="w3-btn w3-teal w3-round">Retour</a>
         </div>
         <div class="w3-half w3-padding">
@@ -50,6 +52,21 @@
         document.getElementById('spot_latitude').innerText = '{{ selectedSpot.latitude }}';
         document.getElementById('spot_longitude').innerText = '{{ selectedSpot.longitude }}';
         document.getElementById('selectedSpotId').options.selectedIndex={{ selectedSpot.id }};
+
+        {% for spot in spots %}
+        if ({{ selectedTown.id }} == {{ spot.town.id }})
+        {
+            document.getElementById('spot-{{ spot.id }}').hidden = false;
+            document.getElementById('spot_street').innerText = '';
+            document.getElementById('spot_postal_code').innerText = '';
+            document.getElementById('spot_latitude').innerText = '';
+            document.getElementById('spot_longitude').innerText = '';
+        }
+        else
+        {
+            document.getElementById('spot-{{ spot.id }}').hidden = true;
+        }
+        {% endfor %}
 
         {# chargement des lieux en fonction de la ville sélectionnée #}
         document.getElementById('town').addEventListener('change', function ()
@@ -92,4 +109,5 @@
             {% endfor %}
         });
     </script>
+
 {% endblock %}
