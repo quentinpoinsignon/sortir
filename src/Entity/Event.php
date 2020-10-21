@@ -87,10 +87,18 @@ class Event
     private $cancelReason;
 
     //**********************************Méthodes de vérif pour afficher les options cliquables sur Home *************************************************************
+    /*  ("Créée");
+        ("Ouverte");
+        ("Clôturée");
+        ("En cours");
+        ("Terminée");
+        ("Archivée");
+        ("Annulée");
+    */
 
-    public function canIShow($event)
+    public function canIShowDetails($event)
     {
-        if ($event->getState->getLabel == "Ouverte" || $event->getState->getLabel == "Clôturée" || $event->getState->getLabel == "En cours" ) {
+        if ($event->getState()->getLabel() == "Ouverte" || $event->getState()->getLabel() == "Clôturée" || $event->getState()->getLabel() == "En cours" || $event->getState()->getLabel() == "Terminée") {
             return true;
         } else {
             return false;
@@ -98,15 +106,9 @@ class Event
     }
 
     public function canIModify($event, $user) {
-        if($event->getOwner == $user && $event->getState == "En création") {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        $presentTime = new \DateTime('now');
 
-    public function canIPublish($event, $user) {
-        if($event->getOwner == $user && $event->getState == "En création") {
+        if($event->getOwner() == $user && $event->getRegistrationLimitDate() > $presentTime) {
             return true;
         } else {
             return false;
@@ -120,6 +122,14 @@ class Event
             return false;
         }
 
+    }
+
+    public function canISuscribe(Event $event, $user) {
+        if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState() == "Ouverte") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
