@@ -111,7 +111,7 @@ class Event
     public function canIModify($event, $user) {
         $presentTime = new \DateTime('now');
 
-        if($event->getOwner() == $user && $event->getRegistrationLimitDate() > $presentTime) {
+        if($event->getOwner() == $user && $event->getRegistrationLimitDate() > $presentTime && $event->getState()->getLabel() != "Clôturée") {
 
             return true;
         } else {
@@ -122,7 +122,7 @@ class Event
 
     public function canIPublish($event, $user)
     {
-        if ($event->getOwner == $user && $event->getState == "En création") {
+        if ($event->getOwner() == $user && $event->getState() == "En création") {
 
             return true;
         } else {
@@ -132,7 +132,7 @@ class Event
     }
 
 
-    public function canISuscribe(Event $event, $user)
+    public function canISuscribe($event, $user)
     {
         if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState() == "Ouverte") {
             return true;
@@ -142,13 +142,24 @@ class Event
     }
 
 
-    public function canICancel($event, $user)
+    public function canIDelete($event, $user)
     {
-        if ($event->getOwner == $user && $event->getState == "Ouverte") {
-
+        if ($event->getOwner() == $user && $event->getState() == "Ouverte") {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function canIUnsuscribe($event, $user) {
+        $registrationsList = $event->getRegistrations();
+        foreach ($registrationsList as $registration) {
+            if($registration->getParticipant() == $user && $event->getState()->getLabel() == "Ouverte") {
+                return true;
+                break;
+            } else {
+                return false;
+            }
         }
     }
 

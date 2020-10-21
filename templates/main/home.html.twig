@@ -66,9 +66,9 @@
                         </tr>
                         {% for event in eventList %}
                             <tr>
-                                <td>{{ event.name }}{{ event.state.label }}</td>
-                                <td>{{ event.startDateTime ? event.startDateTime|date('d-m-Y H:i:s') : '' }}</td>
-                                <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d-m-Y H:i:s') : '' }}</td>
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.startDateTime ? event.startDateTime|date('d/m/Y H:i') : '' }}</td>
+                                <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d/m/Y H:i') : '' }}</td>
                                 <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                                 <td>{{ event.state.label }}</td>
 
@@ -87,11 +87,21 @@
                                         <a href="{{ url('event_registration', {'eventId': event.id, 'participantId' : app.user.id }) }}">S'inscrire</a>
                                     {% endif %}
 
+                                  {% if event.canIUnsuscribe(event, app.user) is same as(true) %}
+                                    <!-- Trigger/Open the Modal -->
+                                    <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');">Se désister</button>
+                                  {% endif %}
 
-                                        <div class="modal_desinscription">
-                                            <!-- Trigger/Open the Modal -->
-                                            <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');">Se désister</button>
-                                        </div>
+                                    {% if event.canIDelete(event, app.user) is same as(true) %}
+                                        <a>Annuler</a>
+                                    {% endif %}
+
+
+                                    {% if event.canIModify(event, app.user) is same as(true) %}
+                                        <a>Modifier</a>
+                                    {% endif %}
+
+{#                                    {% if event.canI %}#}
 
                                 </td>
                             </tr>
