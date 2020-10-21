@@ -34,7 +34,7 @@ class LoginSubscriber implements EventSubscriberInterface
             if($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval('PT24H'))))
                 {
                 $this->stateService->closedState($event);
-            $this->entityManager->persist($event);
+
             $this->entityManager->flush();
         }
         }
@@ -47,7 +47,7 @@ class LoginSubscriber implements EventSubscriberInterface
 
                 if ($event->getStartDateTime() <= date("Y/m/d") && $eventFinishingDate >= date("Y/m/d")) {
                     $this->stateService->inProgressState($event);
-                    $this->entityManager->persist($event);
+
                     $this->entityManager->flush();
                 }
 
@@ -59,7 +59,7 @@ class LoginSubscriber implements EventSubscriberInterface
             try {
                 if (date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M')) < date("Y/m/d")) {
                     $this->stateService->finishedState($event);
-                    $this->entityManager->persist($event);
+
 
                     $this->entityManager->flush();
 
@@ -75,7 +75,7 @@ class LoginSubscriber implements EventSubscriberInterface
 
             if (date_diff($event->getStartDateTime(), $eventFinishingDate) >= new DateInterval('P1M')) {
                 $this->stateService->archivedState($event);
-                $this->entityManager->persist($event);
+
                 $this->entityManager->flush();
             }
             } catch (Exception $e) {
