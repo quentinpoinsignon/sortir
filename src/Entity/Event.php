@@ -133,8 +133,15 @@ class Event
     }
 
 
-    public function canISuscribe(Event $event, $user) {
+    public function canISuscribe(Event $event, $user)
+    {
         if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState() == "Ouverte") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public function canICancel($event, $user)
     {
@@ -145,9 +152,6 @@ class Event
             return false;
         }
     }
-
-
-
 
     //**************************************************************************************************
     public function __construct()
