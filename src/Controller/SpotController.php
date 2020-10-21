@@ -55,7 +55,7 @@ class SpotController extends AbstractController
             // message Flash
             $this->addFlash("success", "Nouveau lieu créé : " . $spot->getName());
 
-            return $this->redirectToRoute("event_add");
+            return $this->redirectToRoute("home");
         }
 
         return $this->render('spot/spot-add.html.twig', [

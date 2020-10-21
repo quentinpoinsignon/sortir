@@ -10,7 +10,7 @@ class StateService
     private const OPENED_STATE = 'Ouverte';
     private const CLOSED_STATE = 'Clôturée';
     private const IN_PROGRESS_STATE = 'En cours';
-    private const FINISHED_STATE = 'Passée';
+    private const FINISHED_STATE = 'Terminée';
     private const ARCHIVED_STATE = 'Archivée';
     private const CANCELED_STATE = 'Annulée';
     private StateRepository $stateRepository;
@@ -74,4 +74,5 @@ class StateService
         $state=$this->stateRepository->findOneBy(['label' =>self::CANCELED_STATE]);
         $event->setState($state);
     }
+
 }

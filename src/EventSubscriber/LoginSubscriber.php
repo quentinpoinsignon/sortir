@@ -9,12 +9,21 @@ use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Core\AuthenticationEvents;
 
 class LoginSubscriber implements EventSubscriberInterface
 {
-    private $eventRepository;
-    private $entityManager;
-    private $stateService;
+    private EventRepository $eventRepository;
+    private EntityManager $entityManager;
+    private StateService $stateService;
+    private $registerLimitTime = 'PT24H';
+    private const CREATED_STATE = 'Créée';
+    private const OPENED_STATE = 'Ouverte';
+    private const CLOSED_STATE = 'Clôturée';
+    private const IN_PROGRESS_STATE = 'En cours';
+    private const FINISHED_STATE = 'Terminée';
+    private const ARCHIVED_STATE = 'Archivée';
+    private const CANCELED_STATE = 'Annulée';
 
     public function __construct(EventRepository $eventRepository, StateService $stateService, EntityManager $entityManager)
     {
@@ -26,23 +35,94 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function onSecurityAuthenticationSuccess(AuthenticationEvent $authenticationEvent)
     {
-        $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
+            $now = new \DateTime();
+            $allEvent = $this->eventRepository->findAll();
+            dump($allEvent);
 
+            foreach ($allEvent as $event)
+            {
+                dump($event);
+                $startingDateClone = $event->getStartDateTime();
+                $startingDateForFinishingDate = $event->getStartDateTime();
+                $finishingDate = date_add($startingDateForFinishingDate, new DateInterval('PT'.$event->getDuration().'M'));
+                dump($startingDateClone);
+                dump($startingDateForFinishingDate);
+                dump($finishingDate);
+
+
+                //récupération des évènements publiés
+                if($event->getState()->getLabel()==self::OPENED_STATE){
+                    dump($event);
+                    //test si la date de début de l'évènement est dans moins de 24h
+                    if((date_diff($now,$startingDateClone)->days)<1)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->closedState($event);
+                        dump($event);
+                    }
+
+                }
+                //récupération des évènements clôturés
+                if($event->getState()->getLabel()==self::CLOSED_STATE)
+                {
+                    dump($event);
+                    //test si la date de début de l'évènement est antéreure à maintenant et si la date de fin est postérieure à maintenant
+                    if($event->getStartDateTime()<=$now && $finishingDate>=$now)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->inProgressState($event);
+                        dump($event);
+                    }
+                }
+                //récupération des évènements en cours
+                if ($event->getState()->getLabel()==self::IN_PROGRESS_STATE){
+                    dump($event);
+                    //test si la date de fin de l'évènement est antérieur à maintenant
+                    if ($finishingDate<$now)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->finishedState($event);
+                        dump($event);
+                    }
+                }
+
+                //récupération des évènements terminés
+                if ($event->getState()->getLabel()==self::FINISHED_STATE)
+                {
+                    dump($event);
+                    if (date_diff($now,$event->getStartDateTime()->months)<1)
+                    {
+                        $this->stateService->archivedState($event);
+                        dump($event);
+                    }
+                }
+                $this->entityManager->flush();
+            }
+
+
+
+/*        $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
         foreach ($openEventsToUpload as $event) {
-            if ($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval('PT24H')))) {
+            $start = $event->getStartDateTime();
+            dump($event->getStartDateTime());
+            dump(date_sub($start, new DateInterval($this->registerLimitTime)));
+            if ($event->getStartDateTime()<=(date_sub($start, new DateInterval($this->registerLimitTime)))) {
                 $this->stateService->closedState($event);
-
+                dump($event);
                 $this->entityManager->flush();
             }
         }
 
-        $closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée');
+     dump($closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée'));
         foreach ($closedEventsToUpload as $event) {
             try {
-                $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
-
-
-                if ($event->getStartDateTime() <= date("Y/m/d") && $eventFinishingDate >= date("Y/m/d")) {
+                $start = $event->getStartDateTime();
+                $eventFinishingDate = date_add($start, new DateInterval('PT' . $event->getDuration() . 'M'));
+                dump($event->getStartDateTime());
+                dump($eventFinishingDate);
+                dump($now);
+                if (($event->getStartDateTime() <= $now) && ($eventFinishingDate >= $now)) {
+                    dump($event);
                     $this->stateService->inProgressState($event);
 
                     $this->entityManager->flush();
@@ -53,10 +133,10 @@ class LoginSubscriber implements EventSubscriberInterface
         $inProgressEventsToUpload =  $this->eventRepository->findEventByStateLabel('En cours');
         foreach ($inProgressEventsToUpload as $event) {
             try {
-                if (date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M')) < date("Y/m/d")) {
+                dump(new DateInterval('PT' . $event->getDuration() . 'M'));
+                if (date_add($event->getStartDateTime(), new DateInterval('PT' . $event->getDuration() . 'M')) < $now) {
                     $this->stateService->finishedState($event);
-
-
+                    dump($event);
                     $this->entityManager->flush();
                 }
             } catch (Exception $e) {
@@ -66,23 +146,22 @@ class LoginSubscriber implements EventSubscriberInterface
         $finishedEventsToUpload =  $this->eventRepository->findEventByStateLabel('Terminée');
         foreach ($finishedEventsToUpload as $event) {
             try {
-                $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
-
+                $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('PT' . $event->getDuration() . 'M'));
                 if (date_diff($event->getStartDateTime(), $eventFinishingDate) >= new DateInterval('P1M')) {
                     $this->stateService->archivedState($event);
-
+                    dump($event);
                     $this->entityManager->flush();
                 }
             } catch (Exception $e) {
             }
-        }
+        }*/
     }
 
 
     public static function getSubscribedEvents()
     {
         return [
-            'security.authentication.success' => 'onSecurityAuthenticationSuccess',
+            AuthenticationEvents::AUTHENTICATION_SUCCESS => 'onSecurityAuthenticationSuccess',
         ];
     }
 }

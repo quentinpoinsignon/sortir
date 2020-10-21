@@ -120,7 +120,9 @@ class Event
     }
 
 
+
     public function canIPublish($event, $user)
+
     {
         if ($event->getOwner() == $user && $event->getState() == "En création") {
 
