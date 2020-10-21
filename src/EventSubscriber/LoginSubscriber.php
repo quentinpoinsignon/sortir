@@ -17,6 +17,13 @@ class LoginSubscriber implements EventSubscriberInterface
     private EntityManager $entityManager;
     private StateService $stateService;
     private $registerLimitTime = 'PT24H';
+    private const CREATED_STATE = 'Créée';
+    private const OPENED_STATE = 'Ouverte';
+    private const CLOSED_STATE = 'Clôturée';
+    private const IN_PROGRESS_STATE = 'En cours';
+    private const FINISHED_STATE = 'Terminée';
+    private const ARCHIVED_STATE = 'Archivée';
+    private const CANCELED_STATE = 'Annulée';
 
     public function __construct(EventRepository $eventRepository, StateService $stateService, EntityManager $entityManager)
     {
@@ -29,19 +36,70 @@ class LoginSubscriber implements EventSubscriberInterface
     public function onSecurityAuthenticationSuccess(AuthenticationEvent $authenticationEvent)
     {
             $now = new \DateTime();
+            $allEvent = $this->eventRepository->findAll();
 
-        $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
+
+            foreach ($allEvent as $event)
+            {
+                $startingDateClone = $event->getStartDateTime();
+                $startingDateForFinishingDate = $event->getStartDateTime();
+                $finishingDate = date_add($startingDateForFinishingDate, new DateInterval($event->getDuration()));
+
+                //récupération des évènements publiés
+                if($event->getState()->getLabel()==self::OPENED_STATE){
+                    //test si la date de début de l'évènement est dans moins de 24h
+                    if((date_diff($now,$startingDateClone)->days)<1)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->closedState($event);
+                    }
+
+                }
+                //récupération des évènements clôturés
+                if($event->getState()->getLabel()==self::CLOSED_STATE)
+                {
+                    //test si la date de début de l'évènement est antéreure à maintenant et si la date de fin est postérieure à maintenant
+                    if($event->getStartDateTime()<=$now && $finishingDate>=$now)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->inProgressState($event);
+                    }
+                }
+                //récupération des évènements en cours
+                if ($event->getState()->getLabel()==self::IN_PROGRESS_STATE){
+                    //test si la date de fin de l'évènement est antérieur à maintenant
+                    if ($finishingDate<$now)
+                    {
+                        //appel du stateService pour changement du statut de la sortie si le test est vrai
+                        $this->stateService->finishedState($event);
+                    }
+                }
+
+                //récupération des évènements terminés
+                if ($event->getState()->getLabel()==self::FINISHED_STATE)
+                {
+                    if (date_diff($now,$event->getStartDateTime()->months)<1)
+                    {
+                        $this->stateService->archivedState($event);
+                    }
+                }
+            }
+
+
+
+/*        $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
         foreach ($openEventsToUpload as $event) {
+            $start = $event->getStartDateTime();
             dump($event->getStartDateTime());
-            dump(date_sub($event->getStartDateTime(), new DateInterval($this->registerLimitTime)));
-            if ($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval($this->registerLimitTime)))) {
+            dump(date_sub($start, new DateInterval($this->registerLimitTime)));
+            if ($event->getStartDateTime()<=(date_sub($start, new DateInterval($this->registerLimitTime)))) {
                 $this->stateService->closedState($event);
                 dump($event);
                 $this->entityManager->flush();
             }
         }
 
-     dump(   $closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée'));
+     dump($closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée'));
         foreach ($closedEventsToUpload as $event) {
             try {
                 $start = $event->getStartDateTime();
@@ -82,7 +140,7 @@ class LoginSubscriber implements EventSubscriberInterface
                 }
             } catch (Exception $e) {
             }
-        }
+        }*/
     }
 
 
