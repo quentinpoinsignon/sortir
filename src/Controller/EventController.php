@@ -91,9 +91,10 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Nouvel évènement enregistré : ' . $event->getName());
 
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute('event_edit', [
+                'id' => $event->getId(),
+            ]);
         }
 
         return $this->render('event/event-add.html.twig', [
@@ -136,8 +137,15 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
             //retour maison
-            $this->addFlash('success', 'La sortie ' . $event->getName() . ' a été modifiée');
-            return $this->redirectToRoute('home');
+            $this->addFlash('success', 'Modifications effectuées');
+            return $this->render('event/event-edit.html.twig', [
+                'eventEditForm' => $eventEditForm->createView(),
+                'event' => $event,
+                'towns' => $towns,
+                'spots' => $spots,
+                'selectedSpot' => $selectedSpot,
+                'selectedTown' => $selectedTown,
+            ]);
         }
 
         return $this->render('event/event-edit.html.twig', [
