@@ -90,7 +90,7 @@ class LoginSubscriber implements EventSubscriberInterface
                 if ($event->getState()->getLabel()==self::FINISHED_STATE)
                 {
                     dump($event);
-                    if (date_diff($now,$event->getStartDateTime()->months)<1)
+                    if ((date_diff($now,$event->getStartDateTime())->months)<1)
                     {
                         $this->stateService->archivedState($event);
                         dump($event);
