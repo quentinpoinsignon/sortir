@@ -4,9 +4,9 @@ namespace App\EventSubscriber;
 
 use App\EventServices\StateService;
 use App\Repository\EventRepository;
+use DateInterval;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 
@@ -25,58 +25,63 @@ class LoginSubscriber implements EventSubscriberInterface
     }
 
 
-    public function onSecurityAuthenticationSuccess(AuthenticationEvent $event)
+    public function onSecurityAuthenticationSuccess(AuthenticationEvent $authenticationEvent)
     {
-        $openedEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
-        foreach($openedEventsToUpload as $event)
+       $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
+
+        foreach($openEventsToUpload as $event)
         {
-            $eventFinishingDate = date_add($event->getStartDateTime(), new\DateInterval('P' . $event->getDuration() . 'M'));
-
-            if($event->getStartDateTime()<=date("Y/m/d") && $eventFinishingDate >= date("Y/m/d")){
-                $this->stateService->inProgressState($event);
-                try {
-                    $this->entityManager->persist($event);
-                } catch (ORMException $e) {
-                }
-                try {
-                    $this->entityManager->flush();
-                } catch (OptimisticLockException $e) {
-                } catch (ORMException $e) {
-                }
-            }
-
+            if($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval('PT24H'))))
+                {
+                $this->stateService->closedState($event);
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
+        }
         }
 
-        $inProgressEventsToUpload =  $this->eventRepository->findEventByStateLabel('En cours');
-        foreach ($inProgressEventsToUpload as $event){
+        $closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée');
+        foreach($closedEventsToUpload as $event) {
             try {
-                if (date_add($event->getStartDateTime(), new \DateInterval('P' . $event->getDuration() . 'M')) < date("Y/m/d")) {
-                    $this->stateService->finishedState($event);
-                    try {
-                        $this->entityManager->persist($event);
-                    } catch (ORMException $e) {
-                        $e->getMessage('erreur lors de la sauvegarge de la sortie');
-                    }
-                    try {
-                        $this->entityManager->flush();
-                    } catch (OptimisticLockException $e) {
-                        $e->getMessage('erreur lors de la sauvegarge de la sortie');
-                    } catch (ORMException $e) {
-                        $e->getMessage('erreur lors de la sauvegarge de la sortie');
-                    }
+                $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
+
+
+                if ($event->getStartDateTime() <= date("Y/m/d") && $eventFinishingDate >= date("Y/m/d")) {
+                    $this->stateService->inProgressState($event);
+                    $this->entityManager->persist($event);
+                    $this->entityManager->flush();
                 }
-            } catch (\Exception $e) {
+
+            } catch (Exception $e) {
+            }
+        }
+        $inProgressEventsToUpload =  $this->eventRepository->findEventByStateLabel('En cours');
+        foreach ($inProgressEventsToUpload as $event) {
+            try {
+                if (date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M')) < date("Y/m/d")) {
+                    $this->stateService->finishedState($event);
+                    $this->entityManager->persist($event);
+
+                    $this->entityManager->flush();
+
+                }
+            } catch (Exception $e) {
             }
         }
 
         $finishedEventsToUpload =  $this->eventRepository->findEventByStateLabel('Terminée');
-        foreach ($finishedEventsToUpload as $event){
-            if(date_diff($event->getStartDateTime(), $eventFinishingDate)>=30){
-                $this->stateService->archivedState();
-            }
-        }
+        foreach ($finishedEventsToUpload as $event) {
+            try {
+                $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
 
+            if (date_diff($event->getStartDateTime(), $eventFinishingDate) >= new DateInterval('P1M')) {
+                $this->stateService->archivedState($event);
+                $this->entityManager->persist($event);
+                $this->entityManager->flush();
+            }
+            } catch (Exception $e) {
+            }}
     }
+
 
     public static function getSubscribedEvents()
     {
