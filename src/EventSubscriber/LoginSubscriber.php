@@ -42,11 +42,11 @@ class LoginSubscriber implements EventSubscriberInterface
             foreach ($allEvent as $event)
             {
                 dump($event);
-                $startingDateClone = $event->getStartDateTime();
-                $startingDateForFinishingDate = $event->getStartDateTime();
-                $finishingDate = date_add($startingDateForFinishingDate, new DateInterval('PT'.$event->getDuration().'M'));
-                dump($startingDateClone);
-                dump($startingDateForFinishingDate);
+                $startingDate = $event->getStartDateTime();
+                $startingDateclone = clone $startingDate;
+                $finishingDate = date_add($startingDateclone, new DateInterval('PT'.$event->getDuration().'M'));
+                dump($startingDate);
+                dump($startingDateclone);
                 dump($finishingDate);
 
 
@@ -54,7 +54,7 @@ class LoginSubscriber implements EventSubscriberInterface
                 if($event->getState()->getLabel()==self::OPENED_STATE){
                     dump($event);
                     //test si la date de début de l'évènement est dans moins de 24h
-                    if((date_diff($now,$startingDateClone)->days)<1)
+                    if((date_diff($now,$startingDateclone)->days)<1)
                     {
                         //appel du stateService pour changement du statut de la sortie si le test est vrai
                         $this->stateService->closedState($event);
