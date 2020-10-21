@@ -37,52 +37,66 @@ class LoginSubscriber implements EventSubscriberInterface
     {
             $now = new \DateTime();
             $allEvent = $this->eventRepository->findAll();
-
+            dump($allEvent);
 
             foreach ($allEvent as $event)
             {
+                dump($event);
                 $startingDateClone = $event->getStartDateTime();
                 $startingDateForFinishingDate = $event->getStartDateTime();
-                $finishingDate = date_add($startingDateForFinishingDate, new DateInterval($event->getDuration()));
+                $finishingDate = date_add($startingDateForFinishingDate, new DateInterval('PT'.$event->getDuration().'M'));
+                dump($startingDateClone);
+                dump($startingDateForFinishingDate);
+                dump($finishingDate);
+
 
                 //récupération des évènements publiés
                 if($event->getState()->getLabel()==self::OPENED_STATE){
+                    dump($event);
                     //test si la date de début de l'évènement est dans moins de 24h
                     if((date_diff($now,$startingDateClone)->days)<1)
                     {
                         //appel du stateService pour changement du statut de la sortie si le test est vrai
                         $this->stateService->closedState($event);
+                        dump($event);
                     }
 
                 }
                 //récupération des évènements clôturés
                 if($event->getState()->getLabel()==self::CLOSED_STATE)
                 {
+                    dump($event);
                     //test si la date de début de l'évènement est antéreure à maintenant et si la date de fin est postérieure à maintenant
                     if($event->getStartDateTime()<=$now && $finishingDate>=$now)
                     {
                         //appel du stateService pour changement du statut de la sortie si le test est vrai
                         $this->stateService->inProgressState($event);
+                        dump($event);
                     }
                 }
                 //récupération des évènements en cours
                 if ($event->getState()->getLabel()==self::IN_PROGRESS_STATE){
+                    dump($event);
                     //test si la date de fin de l'évènement est antérieur à maintenant
                     if ($finishingDate<$now)
                     {
                         //appel du stateService pour changement du statut de la sortie si le test est vrai
                         $this->stateService->finishedState($event);
+                        dump($event);
                     }
                 }
 
                 //récupération des évènements terminés
                 if ($event->getState()->getLabel()==self::FINISHED_STATE)
                 {
+                    dump($event);
                     if (date_diff($now,$event->getStartDateTime()->months)<1)
                     {
                         $this->stateService->archivedState($event);
+                        dump($event);
                     }
                 }
+                $this->entityManager->flush();
             }
 
 
