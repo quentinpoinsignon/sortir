@@ -105,7 +105,7 @@ class Event
         }
     }
 
-    public function canIPublish($event, $user)
+    public function getCanIPublish($event, $user)
     {
         if ($event->getOwner == $user && $event->getState == "En création") {
             return true;
