@@ -18,7 +18,6 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function __construct(EventRepository $eventRepository, StateService $stateService, EntityManager $entityManager)
     {
-
         $this->eventRepository = $eventRepository;
         $this->stateService = $stateService;
         $this->entityManager = $entityManager;
@@ -27,20 +26,18 @@ class LoginSubscriber implements EventSubscriberInterface
 
     public function onSecurityAuthenticationSuccess(AuthenticationEvent $authenticationEvent)
     {
-       $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
+        $openEventsToUpload = $this->eventRepository->findEventByStateLabel('Ouverte');
 
-        foreach($openEventsToUpload as $event)
-        {
-            if($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval('PT24H'))))
-                {
+        foreach ($openEventsToUpload as $event) {
+            if ($event->getStartDateTime()<=(date_sub($event->getStartDateTime(), new DateInterval('PT24H')))) {
                 $this->stateService->closedState($event);
 
-            $this->entityManager->flush();
-        }
+                $this->entityManager->flush();
+            }
         }
 
         $closedEventsToUpload = $this->eventRepository->findEventByStateLabel('Clôturée');
-        foreach($closedEventsToUpload as $event) {
+        foreach ($closedEventsToUpload as $event) {
             try {
                 $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
 
@@ -50,7 +47,6 @@ class LoginSubscriber implements EventSubscriberInterface
 
                     $this->entityManager->flush();
                 }
-
             } catch (Exception $e) {
             }
         }
@@ -62,7 +58,6 @@ class LoginSubscriber implements EventSubscriberInterface
 
 
                     $this->entityManager->flush();
-
                 }
             } catch (Exception $e) {
             }
@@ -73,13 +68,14 @@ class LoginSubscriber implements EventSubscriberInterface
             try {
                 $eventFinishingDate = date_add($event->getStartDateTime(), new DateInterval('P' . $event->getDuration() . 'M'));
 
-            if (date_diff($event->getStartDateTime(), $eventFinishingDate) >= new DateInterval('P1M')) {
-                $this->stateService->archivedState($event);
+                if (date_diff($event->getStartDateTime(), $eventFinishingDate) >= new DateInterval('P1M')) {
+                    $this->stateService->archivedState($event);
 
-                $this->entityManager->flush();
-            }
+                    $this->entityManager->flush();
+                }
             } catch (Exception $e) {
-            }}
+            }
+        }
     }
 
 
@@ -90,5 +86,3 @@ class LoginSubscriber implements EventSubscriberInterface
         ];
     }
 }
-
-

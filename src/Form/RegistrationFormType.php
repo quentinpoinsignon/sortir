@@ -24,22 +24,21 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('roles', ChoiceType::class,['multiple'=>true, 'choices' => [
+            ->add('roles', ChoiceType::class, ['multiple'=>true, 'choices' => [
                 'ROLE_USER' => 'ROLE_USER',
                 'ROLE_ADMIN' => 'ROLE_ADMIN',
             ],'attr' => ['class' => 'w3-select w3-margin']])
 
-            ->add('password',PasswordType::class,['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('name', TextType::class,['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('firstName',TextType::class,['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('phoneNumber',TextType::class,['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('emailAdress',EmailType::class,['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('administrator',CheckboxType::class,['attr' => ['class' => 'w3-check w3-margin']])
-            ->add('active',CheckboxType::class,['attr' => ['class' => 'w3-check w3-margin']])
-            ->add('campus', EntityType::class,['class' =>Campus::class, 'choice_label' => 'name',
+            ->add('password', PasswordType::class, ['attr' => ['class' => 'w3-input w3-margin']])
+            ->add('name', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
+            ->add('firstName', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
+            ->add('phoneNumber', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
+            ->add('emailAdress', EmailType::class, ['attr' => ['class' => 'w3-input w3-margin']])
+            ->add('administrator', CheckboxType::class, ['attr' => ['class' => 'w3-check w3-margin']])
+            ->add('active', CheckboxType::class, ['attr' => ['class' => 'w3-check w3-margin']])
+            ->add('campus', EntityType::class, ['class' =>Campus::class, 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select w3-margin']])
             ->add('save', SubmitType::class, ['attr' => ['class' => 'w3-btn w3-blue']]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

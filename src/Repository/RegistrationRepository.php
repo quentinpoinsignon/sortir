@@ -24,7 +24,8 @@ class RegistrationRepository extends ServiceEntityRepository
      * @param $idEvent
      *
      */
-    public function findRegistrationsByEventByUser ($idEvent, $user) {
+    public function findRegistrationsByEventByUser($idEvent, $user)
+    {
         $qb = $this->createQueryBuilder('r')
             ->andWhere('r.event =:val')
             ->andWhere('r.participant =:val2')
@@ -33,7 +34,6 @@ class RegistrationRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
         $query->execute();
         return $query->getResult();
-
     }
 
 

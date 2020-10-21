@@ -17,12 +17,14 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('currentPassword', PasswordType::class,
-                ['constraints' => new SecurityAssert\UserPassword
-                (['message' => 'Wrong value for your current password'
+            ->add(
+                'currentPassword',
+                PasswordType::class,
+                ['constraints' => new SecurityAssert\UserPassword(['message' => 'Wrong value for your current password'
                     ]),
                 'mapped' => false
-            ])
+            ]
+            )
             ->add('newPassword', PasswordType::class, ['mapped'=>false])
             ->add('name')
             ->add('firstName')

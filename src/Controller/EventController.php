@@ -7,7 +7,7 @@ use App\Entity\Registration;
 use App\Entity\Spot;
 use App\Entity\State;
 use App\Entity\Town;
-Use App\EventServices\StateService as StateService;
+use App\EventServices\StateService as StateService;
 use App\Form\EventAddFormType;
 use App\Form\EventCancelFormType;
 use App\Form\EventType;
@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 /**
  * @Route("/event")
@@ -68,46 +67,41 @@ class EventController extends AbstractController
         // Récupération de la liste des villes
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findBy(array(), array('name' =>'ASC'));
-        $event = new Event();
+        // Récupération de la liste des spots
         $spotRepository = $entityManager->getRepository(Spot::class);
         $spots = $spotRepository->findAll();
-
+        // Instanciation du nouvel event
+        $event = new Event();
+        //Génération du formulaire
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
 
         if ($eventAddForm->isSubmitted() && $eventAddForm->isValid()) {
 
-                //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
-                $stateService->createdState($event);
+            //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
+            $stateService->createdState($event);
+            //owner à l'user connecté
+            $event->setOwner($this->getUser());
+            //campus au campus de l'user connecté
+            $event->setCampus($this->getUser()->getCampus());
+            // spot depuis la sélection de l'user
+            $spot = $spotRepository->find($request->request->get('selectedSpotId'));
+            $event->setSpot($spot);
+            //envoi à la base de données
+            $entityManager->persist($event);
+            $entityManager->flush();
 
-                    //set de valeurs par défaut : state à créé
-                    $stateRepository = $entityManager->getRepository(State::class);
-                    $stateCreated = $stateRepository->findOneBy(['label' => 'Créée']);
-                    $event->setState($stateCreated);
-                    //owner à l'user connecté
-                    $event->setOwner($this->getUser());
-                    //campus au campus de l'user connecté
-                    $event->setCampus($this->getUser()->getCampus());
-                    // spot depuis la sélection de l'user
-                    $spot = $spotRepository->find($request->request->get('selectedSpotId'));
-                    $event->setSpot($spot);
-                    //envoi à la base de données
-                    $entityManager->persist($event);
-                    $entityManager->flush();
+            $this->addFlash('success', 'Nouvel évènement enregistré : ' . $event->getName());
 
-                    $this->addFlash('success', 'Nouvel évènement enregistré !' . $event->getName());
-
-                    return $this->redirectToRoute("home");
-
+            return $this->redirectToRoute("home");
         }
 
-            return $this->render('event/event-add.html.twig', [
+        return $this->render('event/event-add.html.twig', [
                 'eventAddForm' => $eventAddForm->createView(),
                 'towns' => $towns,
                 'spots' => $spots,
             ]);
-
-}
+    }
 
 
     /**
@@ -192,9 +186,7 @@ class EventController extends AbstractController
         if ($eventCancelForm->isSubmitted() && $eventCancelForm->isValid()) {
             //Appel de la méthode canceledState de StateService
             $stateService->canceledState($event);
-          /*  $stateRepository = $entityManager->getRepository(State::class);
-            $stateCanceled = $stateRepository->findOneBy(['label' => 'Annulée']);
-            $event->setState($stateCanceled);*/
+
             //sauvegarde en base
             $entityManager->persist($event);
             $entityManager->flush();
@@ -223,13 +215,8 @@ class EventController extends AbstractController
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
 
-        //Récup du state ouverte
-        //$stateRepository = $entityManager->getRepository(State::class);
         //Appel du service StateService pour set le state à "Ouverte"
         $stateService->openedState($event);
-       /*
-        $stateCreated = $stateRepository->findOneBy(['label' => 'Ouverte']);
-        $event->setState($stateCreated);*/
 
         //remove de l'event
         $entityManager->persist($event);
@@ -246,8 +233,8 @@ class EventController extends AbstractController
      * Fonction pour se désister d'un event
      * @Route ("/unsuscribe/{idEvent}", name="unsuscribe", methods={"GET"}, requirements={"idEvent": "\d+"})
      */
-    public function unsuscribeEvent (int $idEvent, EntityManagerInterface $entityManager) {
-
+    public function unsuscribeEvent(int $idEvent, EntityManagerInterface $entityManager)
+    {
         $registrationRepository = $entityManager->getRepository(Registration::class);
         $registrations =  $registrationRepository->findRegistrationsByEventByUser($idEvent, $this->getUser());
         //dd($registrations);
@@ -256,5 +243,4 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
-
 }

@@ -13,7 +13,7 @@ class EventCancelFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cancelReason', TextareaType::class,  [
+            ->add('cancelReason', TextareaType::class, [
                 'label' => 'Motif :',
                 'attr' => ['class' => 'w3-input'],
             ])

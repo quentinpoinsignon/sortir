@@ -90,36 +90,38 @@ class Event
 
     public function canIShow($event)
     {
-        if ($event->getState->getLabel == "Ouverte" || $event->getState->getLabel == "Clôturée" || $event->getState->getLabel == "En cours" ) {
+        if ($event->getState->getLabel == "Ouverte" || $event->getState->getLabel == "Clôturée" || $event->getState->getLabel == "En cours") {
             return true;
         } else {
             return false;
         }
     }
 
-    public function canIModify($event, $user) {
-        if($event->getOwner == $user && $event->getState == "En création") {
+    public function canIModify($event, $user)
+    {
+        if ($event->getOwner == $user && $event->getState == "En création") {
             return true;
         } else {
             return false;
         }
     }
 
-    public function canIPublish($event, $user) {
-        if($event->getOwner == $user && $event->getState == "En création") {
+    public function canIPublish($event, $user)
+    {
+        if ($event->getOwner == $user && $event->getState == "En création") {
             return true;
         } else {
             return false;
         }
     }
 
-    public function canICancel($event, $user) {
-        if($event->getOwner == $user && $event->getState == "Ouverte") {
+    public function canICancel($event, $user)
+    {
+        if ($event->getOwner == $user && $event->getState == "Ouverte") {
             return true;
         } else {
             return false;
         }
-
     }
 
 
@@ -311,7 +313,4 @@ class Event
 
         return $this;
     }
-
-
-
 }
