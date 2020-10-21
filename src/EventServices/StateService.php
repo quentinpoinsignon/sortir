@@ -4,13 +4,12 @@ namespace App\EventServices;
 use App\Entity\Event;
 use App\Repository\StateRepository;
 
-
 class StateService
 {
     private const CREATED_STATE = 'Créée';
     private const OPENED_STATE = 'Ouverte';
     private const CLOSED_STATE = 'Clôturée';
-    private const IN_PROGRESS_STATE = 'Activité en cours';
+    private const IN_PROGRESS_STATE = 'En cours';
     private const FINISHED_STATE = 'Passée';
     private const ARCHIVED_STATE = 'Archivée';
     private const CANCELED_STATE = 'Annulée';
@@ -32,39 +31,47 @@ class StateService
      * Définit l'attribut "state" de l'instance de classe "Event" passée en argument à la
      * valeur de la constante CREATED_STATE
      */
-            public function createdState(Event $event)
-            {
-                $state = $this->stateRepository->findOneBy(['label'=>self::CREATED_STATE]);
-                $event->setState($state);
-            }
+    public function createdState(Event $event)
+    {
+        $state = $this->stateRepository->findOneBy(['label'=>self::CREATED_STATE]);
+        $event->setState($state);
+    }
 
 
-            public function openedState(Event $event)
-            {
-
-            }
-
-
-            public function closedState(Event $event){
-
-            }
-
-            public function inProgressState(Event $event){
-
-            }
-
-            public function finishedState(Event $event){
+    public function openedState(Event $event)
+    {
+        $state = $this->stateRepository->findOneBy(['label' => self::OPENED_STATE]);
+        $event->setState($state);
+    }
 
 
-            }
+    public function closedState(Event $event)
+    {
+        $state= $this->stateRepository->findOneBy(['label'=>self::CLOSED_STATE]);
+        $event->setState($state);
+    }
 
-            public function archivedState(Event $event){
+    public function inProgressState(Event $event)
+    {
+        $state= $this->stateRepository->findOneBy(['label'=>self::IN_PROGRESS_STATE]);
+        $event->setState($state);
+    }
 
-            }
+    public function finishedState(Event $event)
+    {
+        $state= $this->stateRepository->findOneBy(['label'=>self::FINISHED_STATE]);
+        $event->setState($state);
+    }
 
-            public function canceledState(Event $event){
+    public function archivedState(Event $event)
+    {
+        $state= $this->stateRepository->findOneBy(['label'=>self::ARCHIVED_STATE]);
+        $event->setState($state);
+    }
 
-
-            }
-
+    public function canceledState(Event $event)
+    {
+        $state=$this->stateRepository->findOneBy(['label' =>self::CANCELED_STATE]);
+        $event->setState($state);
+    }
 }

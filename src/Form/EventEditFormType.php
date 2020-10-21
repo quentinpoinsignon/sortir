@@ -42,7 +42,7 @@ class EventEditFormType extends AbstractType
                 'attr' => ['class' => 'w3-input'],
             ])
 
-            ->add('eventInfos', TextareaType::class,[
+            ->add('eventInfos', TextareaType::class, [
                 'label' => 'Description et infos :',
                 'attr' => ['class' => 'w3-input'],
             ])

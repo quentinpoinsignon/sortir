@@ -125,7 +125,7 @@ class GlobalFixtures extends Fixture
         $user1->setEmailAdress("adelineavril@eni.fr");
         $user1->setActive(true);
         $user1->setAdministrator(true);
-        $user1->setPassword($this->encoder->encodePassword($user1,'adeline'));
+        $user1->setPassword($this->encoder->encodePassword($user1, 'adeline'));
         $user1->setPhoneNumber("0645879632");
         $user1->setRoles(['ROLE_ADMIN']);
         $user1->setUsername("adeline");
@@ -137,7 +137,7 @@ class GlobalFixtures extends Fixture
         $user2->setEmailAdress("kimmaroe@eni.fr");
         $user2->setActive(true);
         $user2->setAdministrator(true);
-        $user2->setPassword($this->encoder->encodePassword($user2,'kim'));
+        $user2->setPassword($this->encoder->encodePassword($user2, 'kim'));
         $user2->setPhoneNumber("0758972596");
         $user2->setRoles(['ROLE_ADMIN']);
         $user2->setUsername("kim");
@@ -149,7 +149,7 @@ class GlobalFixtures extends Fixture
         $user3->setEmailAdress("quentinpoinsignon@eni.fr");
         $user3->setActive(true);
         $user3->setAdministrator(true);
-        $user3->setPassword($this->encoder->encodePassword($user3,'quentin'));
+        $user3->setPassword($this->encoder->encodePassword($user3, 'quentin'));
         $user3->setPhoneNumber("0656243514");
         $user3->setRoles(['ROLE_ADMIN']);
         $user3->setUsername("quentin");
@@ -162,7 +162,7 @@ class GlobalFixtures extends Fixture
         $user4->setEmailAdress("guillaumesylvestre@eni.fr");
         $user4->setActive(true);
         $user4->setAdministrator(false);
-        $user4->setPassword($this->encoder->encodePassword($user4,'guillaume'));
+        $user4->setPassword($this->encoder->encodePassword($user4, 'guillaume'));
         $user4->setPhoneNumber("0765897654");
         $user4->setRoles(['ROLE_USER']);
         $user4->setUsername("guillaume");
@@ -174,7 +174,7 @@ class GlobalFixtures extends Fixture
         $user5->setEmailAdress("herveboisgontier@eni.fr");
         $user5->setActive(true);
         $user5->setAdministrator(false);
-        $user5->setPassword($this->encoder->encodePassword($user5,'herve'));
+        $user5->setPassword($this->encoder->encodePassword($user5, 'herve'));
         $user5->setPhoneNumber("0676543419");
         $user5->setRoles(['ROLE_USER']);
         $user5->setUsername("hervé");
@@ -294,7 +294,7 @@ class GlobalFixtures extends Fixture
         $event3->setEventInfos('Fêtons ensemble la fin du projet Symfony !');
         $event4->setEventInfos('Well to be honest I don\'t know what this is...');
         $event5->setEventInfos('Comme un poisson dans l\'eau, venez nager et transpirer ensemble...');
-        $event6->setEventInfos('Super soirée Escape Game en éspérant que l\'on ne restera pas coincés!!' );
+        $event6->setEventInfos('Super soirée Escape Game en éspérant que l\'on ne restera pas coincés!!');
 
         $manager->persist($event1);
         $manager->persist($event2);
@@ -363,5 +363,4 @@ class GlobalFixtures extends Fixture
 
         $manager->flush();
     }
-
 }

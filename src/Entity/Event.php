@@ -98,34 +98,48 @@ class Event
 
     public function canIShowDetails($event)
     {
+
         if ($event->getState()->getLabel() == "Ouverte" || $event->getState()->getLabel() == "Clôturée" || $event->getState()->getLabel() == "En cours" || $event->getState()->getLabel() == "Terminée") {
+
+
             return true;
         } else {
             return false;
         }
     }
+
 
     public function canIModify($event, $user) {
         $presentTime = new \DateTime('now');
 
         if($event->getOwner() == $user && $event->getRegistrationLimitDate() > $presentTime) {
+
             return true;
         } else {
             return false;
         }
     }
 
-    public function canICancel($event, $user) {
-        if($event->getOwner == $user && $event->getState == "Ouverte") {
+
+    public function canIPublish($event, $user)
+    {
+        if ($event->getOwner == $user && $event->getState == "En création") {
+
             return true;
         } else {
             return false;
         }
 
     }
+
 
     public function canISuscribe(Event $event, $user) {
         if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState() == "Ouverte") {
+
+    public function canICancel($event, $user)
+    {
+        if ($event->getOwner == $user && $event->getState == "Ouverte") {
+
             return true;
         } else {
             return false;
@@ -321,7 +335,4 @@ class Event
 
         return $this;
     }
-
-
-
 }

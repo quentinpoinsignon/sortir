@@ -57,14 +57,9 @@ class IrrationalIdResetCommand extends Command
                 $io->error('Something went wrong, please check you passed the right argument.');
                 return Command::FAILURE;
             }
-        }
-        else
-        {
+        } else {
             $io->error('Something went wrong, please check you passed the right argument.');
             return Command::SUCCESS;
         }
-
-
-
     }
 }

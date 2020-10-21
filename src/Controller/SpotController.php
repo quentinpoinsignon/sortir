@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-
 class SpotController extends AbstractController
 {
     /**
@@ -36,7 +35,7 @@ class SpotController extends AbstractController
      */
     public function addSpot(Request $request, EntityManagerInterface $entityManager)
     {
-       // $this->denyAccessUnlessGranted("ROLE_USER");
+        // $this->denyAccessUnlessGranted("ROLE_USER");
 
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findBy(array(), array('name' => 'ASC'));
@@ -46,8 +45,7 @@ class SpotController extends AbstractController
         $spotAddForm->handleRequest($request);
 
         //si le formulaire est envoyé, set des valeurs par défaut de published et date
-        if($spotAddForm->isSubmitted() && $spotAddForm->isValid())
-        {
+        if ($spotAddForm->isSubmitted() && $spotAddForm->isValid()) {
             //récup de la town sélectionnée
             $selectedTown = $townRepository->find($request->get('town'));
             $spot->setTown($selectedTown);
@@ -64,7 +62,6 @@ class SpotController extends AbstractController
             'spotAddForm' => $spotAddForm->createView(),
             'towns' => $towns,
         ]);
-
     }
 
 
@@ -83,8 +80,11 @@ class SpotController extends AbstractController
         $spotRepository = $entityManager->getRepository(Spot::class);
 
         $spots = $spotRepository->spotTest(1);
-        $jsonContent = $serializer->serialize($spots, 'json',
-            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['events','town']]);
+        $jsonContent = $serializer->serialize(
+            $spots,
+            'json',
+            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['events','town']]
+        );
         $response = new JsonResponse();
         $response->setContent($jsonContent);
         return $response;

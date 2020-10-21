@@ -12,17 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-
 class MainController extends AbstractController
 {
     /**
      * @Route("/home", name="home")
      */
     public function home(Request $request, EventRepository $eventRepository, RegistrationRepository $registrationRepository, CampusRepository $campusRepository, UserRepository $userRepository)
-
     {
-
-
         $userList = $userRepository->findAll();
         $campusList = $campusRepository->findAll();
         $registrationList = $registrationRepository->findAll();
@@ -54,7 +50,5 @@ class MainController extends AbstractController
             "sortiesPassees" => $sortiesPassees
 
         ]);
-
     }
-
 }
