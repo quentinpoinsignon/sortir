@@ -14,13 +14,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * Class UserController
  * @package App\Controller
- * @Route("/admin")
  */
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user_index", name="user_index", methods={"GET"})
+     * @Route("/admin/user_index", name="user_index", methods={"GET"})
      * @param UserRepository $userRepository
      * @return Response
      */
@@ -32,7 +31,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user_show/{id}", name="user_show", methods={"GET"})
+     * @Route("/admin/user_show/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -42,7 +41,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/user_edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/admin/{id}/user_edit", name="user_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
      * @return Response
@@ -72,7 +71,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/user_delete", name="user_delete", methods={"DELETE"})
+     * @Route("/admin/{id}/user_delete", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {
@@ -83,5 +82,17 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @author quentin
+     * ptite fonction pour consulter le profil d'un autre utilisateur en tant qu'user
+     *  @Route("/user_basic_show/{id}", name="user_basic_show", methods={"GET"})
+     */
+    public function basicShow(User $user)
+    {
+        return $this->render('user/basic_show.html.twig', [
+            'user' => $user,
+        ]);
     }
 }
