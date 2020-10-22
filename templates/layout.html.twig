@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{asset('css/w3.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/svg" href="{{ asset('images/orange-juice.svg') }}"/>
+    <title>Sortir{% block title %}{% endblock %}</title>
+</head>
+<body class="w3-light-gray">
+
+{# header #}
+
+    <header class="w3-red w3-padding w3-top w3-container">
+        <nav class="w3-bar w3-red w3-padding">
+        {% if app.user %}
+            <a href="{{ path('home') }}" class="w3-bar-item w3-btn w3-large">Accueil</a>
+            {% if is_granted ('ROLE_ADMIN') %}
+                {#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Villes</a>#}
+                {#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Campus</a>#}
+                <a href="{{ path('admin_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-btn w3-large">Mon profil</a>
+            {% else %}
+                <a href="{{ path('simple_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-btn w3-large">Mon profil</a>
+            {% endif %}
+            <a href="{{ path('app_logout') }}" class="w3-bar-item w3-btn w3-large">Se déconnecter</a>
+        {% endif %}
+            <img  class="w3-right" src="{{ asset('images/orange-juice.svg') }}" width="50px" alt="image"/>
+            <h1 class="w3-right">Sortir.com</h1>
+        </nav>
+    </header>
+    <br><br>
+
+    {# read and display all flash messages #}
+    {% for message in app.flashes('success') %}
+        <div class="w3-panel w3-blue w3-margin-top w3-padding-32">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="w3-panel w3-red w3-margin-top w3-padding-32">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+        <div class="w3-container">
+    {% block body %}
+    {% endblock %}
+        </div>
+
+    <!-- Footer -->
+    <footer class="w3-center w3-container">
+        <p>&copy Adeline, Kim, Quentin - ENI Octobre 2020</p>
+        <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
+    </footer>
+
+</body>
+</html>
