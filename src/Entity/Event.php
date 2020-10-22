@@ -136,7 +136,7 @@ class Event
 
     public function canISuscribe($event, $user)
     {
-        if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState() == "Ouverte") {
+        if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState()->getLabel() == "Ouverte") {
             return true;
         } else {
             return false;
