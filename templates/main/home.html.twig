@@ -93,12 +93,12 @@
                                   {% endif %}
 
                                     {% if event.canIDelete(event, app.user) is same as(true) %}
-                                        <a>Annuler</a>
+                                        <a href="{{ url('event_remove', {'id' : event.id}) }}">Annuler</a>
                                     {% endif %}
 
 
                                     {% if event.canIModify(event, app.user) is same as(true) %}
-                                        <a>Modifier</a>
+                                        <a href="{{ url('event_edit', {'id' : event.id}) }}">Modifier</a>
                                     {% endif %}
 
 {#                                    {% if event.canI %}#}

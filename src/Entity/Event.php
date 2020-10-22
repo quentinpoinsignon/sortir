@@ -146,7 +146,7 @@ class Event
 
     public function canIDelete($event, $user)
     {
-        if ($event->getOwner() == $user && $event->getState() == "Ouverte") {
+        if ($event->getOwner() == $user && $event->getState()->getLabel() == "Ouverte") {
             return true;
         } else {
             return false;
