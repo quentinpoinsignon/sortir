@@ -93,7 +93,7 @@
                                   {% endif %}
 
                                     {% if event.canIDelete(event, app.user) is same as(true) %}
-                                        <a href="{{ url('event_remove', {'id' : event.id}) }}">Annuler</a>
+                                        <a href="{{ url('event_cancel', {'id' : event.id}) }}">Annuler</a>
                                     {% endif %}
 
 
