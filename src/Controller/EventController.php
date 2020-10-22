@@ -79,6 +79,7 @@ class EventController extends AbstractController
         //Génération du formulaire
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
+        dump($event->getStartDateTime());
         $errors = $validator->validate($event);
 dump($errors);
         if ($eventAddForm->isSubmitted() && $eventAddForm->isValid() && count($errors)==0) {
