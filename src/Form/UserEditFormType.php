@@ -65,6 +65,7 @@ class UserEditFormType extends AbstractType
                 'label' => 'Choisissez une photo pour votre profil',
                 'mapped' => false,
                 'required' => false,
+                'attr' => ['class' => 'w3-input'],
                 'constraints' => [
                     new File([
                     'maxSize' => '1024k',
