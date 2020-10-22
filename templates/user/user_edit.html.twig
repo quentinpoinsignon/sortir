@@ -11,9 +11,11 @@
             <img src="{{ asset('images/profile_pictures/neutral-user.svg')}}" alt="profile_neutral" class="w3-round" width="175px" height="175px">
         {% endif %}
     <br>
-    {{ form_start(userEditFormType) }}
-    {{ form_widget(userEditFormType) }}
-    <br>
+        <div class="form" style="width: 70%;">
+            {{ form_start(userEditFormType) }}
+            {{ form_widget(userEditFormType) }}
+            <br>
+        </div>
 
     <br>
     <button class="w3-btn w3-indigo w3-round" type="submit">Enregistrer</button>
