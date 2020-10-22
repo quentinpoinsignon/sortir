@@ -24,7 +24,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = ['app_index','app_login'];
 
     private $entityManager;
     private $urlGenerator;
@@ -41,7 +41,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
     public function supports(Request $request)
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+        return in_array($request->attributes->get('_route'), self::LOGIN_ROUTE)
             && $request->isMethod('POST');
     }
 
@@ -80,6 +80,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
     public function checkCredentials($credentials, UserInterface $user)
     {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+
     }
 
     /**

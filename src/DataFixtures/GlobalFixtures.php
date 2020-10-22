@@ -35,6 +35,8 @@ class GlobalFixtures extends Fixture
         $town4 = new Town();
         $town4->setName('Saint-Herblain');
         $town4->setPostalCode('44800');
+  
+
 
 
         $manager->persist($town1);
@@ -97,9 +99,10 @@ class GlobalFixtures extends Fixture
         $spot6 = new Spot();
         $spot6->setName('Calicéo');
         $spot6->setStreet('14 Chemin du Vigneau');
-        $spot6->setLatitude(47.215724);
-        $spot6->setLongitude(-1.626301);
+        $spot6->setLatitude(47.21607);
+        $spot6->setLongitude(-1.62806);
         $spot6->setTown($town4);
+
 
         $spot7 = new Spot();
         $spot7->setName('Escape Game - La Ligue Des Gentlemen');
@@ -123,8 +126,6 @@ class GlobalFixtures extends Fixture
         $user1->setFirstName("Adeline");
         $user1->setName("Avril");
         $user1->setEmailAdress("adelineavril@eni.fr");
-        $user1->setActive(true);
-        $user1->setAdministrator(true);
         $user1->setPassword($this->encoder->encodePassword($user1, 'adeline'));
         $user1->setPhoneNumber("0645879632");
         $user1->setRoles(['ROLE_ADMIN']);
@@ -136,8 +137,6 @@ class GlobalFixtures extends Fixture
         $user2->setFirstName("Kim");
         $user2->setName("Maroe");
         $user2->setEmailAdress("kimmaroe@eni.fr");
-        $user2->setActive(true);
-        $user2->setAdministrator(true);
         $user2->setPassword($this->encoder->encodePassword($user2, 'kim'));
         $user2->setPhoneNumber("0758972596");
         $user2->setRoles(['ROLE_ADMIN']);
@@ -149,8 +148,6 @@ class GlobalFixtures extends Fixture
         $user3->setFirstName("Quentin");
         $user3->setName("Poinsignon");
         $user3->setEmailAdress("quentinpoinsignon@eni.fr");
-        $user3->setActive(true);
-        $user3->setAdministrator(true);
         $user3->setPassword($this->encoder->encodePassword($user3, 'quentin'));
         $user3->setPhoneNumber("0656243514");
         $user3->setRoles(['ROLE_ADMIN']);
@@ -163,8 +160,6 @@ class GlobalFixtures extends Fixture
         $user4->setFirstName("Guillaume");
         $user4->setName("Sylvestre");
         $user4->setEmailAdress("guillaumesylvestre@eni.fr");
-        $user4->setActive(true);
-        $user4->setAdministrator(false);
         $user4->setPassword($this->encoder->encodePassword($user4, 'guillaume'));
         $user4->setPhoneNumber("0765897654");
         $user4->setRoles(['ROLE_USER']);
@@ -176,8 +171,6 @@ class GlobalFixtures extends Fixture
         $user5->setFirstName("Hervé");
         $user5->setName("Boisgontier");
         $user5->setEmailAdress("herveboisgontier@eni.fr");
-        $user5->setActive(true);
-        $user5->setAdministrator(false);
         $user5->setPassword($this->encoder->encodePassword($user5, 'herve'));
         $user5->setPhoneNumber("0676543419");
         $user5->setRoles(['ROLE_USER']);

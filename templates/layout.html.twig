@@ -17,19 +17,23 @@
         <div class="w3-col">
             <img  class="w3-right w3-cell-middle" src="{{ asset('images/orange-juice.svg') }}" width="50px" alt="image"/>
             <h1 class="w3-right">Sortir.com</h1>
-        </div>
-        <nav class="w3-bar w3-indigo w3-padding w3-col">
-            {% if app.user %}
-                <a href="{{ path('home') }}" class="w3-bar-item w3-btn w3-large">Accueil</a>
-                {#{% if is_granted ('ROLE_ADMIN') %}#}
+
+
+
+        <nav class="w3-bar w3-indigo w3-padding">
+        {% if app.user %}
+            <a href="{{ path('home') }}" class="w3-bar-item w3-btn w3-large">Accueil</a>
+            {% if is_granted ('ROLE_ADMIN') %}
                 {#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Villes</a>#}
                 {#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Campus</a>#}
-                {#<a href="{{ path('admin_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-btn w3-large">Mon profil</a>#}
-                {#{% else %}#}
-                <a href="{{ path('simple_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-btn w3-large">Mon profil</a>
-                {#{% endif %}#}
-                <a href="{{ path('app_logout') }}" class="w3-bar-item w3-btn w3-large">Se déconnecter</a>
+                <a href="{{ path('app_register') }}" class="w3-bar-item w3-btn w3-large">Créer un compte</a>
+{#            {% else %}#}
             {% endif %}
+            <a href="{{ path('simple_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-btn w3-large">Mon profil</a>
+            <a href="{{ path('app_logout') }}" class="w3-bar-item w3-btn w3-large">Se déconnecter</a>
+        {% endif %}
+
+
         </nav>
     </header>
     <br><br><br>

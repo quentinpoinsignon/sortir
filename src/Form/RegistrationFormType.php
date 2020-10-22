@@ -34,8 +34,6 @@ class RegistrationFormType extends AbstractType
             ->add('firstName', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
             ->add('phoneNumber', TextType::class, ['attr' => ['class' => 'w3-input w3-margin']])
             ->add('emailAdress', EmailType::class, ['attr' => ['class' => 'w3-input w3-margin']])
-            ->add('administrator', CheckboxType::class, ['attr' => ['class' => 'w3-check w3-margin']])
-            ->add('active', CheckboxType::class, ['attr' => ['class' => 'w3-check w3-margin']])
             ->add('campus', EntityType::class, ['class' =>Campus::class, 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select w3-margin']])
             ->add('save', SubmitType::class, ['attr' => ['class' => 'w3-btn w3-blue']]);

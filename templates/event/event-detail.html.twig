@@ -29,7 +29,8 @@
                     {% for registration in registrations%}
                         {% if registration.event.id == event.id %}
                             <tr>
-                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id, 'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
+                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id,
+                                        'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
                                 <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
                             </tr>
                         {% endif %}
@@ -37,8 +38,9 @@
 
                 </table>
 
-                    {% if  event.registrations.count < event.registrationMaxNb and event.state.label == 'Ouverte'%}
-                <a class="w3-margin-left w3-btn w3-round w3-indigo" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
+                    {% if  event.canISuscribe(event, app.user) is same as(true)   %}
+                                <a class="w3-margin-left w3-btn w3-round w3-indigo" href="{{ path('event_registration' ,
+                             { 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
                     {% endif %}
                 <div class="btn"><a href="{{ url("home") }}" class="w3-btn w3-indigo w3-round w3-" style="margin-left: 16px; margin-top: 5px;">Retour</a></div>
             </div>

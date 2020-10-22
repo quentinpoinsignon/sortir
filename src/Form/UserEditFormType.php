@@ -66,6 +66,7 @@ class UserEditFormType extends AbstractType
                 'mapped' => false,
                 'attr' => ['class' => 'w3-input'],
                 'required' => false,
+                'attr' => ['class' => 'w3-input'],
                 'constraints' => [
                     new File([
                     'maxSize' => '1024k',

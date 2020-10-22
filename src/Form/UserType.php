@@ -54,14 +54,7 @@ class UserType extends AbstractType
                 'label' => 'Email :',
                 'attr' => ['class' => 'w3-input'],
             ])
-            ->add('administrator', CheckboxType::class, [
-                'label' => 'Administrateur',
-                'attr' => ['class' => 'w3-check'],
-            ])
-            ->add('active', CheckboxType::class, [
-                'label' => 'Acti.f(ve)',
-                'attr' => ['class' => 'w3-check'],
-            ])
+
             ->add('campus', EntityType::class, [ 'class' => Campus::class,
                 'label' => 'Campus',
                 'choice_label' => 'name',
