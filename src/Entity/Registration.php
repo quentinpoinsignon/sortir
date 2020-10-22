@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *     fields={"event", "participant"},
  *     errorPath="particpant",
- *     message="Vous êtes déjà inscrit à cet sortie."
+ *     message="Vous êtes déjà inscrit à cette sortie."
  * )
  */
 

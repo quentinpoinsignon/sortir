@@ -16,6 +16,7 @@ use App\Repository\EventRepository;
 use App\Repository\RegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +55,7 @@ class EventController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @param StateService $stateService
+     * @param Validator $validator
      * @return RedirectResponse|Response
      * @author quentin
      * Fonction pour créer un nouvel event
@@ -61,7 +63,7 @@ class EventController extends AbstractController
      * @Route ("/edit/{id}", name="event_edit")
      */
     
-    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request, StateService  $stateService)
+    public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request, StateService  $stateService, ValidatorInterface $validator)
     {
 //       $this->denyAccessUnlessGranted("ROLE_USER");
         // Récupération de la liste des villes
@@ -72,11 +74,14 @@ class EventController extends AbstractController
         $spots = $spotRepository->findAll();
         // Instanciation du nouvel event
         $event = new Event();
+        //validation de l'event
+
         //Génération du formulaire
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
-
-        if ($eventAddForm->isSubmitted() && $eventAddForm->isValid()) {
+        $errors = $validator->validate($event);
+dump($errors);
+        if ($eventAddForm->isSubmitted() && $eventAddForm->isValid() && count($errors)==0) {
 
             //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
             $stateService->createdState($event);

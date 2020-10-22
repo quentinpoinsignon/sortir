@@ -27,7 +27,9 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\LessThanOrEqual("today UTC")
      */
+
     private $startDateTime;
 
     /**
@@ -37,6 +39,7 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\LessThanOrEqual(propertyPath="startDateTime")
      */
     private $registrationLimitDate;
 
