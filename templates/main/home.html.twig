@@ -9,29 +9,33 @@
                         <p class="userName">Participant : {{ app.user.firstName }}</p>
                     </div>
 
-                <div class="form_plus_card w3-row w3-half">
-                    <form class="w3-container home_form w3-col" method="post" action="{{ path('home') }}">
-                        <h2 class="titre_form_accueil">Filtrer les sorties</h2>
+                <div class="form_plus_card w3-row w3-rest">
 
-                        <label for="campus_list" class="campus_lbl">Campus</label>
-                        <select class="w3-select campus_list" id="campus_list" name="campus_list">
-                            {% for campus in campusList %}
-                                <option value="{{ campus.id }}" name="{{ campus.id }}" {% if campus == app.user.campus %}selected="selected"{% endif%} >{{ campus.name }}</option>
-                            {% endfor %}
-                        </select>
+                    <form class="w3-row-padding home_form w3-col w3-margin-bottom" method="post" action="{{ path('home') }}">
+                        <h2 class="titre_form_accueil w3-padding-large">Filtrer les sorties</h2>
+                        <div class="w3-cell w3-row-padding w3-padding-large">
+                            <label for="campus_list" class="campus_lbl">Campus</label>
+                            <select class="w3-select campus_list" id="campus_list" name="campus_list">
+                                {% for campus in campusList %}
+                                    <option value="{{ campus.id }}" name="{{ campus.id }}" {% if campus == app.user.campus %}selected="selected"{% endif%} >{{ campus.name }}</option>
+                                {% endfor %}
+                            </select>
 
 
-                        <label for="search_input" class="search_lbl">Le nom de la sortie contient :</label>
-                        <input type="text" class="search_input w3-input" id="search_input" name="search_input" value="{{ searchWords }}">
+                            <label for="search_input" class="search_lbl">Le nom de la sortie contient :</label>
+                            <input type="text" class="search_input w3-input" id="search_input" name="search_input" value="{{ searchWords }}">
 
-                        <label for="date_debut" class="date_debut_lbl">Entre</label>
-                        <input type="date" class="date_debut w3-input" id="date_debut" name="date_debut" value="{{ dateDebut }}">
+                            <label for="date_debut" class="date_debut_lbl">Entre</label>
+                            <input type="date" class="date_debut w3-input" id="date_debut" name="date_debut" value="{{ dateDebut }}">
 
-                        <label for="date_fin" class="date_fin_lbl">et</label>
-                        <input type="date" class="date_fin w3-input" id="date_fin" name="date_fin" value="{{ dateFin }}">
-                        <br>
+                            <label for="date_fin" class="date_fin_lbl">et</label>
+                            <input type="date" class="date_fin w3-input" id="date_fin" name="date_fin" value="{{ dateFin }}">
+                        </div>
 
-                        <div class="checkbx">
+
+
+                        <div class="checkbx w3-cell w3-row-padding w3-padding-large">
+
 
                             <div>
                                 <input type="checkbox" class="user_organisateur w3-check" id="user_organisateur" name="user_organisateur" {% if userOrganisateur == "on" %} checked {% endif %}>
@@ -47,20 +51,22 @@
                                 <input type="checkbox" class="sorties_passees w3-check" id="sorties_passees" name="sorties_passees" {% if sortiesPassees == "on" %} checked {% endif %}>
                                 <label for="sorties_passees" class="sorties_passees_lbl">Sorties passées</label>
                             </div>
+                            <br><br><br><br><br>
+                            <button class="w3-btn w3-round w3-indigo w3-cell w3-cell-bottom" type="submit" style="margin:10px 0px">Valider</button>
                         </div>
-                        <button class="w3-btn w3-round w3-indigo" type="submit" style="margin:10px 0px">Valider</button>
+
                     </form>
 
                 </div>
-                <div class="tableau_list_event">
-                    <table class="w3-table-all w3-centered">
+                <div class="tableau_list_event w3-padding-large">
+                    <table class="w3-table-all">
                         <tr class="w3-indigo">
                             <th>Nom de la sortie</th>
                             <th>Date de la sortie</th>
                             <th>Clôture</th>
                             <th>inscrits/places</th>
                             <th>Etat</th>
-                            <th>Inscrit</th>
+                            <th >Inscrit</th>
                             <th>Organisateur</th>
                             <th>Actions</th>
                         </tr>
@@ -72,7 +78,7 @@
                                 <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
                                 <td>{{ event.state.label }}</td>
 
-                                <td>
+                                <td class="w3-center">
                                 {% for registration in registrationList %}
                                          {{ (registration.participant.id == app.user.id and registration.event.id == event.id)? 'X' :'' }}
                                 {% endfor %}
@@ -107,14 +113,12 @@
                                 </td>
                             </tr>
                         {% endfor %}
+
                     </table>
                     <br>
-                </div>
-                    <a href="{{ url('event_add')}}" class="w3-btn w3-indigo w3-round">Créer une sortie</a>
-                </div>
-
-
-
+                    <div>
+                     <a  href="{{ url('event_add')}}" class="w3-btn w3-indigo w3-round">Créer une sortie</a>
+                     </div>
     </div>
     <!-- The Modal -->
     <div id="id01" class="w3-modal">
