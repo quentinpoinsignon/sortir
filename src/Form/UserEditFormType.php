@@ -64,6 +64,7 @@ class UserEditFormType extends AbstractType
             ->add('pictureFilename', FileType::class, [
                 'label' => 'Choisissez une photo pour votre profil',
                 'mapped' => false,
+                'attr' => ['class' => 'w3-input'],
                 'required' => false,
                 'attr' => ['class' => 'w3-input'],
                 'constraints' => [
