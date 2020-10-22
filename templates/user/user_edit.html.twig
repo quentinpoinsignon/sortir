@@ -3,7 +3,7 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block body %}
-    <div class="w3-card w3-margin w3-padding">
+    <div class="w3-card w3-margin w3-padding w3-half">
     <h1>Mon profil</h1>
         {% if app.user.pictureFilename %}
             <img src="{{ asset('images/profile_pictures/' ~ user.pictureFilename )}}" alt="profile_picture" class="w3-round" width="175px" height="175px">

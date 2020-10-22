@@ -35,6 +35,8 @@ class GlobalFixtures extends Fixture
         $town4 = new Town();
         $town4->setName('Saint-Herblain');
         $town4->setPostalCode('44800');
+  
+
 
 
         $manager->persist($town1);
@@ -97,9 +99,10 @@ class GlobalFixtures extends Fixture
         $spot6 = new Spot();
         $spot6->setName('Calicéo');
         $spot6->setStreet('14 Chemin du Vigneau');
-        $spot6->setLatitude(47.215724);
-        $spot6->setLongitude(-1.626301);
+        $spot6->setLatitude(47.21607);
+        $spot6->setLongitude(-1.62806);
         $spot6->setTown($town4);
+
 
         $spot7 = new Spot();
         $spot7->setName('Escape Game - La Ligue Des Gentlemen');
