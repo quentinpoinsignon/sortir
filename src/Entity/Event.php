@@ -136,11 +136,16 @@ class Event
 
     }
 
-
-    public function canISuscribe($event, $user)
-        //TODO le lien n'apprait pas si je suis deja inscrit!!
-    {
-        if(count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState()->getLabel() == "Ouverte") {
+    //TODO le lien n'apprait pas si je suis deja inscrit!!
+    public function canISuscribe($event, $user) {
+        $amIRegistered = false;
+        $registrationsList = $event->getRegistrations();
+        foreach ($registrationsList as $registration) {
+            if($registration->getParticipant() == $user) {
+                $amIRegistered = true;
+            }
+        }
+        if(count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState()->getLabel() == "Ouverte" && !$amIRegistered) {
             return true;
         } else {
             return false;
