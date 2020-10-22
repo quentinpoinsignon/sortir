@@ -10,7 +10,7 @@
         <title>Sortir{% block title %}{% endblock %}</title>
     </head>
     <br>
-    <body class="w3-container" style="height: 100vh; padding: 0;">
+    <body class="w3-container" style="padding: 0;">
     <!-- Navbar -->
     <div class = "w3-top">
 
@@ -51,28 +51,30 @@
 
         </div>
     </div>
-
-    {# read and display all flash messages #}
-    {% for message in app.flashes('success') %}
-            <div class="w3-panel w3-blue w3-margin-top w3-padding-32">
+    <div class="w3-container w3-center w3-red" style="height: 100vh;">
+        {# read and display all flash messages #}
+        {% for message in app.flashes('success') %}
+                <div class="w3-panel w3-blue w3-margin-top w3-padding-32">
+                    {{ message }}
+                </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="w3-panel w3-red w3-margin-top w3-padding-32">
                 {{ message }}
             </div>
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-        <div class="w3-panel w3-red w3-margin-top w3-padding-32">
-            {{ message }}
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-        {% block body %}
-        {% endblock %}
+            {% block body %}
+            {% endblock %}
 
 
-    <!-- Footer -->
-    <footer class="w3-center w3-container" style="height: min-content;">
-        <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-        <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
-    </footer>
+        <!-- Footer -->
+        <footer class="w3-center w3-container w3-light-grey" style="height: 20%">
+            <p>Site By Kim, Quentin et Adeline</p>
+            <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+            <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
+        </footer>
+    </div>
 
 
 
