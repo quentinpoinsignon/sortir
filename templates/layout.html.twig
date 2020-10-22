@@ -9,12 +9,14 @@
     <link rel="shortcut icon" type="image/svg" href="{{ asset('images/orange-juice.svg') }}"/>
     <title>Sortir{% block title %}{% endblock %}</title>
 </head>
+<br>
 <body class="w3-light-gray">
 
 {# header #}
-
-    <header class="w3-red w3-padding w3-top w3-container">
-        <nav class="w3-bar w3-red w3-padding">
+    <header class="w3-indigo w3-padding w3-top w3-container">
+            <img  class="w3-right w3-cell-middle" src="{{ asset('images/orange-juice.svg') }}" width="50px" alt="image"/>
+            <h1 class="w3-right">Sortir.com</h1>
+        <nav class="w3-bar w3-indigo w3-padding">
         {% if app.user %}
             <a href="{{ path('home') }}" class="w3-bar-item w3-btn w3-large">Accueil</a>
             {% if is_granted ('ROLE_ADMIN') %}
@@ -26,11 +28,9 @@
             {% endif %}
             <a href="{{ path('app_logout') }}" class="w3-bar-item w3-btn w3-large">Se déconnecter</a>
         {% endif %}
-            <img  class="w3-right" src="{{ asset('images/orange-juice.svg') }}" width="50px" alt="image"/>
-            <h1 class="w3-right">Sortir.com</h1>
         </nav>
     </header>
-    <br><br>
+    <br><br><br>
 
     {# read and display all flash messages #}
     {% for message in app.flashes('success') %}
