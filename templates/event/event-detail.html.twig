@@ -30,15 +30,17 @@
                     {% for registration in registrations%}
                         {% if registration.event.id == event.id %}
                             <tr>
-                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id, 'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
+                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id,
+                                        'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
                                 <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}
                 </table>
 
-                    {% if  event.registrations.count < event.registrationMaxNb and event.state.label == 'Ouverte'%}
-                <a class="w3-margin-left w3-btn w3-round w3-indigo" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
+                    {% if  event.canISuscribe(event, app.user) is same as(true)   %}
+                                <a class="w3-margin-left w3-btn w3-round w3-indigo" href="{{ path('event_registration' ,
+                             { 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
                     {% endif %}
             </div>
             <div class="w3-cell w3-margin">
