@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 {% block title %} | Ajouter un lieu {% endblock %}
 {% block body %}
     <br><br>
@@ -14,9 +14,9 @@
         </select>
         {{ form_widget(spotAddForm)}}
         <br>
-        <button type="submit" class="w3-teal w3-btn w3-round">Enregistrer</button>
-{#        <a href="{{ path("home") }}" class="w3-btn w3-teal w3-round">Retour</a>#}
-        <button class="w3-btn w3-teal w3-round" onclick="goBack()">Retour</button>
+        <button type="submit" class="w3-indigo w3-btn w3-round">Enregistrer</button>
+{#        <a href="{{ path("home") }}" class="w3-btn w3-indigo w3-round">Retour</a>#}
+        <button class="w3-btn w3-indigo w3-round" onclick="goBack()">Retour</button>
         {{ form_end(spotAddForm) }}
     </div>
 
