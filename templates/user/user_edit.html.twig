@@ -5,6 +5,11 @@
 {% block body %}
     <div class="w3-card w3-margin w3-padding">
     <h1>Mon profil</h1>
+        {% if app.user.pictureFilename %}
+            <img src="{{ asset('images/profile_pictures/' ~ user.pictureFilename )}}" alt="profile_picture" class="w3-round" width="175px" height="175px">
+        {% else  %}
+            <img src="{{ asset('images/profile_pictures/neutral-user.svg')}}" alt="profile_neutral" class="w3-round" width="175px" height="175px">
+        {% endif %}
     <br>
     {{ form_start(userEditFormType) }}
     {{ form_widget(userEditFormType) }}
