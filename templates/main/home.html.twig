@@ -89,7 +89,7 @@
 
                                   {% if event.canIUnsuscribe(event, app.user) is same as(true) %}
                                     <!-- Trigger/Open the Modal -->
-                                    <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');" style="border: none; text-decoration: underline;cursor: pointer">Se désister</button>
+                                    <button onclick="showDesistModal('{{ url('unsuscribe', {'idEvent': event.id}) }}');" style="border: none; text-decoration: underline;cursor: pointer; background: none;">Se désister</button>
                                   {% endif %}
 
                                     {% if event.canIDelete(event, app.user) is same as(true) %}

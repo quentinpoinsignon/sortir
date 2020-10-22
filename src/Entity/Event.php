@@ -135,8 +135,9 @@ class Event
 
 
     public function canISuscribe($event, $user)
+        //TODO le lien n'apprait pas si je suis deja inscrit!!
     {
-        if($event->getOwner() != $user && count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState()->getLabel() == "Ouverte") {
+        if(count($event->getRegistrations()) < $event->getRegistrationMaxNb() && $event->getState()->getLabel() == "Ouverte") {
             return true;
         } else {
             return false;
