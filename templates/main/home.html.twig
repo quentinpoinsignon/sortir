@@ -84,7 +84,7 @@
                                      <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>
 
                                     {% if event.canISuscribe(event, app.user) is same as(true) %}
-                                        <a href="{{ url('event_detail', {'id': event.id}) }}">>S'inscrire</a>
+                                        <a href="{{ url('event_detail', {'id': event.id}) }}">S'inscrire</a>
 
                                     {% endif %}
 
