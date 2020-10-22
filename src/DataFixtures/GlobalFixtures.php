@@ -126,8 +126,6 @@ class GlobalFixtures extends Fixture
         $user1->setFirstName("Adeline");
         $user1->setName("Avril");
         $user1->setEmailAdress("adelineavril@eni.fr");
-        $user1->setActive(true);
-        $user1->setAdministrator(true);
         $user1->setPassword($this->encoder->encodePassword($user1, 'adeline'));
         $user1->setPhoneNumber("0645879632");
         $user1->setRoles(['ROLE_ADMIN']);
@@ -139,8 +137,6 @@ class GlobalFixtures extends Fixture
         $user2->setFirstName("Kim");
         $user2->setName("Maroe");
         $user2->setEmailAdress("kimmaroe@eni.fr");
-        $user2->setActive(true);
-        $user2->setAdministrator(true);
         $user2->setPassword($this->encoder->encodePassword($user2, 'kim'));
         $user2->setPhoneNumber("0758972596");
         $user2->setRoles(['ROLE_ADMIN']);
@@ -152,8 +148,6 @@ class GlobalFixtures extends Fixture
         $user3->setFirstName("Quentin");
         $user3->setName("Poinsignon");
         $user3->setEmailAdress("quentinpoinsignon@eni.fr");
-        $user3->setActive(true);
-        $user3->setAdministrator(true);
         $user3->setPassword($this->encoder->encodePassword($user3, 'quentin'));
         $user3->setPhoneNumber("0656243514");
         $user3->setRoles(['ROLE_ADMIN']);
@@ -166,8 +160,6 @@ class GlobalFixtures extends Fixture
         $user4->setFirstName("Guillaume");
         $user4->setName("Sylvestre");
         $user4->setEmailAdress("guillaumesylvestre@eni.fr");
-        $user4->setActive(true);
-        $user4->setAdministrator(false);
         $user4->setPassword($this->encoder->encodePassword($user4, 'guillaume'));
         $user4->setPhoneNumber("0765897654");
         $user4->setRoles(['ROLE_USER']);
@@ -179,8 +171,6 @@ class GlobalFixtures extends Fixture
         $user5->setFirstName("Hervé");
         $user5->setName("Boisgontier");
         $user5->setEmailAdress("herveboisgontier@eni.fr");
-        $user5->setActive(true);
-        $user5->setAdministrator(false);
         $user5->setPassword($this->encoder->encodePassword($user5, 'herve'));
         $user5->setPhoneNumber("0676543419");
         $user5->setRoles(['ROLE_USER']);

@@ -59,16 +59,6 @@ class User implements UserInterface
     private $emailAdress;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $administrator;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -219,29 +209,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAdministrator(): ?bool
-    {
-        return $this->administrator;
-    }
-
-    public function setAdministrator(bool $administrator): self
-    {
-        $this->administrator = $administrator;
-
-        return $this;
-    }
-
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
-    }
 
     public function getCampus(): ?Campus
     {
