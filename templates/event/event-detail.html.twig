@@ -30,7 +30,7 @@
                     {% for registration in registrations%}
                         {% if registration.event.id == event.id %}
                             <tr>
-                                <td>{{ registration.participant.username }}</td>
+                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id, 'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
                                 <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
                             </tr>
                         {% endif %}

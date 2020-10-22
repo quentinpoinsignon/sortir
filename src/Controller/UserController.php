@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
+use App\Entity\Registration;
 use App\Entity\User;
 use App\Form\UserEditFormType;
 use App\Form\UserType;
@@ -91,10 +93,15 @@ class UserController extends AbstractController
      * ptite fonction pour consulter le profil d'un autre utilisateur en tant qu'user
      *  @Route("/user_basic_show/{id}", name="user_basic_show", methods={"GET"})
      */
-    public function basicShow(User $user)
+    public function basicShow(int $id, User $user, Event $event, EntityManagerInterface $entityManager)
     {
+        $registrationRepository = $entityManager->getRepository(Registration::class);
+        $registrations = $registrationRepository->findAll();
+
         return $this->render('user/basic_show.html.twig', [
             'user' => $user,
+            'event' => $event,
+            'registrations' => $registrations,
         ]);
     }
 
