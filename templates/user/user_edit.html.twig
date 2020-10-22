@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+    <div class="w3-card w3-margin w3-padding">
+    <h1>Mon profil</h1>
+    <br>
+    {{ form_start(userEditFormType) }}
+    {{ form_widget(userEditFormType) }}
+    <br>
+    <br>
+    <button class="w3-btn w3-teal w3-round" type="submit">Enregistrer</button>
+    <a href="{{ url('home') }}" class="w3-btn w3-red w3-round">Annuler</a>
+    {{ form_end(userEditFormType) }}
+    </div>
+{% endblock %}

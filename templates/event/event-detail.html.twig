@@ -18,7 +18,7 @@
                 <p>Nombre de places : {{ event.registrationMaxNb }}</p>
                 <p>Durée :  {{ event.duration }} minutes</p>
                 <p>Description et infos : </p>
-                <textarea name="" id="" cols="30" rows="2">{{ event.eventInfos }}</textarea>
+                <textarea name="" id="" cols="30" rows="2" disabled>{{ event.eventInfos }}</textarea>
                 <br>
                 {# affichage de la liste des participants #}
                 <table class="w3-table-all w3-hoverable w3-half">
@@ -30,14 +30,14 @@
                     {% for registration in registrations%}
                         {% if registration.event.id == event.id %}
                             <tr>
-                                <td>{{ registration.participant.username }}</td>
+                                <td><a href="{{ url('user_basic_show', {'id':registration.participant.id, 'registrations':registrations}) }}">{{ registration.participant.username }}</a></td>
                                 <td>{{ registration.participant.firstName }} {{ registration.participant.name }}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}
                 </table>
 
-                    {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte' %}
+                    {% if  event.registrations.count < event.registrationMaxNb and date(event.registrationLimitDate) > date() and event.state.label == 'Ouverte'%}
                 <a class="w3-margin-left w3-btn w3-teal" href="{{ path('event_registration' ,{ 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
                     {% endif %}
             </div>

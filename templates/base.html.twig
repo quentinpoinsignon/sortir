@@ -10,7 +10,7 @@
         <title>Sortir{% block title %}{% endblock %}</title>
     </head>
     <br>
-    <body>
+    <body class="w3-container" style="height: 100vh; padding: 0;">
     <!-- Navbar -->
     <div class = "w3-top">
 
@@ -22,10 +22,12 @@
                     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
                     <a href="{{ path('home') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Accueil</a>
                     {% if is_granted ('ROLE_ADMIN') %}
-                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Villes</a>
-                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Campus</a>
+{#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Villes</a>#}
+{#                        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Campus</a>#}
+                        <a href="{{ path('admin_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mon profil</a>
+                        {% else %}
+                        <a href="{{ path('simple_user_edit',{ 'id':app.user.id}) }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mon profil</a>
                     {% endif %}
-                    <a href="{{ path('user_show',{ 'id':app.user.id}) }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Mon profil</a>
                     <a href="{{ path('app_logout') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Se déconnecter</a>
                 {% endif %}
                 <!-- logo+titre-->
@@ -67,7 +69,7 @@
 
 
     <!-- Footer -->
-    <footer class="w3-center w3-container">
+    <footer class="w3-center w3-container" style="height: min-content;">
         <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
         <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
     </footer>

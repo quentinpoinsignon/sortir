@@ -11,6 +11,14 @@
         <p>Téléphone : {{ user.phoneNumber }}</p>
         <p>Email : {{ user.emailAdress }}</p>
         <p>Campus : {{ user.campus.name }}</p>
-        <a href="{{ url('home') }}" class="w3-btn w3-teal w3-round">Retour</a>
+{#        <a href="{{ url('event_detail', {'id':event.id, 'registrations':registrations, 'event':event}) }}" class="w3-btn w3-teal w3-round">Retour</a>#}
+        <button class="w3-btn w3-teal w3-round" onclick="goBack()">Retour</button>
     </div>
+
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 {% endblock %}
