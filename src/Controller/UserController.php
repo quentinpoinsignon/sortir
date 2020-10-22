@@ -45,7 +45,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}/user_edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/admin/{id}/user_edit", name="admin_user_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
      * @return Response
@@ -108,7 +108,7 @@ class UserController extends AbstractController
     /**
      * @author quentin
      * ptite fonction pour modifier son profil
-     *  @Route("/user_edit/{id}", name="user_edit", methods={"GET", "POST"})
+     *  @Route("/user_edit/{id}", name="simple_user_edit", methods={"GET", "POST"})
      */
     public function userEdit(User $user, Request $request, EntityManagerInterface $entityManager)
     {
