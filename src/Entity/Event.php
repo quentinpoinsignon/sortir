@@ -27,7 +27,7 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\LessThanOrEqual("today UTC")
+     * @Assert\LessThanOrEqual("now")
      */
 
     private $startDateTime;
