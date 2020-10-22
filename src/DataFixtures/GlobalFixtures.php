@@ -130,6 +130,7 @@ class GlobalFixtures extends Fixture
         $user1->setRoles(['ROLE_ADMIN']);
         $user1->setUsername("adeline");
         $user1->setCampus($campus2);
+        $user1->setPictureFilename("profile-adeline.jpeg");
 
         $user2 = new User();
         $user2->setFirstName("Kim");
@@ -142,6 +143,7 @@ class GlobalFixtures extends Fixture
         $user2->setRoles(['ROLE_ADMIN']);
         $user2->setUsername("kim");
         $user2->setCampus($campus2);
+        $user2->setPictureFilename("profile-kim.jpeg");
 
         $user3 = new User();
         $user3->setFirstName("Quentin");
@@ -154,6 +156,7 @@ class GlobalFixtures extends Fixture
         $user3->setRoles(['ROLE_ADMIN']);
         $user3->setUsername("quentin");
         $user3->setCampus($campus2);
+        $user3->setPictureFilename("profile-quentin.jpeg");
 
         //les users
         $user4 = new User();
@@ -167,6 +170,7 @@ class GlobalFixtures extends Fixture
         $user4->setRoles(['ROLE_USER']);
         $user4->setUsername("guillaume");
         $user4->setCampus($campus2);
+        $user4->setPictureFilename("profile-guillaume.jpeg");
 
         $user5 = new User();
         $user5->setFirstName("Hervé");
@@ -179,6 +183,7 @@ class GlobalFixtures extends Fixture
         $user5->setRoles(['ROLE_USER']);
         $user5->setUsername("hervé");
         $user5->setCampus($campus2);
+        $user5->setPictureFilename("profile-hervé.jpeg");
 
         $manager->persist($user1);
         $manager->persist($user2);

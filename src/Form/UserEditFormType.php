@@ -8,11 +8,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserEditFormType extends AbstractType
 {
@@ -58,6 +60,22 @@ class UserEditFormType extends AbstractType
                 'label' => 'Campus',
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
+            ])
+            ->add('pictureFilename', FileType::class, [
+                'label' => 'Choisissez une photo pour votre profil',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                    'maxSize' => '1024k',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/svg+xml',
+                    ],
+                    'mimeTypesMessage' => 'Fichiers acceptés : .jpg et .png'
+                    ])
+                ],
             ])
         ;
     }
