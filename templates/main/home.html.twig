@@ -72,7 +72,7 @@
                         </tr>
                         {% for event in eventList %}
                             <tr>
-                                <td>{{ event.name }}</td>
+                                <td><a href="{{ url('event_detail', {'id': event.id}) }}">{{ event.name }}</a></td>
                                 <td>{{ event.startDateTime ? event.startDateTime|date('d/m/Y H:i') : '' }}</td>
                                 <td>{{ event.registrationLimitDate ? event.registrationLimitDate|date('d/m/Y H:i') : '' }}</td>
                                 <td>{{ event.registrations|length }}/{{ event.registrationMaxNb }}</td>
@@ -87,7 +87,6 @@
 
                                 <td> {#Colonne avec liens à afficher (Détails, Se désister, S'inscrire, Annuler)#}
 
-                                     <a href="{{ url('event_detail', {'id': event.id}) }}">Détails</a>
 
                                     {% if event.canISuscribe(event, app.user) is same as(true) %}
                                         <a href="{{ url('event_detail', {'id': event.id}) }}">S'inscrire</a>
