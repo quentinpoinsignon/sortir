@@ -1,11 +1,11 @@
 {% extends 'layout.html.twig' %}
-{% block title %} | Page non trouvée {% endblock %}
+{% block title %} | Accès refusé {% endblock %}
 {% block head %}
     <meta http-equiv="refresh" content="2;URL={{ url('app_login')}}">
 {% endblock %}
     {% block body %}
         <br><br>
         <div class="w3-panel">
-            <h1>Désolé ! Page non trouvée, redirection vers la page d'accueil.</h1>
+            <h1>Désolé ! Accès refusé, redirection vers la page d'accueil.</h1>
         </div>
     {% endblock %}

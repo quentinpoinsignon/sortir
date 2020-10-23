@@ -38,6 +38,7 @@ class EventController extends AbstractController
      */
     public function detail(int $id, EntityManagerInterface $entityManager, Request $request)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
 
@@ -65,7 +66,7 @@ class EventController extends AbstractController
     
     public function addEvent(int $id = null, EntityManagerInterface $entityManager, Request $request, StateService  $stateService, ValidatorInterface $validator)
     {
-//       $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted("ROLE_USER");
         // Récupération de la liste des villes
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findBy(array(), array('name' =>'ASC'));
@@ -118,6 +119,7 @@ dump($errors);
      */
     public function editEvent(int $id, Request $request, EntityManagerInterface $entityManager) :Response
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findBy(array(), array('name' =>'ASC'));
 
@@ -171,6 +173,7 @@ dump($errors);
      */
     public function removeEvent(int $id, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
@@ -188,6 +191,7 @@ dump($errors);
      */
     public function cancelEvent(int $id, EntityManagerInterface $entityManager, Request $request, StateService $stateService)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
@@ -225,6 +229,7 @@ dump($errors);
      */
     public function publishEvent(int $id, EntityManagerInterface $entityManager, StateService $stateService)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         //récup de l'event sélectionné via son id
         $eventRepository = $entityManager->getRepository(Event::class);
         $event = $eventRepository->find($id);
@@ -249,6 +254,7 @@ dump($errors);
      */
     public function unsuscribeEvent(int $idEvent, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         $registrationRepository = $entityManager->getRepository(Registration::class);
         $registrations =  $registrationRepository->findRegistrationsByEventByUser($idEvent, $this->getUser());
         //dd($registrations);

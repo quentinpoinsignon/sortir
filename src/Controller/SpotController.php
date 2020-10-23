@@ -35,7 +35,7 @@ class SpotController extends AbstractController
      */
     public function addSpot(Request $request, EntityManagerInterface $entityManager)
     {
-        // $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted("ROLE_USER");
 
         $townRepository = $entityManager->getRepository(Town::class);
         $towns = $townRepository->findBy(array(), array('name' => 'ASC'));
