@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
         $registration->setParticipant($user);
         $registration->setEvent($event);
         $errors = $validator->validate($registration);
-        dump($errors);
+
 
         if (($event->getRegistrationLimitDate()>new DateTime()) && ($event->getRegistrationMaxNb()>count($event->getRegistrations()) && ($event->getState()->getLabel() =='Ouverte') &&count($errors)<1)) {
             $registration->setRegistrationDate(new DateTime());

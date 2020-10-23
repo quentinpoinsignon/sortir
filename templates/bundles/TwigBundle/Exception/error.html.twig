@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+{% block title %} | Erreur de serveur {% endblock %}
+{% block head %}
+    <meta http-equiv="refresh" content="2;URL={{ url('app_login')}}">
+{% endblock %}
+    {% block body %}
+        <br><br>
+        <div class="w3-panel">
+    <h1>Désolé ! Nous rencontrons une erreur sur le serveur.</h1>
+
+    </div>
+{% endblock %}
