@@ -187,7 +187,7 @@ class GlobalFixtures extends Fixture
         $user6->setRoles(['ROLE_ADMIN']);
         $user6->setUsername("charlotte");
         $user6->setCampus($campus2);
-        $user6->setPictureFilename("profile-adeline.jpeg");
+
 
         $user7 = new User();
         $user7->setFirstName("Jean-Baptiste");
@@ -198,7 +198,7 @@ class GlobalFixtures extends Fixture
         $user7->setRoles(['ROLE_USER']);
         $user7->setUsername("jeanbaptiste");
         $user7->setCampus($campus2);
-        $user7->setPictureFilename("profile-adeline.jpeg");
+
 
         $user8 = new User();
         $user8->setFirstName("Firas");

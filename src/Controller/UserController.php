@@ -119,9 +119,7 @@ class UserController extends AbstractController
         if ($userEditForm->isSubmitted() && $userEditForm->isValid()) {
             $pictureFile = $userEditForm->get('pictureFilename')->getData();
             if ($pictureFile) {
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
+
                 $newFilename = 'profile-'.$user->getUsername().'.'.$pictureFile->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
@@ -132,12 +130,10 @@ class UserController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
+
                 $user->setPictureFilename($newFilename);
             }
-
-            // ... persist the $product variable or any other work
+            
             //sauvegarde en base
             $entityManager->persist($user);
             $entityManager->flush();
