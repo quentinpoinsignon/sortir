@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LoginSubscriber implements EventSubscriberInterface
+class StateUploadSubscriber implements EventSubscriberInterface
 {
     private EventRepository $eventRepository;
     private EntityManager $entityManager;
