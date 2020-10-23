@@ -225,7 +225,7 @@ class GlobalFixtures extends Fixture
         $user10->setName("eni");
         $user10->setEmailAdress("nicolas@eni.fr");
         $user10->setPassword($this->encoder->encodePassword($user10, 'nicolas'));
-        $user10->setPhoneNumber("06458710632");
+        $user10->setPhoneNumber("0656243514");
         $user10->setRoles(['ROLE_USER']);
         $user10->setUsername("nicolas");
         $user10->setCampus($campus2);
@@ -235,7 +235,7 @@ class GlobalFixtures extends Fixture
         $user11->setName("eni");
         $user11->setEmailAdress("raphael@eni.fr");
         $user11->setPassword($this->encoder->encodePassword($user11, 'raphael'));
-        $user11->setPhoneNumber("06458711632");
+        $user11->setPhoneNumber("0656243514");
         $user11->setRoles(['ROLE_USER']);
         $user11->setUsername("raphael");
         $user11->setCampus($campus2);
@@ -245,7 +245,7 @@ class GlobalFixtures extends Fixture
         $user12->setName("eni");
         $user12->setEmailAdress("kevin@eni.fr");
         $user12->setPassword($this->encoder->encodePassword($user12, 'kevin'));
-        $user12->setPhoneNumber("06458712632");
+        $user12->setPhoneNumber("0656243514");
         $user12->setRoles(['ROLE_USER']);
         $user12->setUsername("kevin");
         $user12->setCampus($campus2);
@@ -255,7 +255,7 @@ class GlobalFixtures extends Fixture
         $user13->setName("eni");
         $user13->setEmailAdress("laetitia@eni.fr");
         $user13->setPassword($this->encoder->encodePassword($user13, 'laetitia'));
-        $user13->setPhoneNumber("06458713632");
+        $user13->setPhoneNumber("0656243514");
         $user13->setRoles(['ROLE_ADMIN']);
         $user13->setUsername("laetitia");
         $user13->setCampus($campus2);
@@ -267,7 +267,7 @@ class GlobalFixtures extends Fixture
         $user16->setName("eni");
         $user16->setEmailAdress("samy@eni.fr");
         $user16->setPassword($this->encoder->encodePassword($user16, 'samy'));
-        $user16->setPhoneNumber("06458716632");
+        $user16->setPhoneNumber("0656243514");
         $user16->setRoles(['ROLE_USER']);
         $user16->setUsername("samy");
         $user16->setCampus($campus2);
@@ -277,7 +277,7 @@ class GlobalFixtures extends Fixture
         $user17->setName("eni");
         $user17->setEmailAdress("elio@eni.fr");
         $user17->setPassword($this->encoder->encodePassword($user17, 'elio'));
-        $user17->setPhoneNumber("06458717632");
+        $user17->setPhoneNumber("0656243514");
         $user17->setRoles(['ROLE_USER']);
         $user17->setUsername("elio");
         $user17->setCampus($campus2);
@@ -287,7 +287,7 @@ class GlobalFixtures extends Fixture
         $user19->setName("eni");
         $user19->setEmailAdress("carole@eni.fr");
         $user19->setPassword($this->encoder->encodePassword($user19, 'carole'));
-        $user19->setPhoneNumber("06458719632");
+        $user19->setPhoneNumber("0656243514");
         $user19->setRoles(['ROLE_ADMIN']);
         $user19->setUsername("carole");
         $user19->setCampus($campus2);
@@ -297,7 +297,7 @@ class GlobalFixtures extends Fixture
         $user20->setName("eni");
         $user20->setEmailAdress("anthony@eni.fr");
         $user20->setPassword($this->encoder->encodePassword($user20, 'anthony'));
-        $user20->setPhoneNumber("06458720632");
+        $user20->setPhoneNumber("0656243514");
         $user20->setRoles(['ROLE_USER']);
         $user20->setUsername("anthony");
         $user20->setCampus($campus2);
@@ -307,7 +307,7 @@ class GlobalFixtures extends Fixture
         $user21->setName("eni");
         $user21->setEmailAdress("iuliia@eni.fr");
         $user21->setPassword($this->encoder->encodePassword($user21, 'iuliia'));
-        $user21->setPhoneNumber("06458721632");
+        $user21->setPhoneNumber("0656243514");
         $user21->setRoles(['ROLE_USER']);
         $user21->setUsername("iuliia");
         $user21->setCampus($campus2);
