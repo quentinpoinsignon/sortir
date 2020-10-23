@@ -16,7 +16,7 @@
         <div class="w3-half w3-padding">
             <p class="w3-input">Campus : {{ app.user.campus.name }}</p>
             <label for="town">Villes :</label>
-            <select class="w3-select" name="town" id="town">
+            <select class="w3-select" name="town" id="town" required="true">
                 <option value="" disabled selected>Choisissez une ville</option>
                 {% for town in towns %}
                     <option value="{{ town.id }}" {% if event is defined and event.spot and event.spot.town == town %} selected {% endif %}>{{ town.name }}</option>

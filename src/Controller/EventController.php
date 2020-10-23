@@ -80,9 +80,7 @@ class EventController extends AbstractController
         //Génération du formulaire
         $eventAddForm = $this->createForm(EventAddFormType::class, $event);
         $eventAddForm->handleRequest($request);
-        dump($event->getStartDateTime());
         $errors = $validator->validate($event);
-dump($errors);
         if ($eventAddForm->isSubmitted() && $eventAddForm->isValid() && count($errors)==0) {
 
             //Appel du service StateService permettant de définir l'attribut "state" à "Créée"
@@ -257,7 +255,7 @@ dump($errors);
         $this->denyAccessUnlessGranted("ROLE_USER");
         $registrationRepository = $entityManager->getRepository(Registration::class);
         $registrations =  $registrationRepository->findRegistrationsByEventByUser($idEvent, $this->getUser());
-        //dd($registrations);
+
         $entityManager->remove($registrations[0]);
         $entityManager->flush();
 
