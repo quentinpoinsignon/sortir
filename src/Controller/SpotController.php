@@ -64,29 +64,4 @@ class SpotController extends AbstractController
         ]);
     }
 
-
-
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return JsonResponse
-     * @Route ("/choucroute", name="choucroute", methods={"GET"})
-     */
-    public function getAvailableSpotsJson(Request $request, EntityManagerInterface $entityManager)
-    {
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-        $spotRepository = $entityManager->getRepository(Spot::class);
-
-        $spots = $spotRepository->spotTest(1);
-        $jsonContent = $serializer->serialize(
-            $spots,
-            'json',
-            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['events','town']]
-        );
-        $response = new JsonResponse();
-        $response->setContent($jsonContent);
-        return $response;
-    }
 }
