@@ -56,7 +56,8 @@ class UserEditFormType extends AbstractType
                 'label' => 'Email :',
                 'attr' => ['class' => 'w3-input'],
             ])
-            ->add('campus', EntityType::class, [ 'class' => Campus::class,
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class,
                 'label' => 'Campus',
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
