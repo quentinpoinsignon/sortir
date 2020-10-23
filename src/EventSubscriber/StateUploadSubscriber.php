@@ -15,14 +15,11 @@ class StateUploadSubscriber implements EventSubscriberInterface
     private EventRepository $eventRepository;
     private EntityManager $entityManager;
     private StateService $stateService;
-    private $registerLimitTime = 'PT24H';
     private const CREATED_STATE = 'Créée';
     private const OPENED_STATE = 'Ouverte';
     private const CLOSED_STATE = 'Clôturée';
     private const IN_PROGRESS_STATE = 'En cours';
     private const FINISHED_STATE = 'Terminée';
-    private const ARCHIVED_STATE = 'Archivée';
-    private const CANCELED_STATE = 'Annulée';
 
     public function __construct(EventRepository $eventRepository, StateService $stateService, EntityManager $entityManager)
     {
@@ -32,9 +29,18 @@ class StateUploadSubscriber implements EventSubscriberInterface
     }
 
 
+    /**
+     * @param ControllerEvent $event
+     * @throws \Exception
+     * @author kim
+     * Appelle le StateService pour mettre à jour les statuts de tous les events en base de données en fonction de
+     * l'intitulé du statut actuel, des dates de sortie, de clôture et
+     * de fin de sortie de chaque event à chaque fois que l'évènement ControllerEvent se produit.
+     */
     public function onKernelController(ControllerEvent $event)
     {
             $now = new \DateTime();
+            //Récupération de tous les events en base de données
             $allEvent = $this->eventRepository->findAll();
 
 
