@@ -1,3 +1,5 @@
+{# @author: quentin #}
+{# @comment: vue du détail d'une sortie #}
 {% extends 'layout.html.twig' %}
 
 {% block title %} | Detail {% endblock %}
@@ -35,9 +37,7 @@
                             </tr>
                         {% endif %}
                     {% endfor %}
-
                 </table>
-
                     {% if  event.canISuscribe(event, app.user) is same as(true)   %}
                                 <a class="w3-margin-left w3-btn w3-round w3-indigo" href="{{ path('event_registration' ,
                              { 'eventId':event.id,'participantId': app.user.id } ) }}">{{ "S'inscrire" }}   </a>
@@ -55,8 +55,6 @@
                 <br><br>
                 <iframe width=400px height=250px frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox={{ event.spot.longitude }}%2C{{ event.spot.latitude }}%2C{{ event.spot.longitude }}%2C{{ event.spot.latitude }}&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/>
             </div>
-
-
         </div>
     </div>
 {% endblock %}
